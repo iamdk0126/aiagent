@@ -1,0 +1,30 @@
+# Python & Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Build & Executables (防止超過 100MB 限制)
+build/
+dist/
+*.exe
+*.pkg
+*.spec
+*.dll
+*.so
+*.dylib
+
+# Logs & Databases
+logs/
+*.log
+*.db
+*.sqlite3
+debug_log.txt
+aider_config.json
+
+# Aider & IDE
+.aider*
+.vscode/
+.idea/
