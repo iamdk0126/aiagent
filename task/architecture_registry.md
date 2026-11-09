@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:14:47
+> 最後自動更新時間：2026-11-09 12:16:09
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -409,11 +409,11 @@
     - `def delete_permission(self, permission_id: str) -> None` ➔ 刪除指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_all_permissions(self) -> List[Dict]` ➔ 查詢所有權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchall`
 
-### 📄 `database/vector_index_engine.py` (所屬階段: `1.1.2`)
-- **模組職責註記**: 此檔案實現了一個向量索引引擎，主要功能包括初始化、加載索引、插入向量、查詢向量和刪除向量。
+### 📄 `database/vector_index_engine.py` (所屬階段: `1.2.1`)
+- **模組職責註記**: 此檔案實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple), hnswlib:(HierarchicalNSW), numpy`
   - **Class `VectorIndexEngine`**: sqlite-vec / HNSW 毫秒級資產向量檢索器
-    - `def __init__(self, db_path: str, index_path: str)` ➔ 初始化向量索引引擎，設置資料庫和索引路徑，加載索引。 | 🔗 呼叫: `load_index`
+    - `def __init__(self, db_path: str, index_path: str)` ➔ 初始化向量索引引擎，設置資料庫路徑和索引路徑，並加載索引。 | 🔗 呼叫: `load_index`
     - `def load_index(self)` ➔ 加載HNSW索引，從SQLite資料庫中讀取向量數據並添加到索引中。 | 🗄️ 資料表: `vector_index_table` | 🔗 呼叫: `HierarchicalNSW, load_index, get_connection, cursor, execute, fetchall, append, add_item`
     - `def get_connection(self) -> sqlite3.Connection` ➔ 從連線池獲取SQLite連線。 | 🔗 呼叫: `DBManager, get_connection`
     - `def insert_vector(self, vector: np.ndarray, vector_id: int)` ➔ 插入向量到SQLite資料庫和HNSW索引中。 | 🗄️ 資料表: `vector_index_table` | 🔗 呼叫: `add_item, append, get_connection, cursor, execute, commit, tobytes`
@@ -434,6 +434,7 @@
 - **階段 `1.1.1` 關聯總結**: 本階段實現了 SQLite WAL 連線池、26 張表初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和操作的互動。
 - **階段 `1.1.2` 關聯總結**: 本階段實現了數據庫管理模組，包括連線池、表初始化、自動升級和滾動備份功能，與父階段和其他模組進行了數據庫連接和操作的互動。
 - **階段 `1.1.3` 關聯總結**: 本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。
+- **階段 `1.2.1` 關聯總結**: 本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。
 - **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。
 - **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。

@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:14:47",
+    "updated_at": "2026-11-09 12:16:09",
     "tables": {
         "users": {
             "columns": [],
@@ -377,8 +377,8 @@
             "functions": {}
         },
         "database/vector_index_engine.py": {
-            "stage_id": "1.1.2",
-            "note": "此檔案實現了一個向量索引引擎，主要功能包括初始化、加載索引、插入向量、查詢向量和刪除向量。",
+            "stage_id": "1.2.1",
+            "note": "此檔案實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -392,7 +392,7 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, db_path: str, index_path: str)",
-                            "note": "初始化向量索引引擎，設置資料庫和索引路徑，加載索引。",
+                            "note": "初始化向量索引引擎，設置資料庫路徑和索引路徑，並加載索引。",
                             "calls": [
                                 "load_index"
                             ],
@@ -1715,6 +1715,7 @@
         "14.1.1": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
         "14.1.2": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
         "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。",
-        "15.1.2": "本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。"
+        "15.1.2": "本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。",
+        "1.2.1": "本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。"
     }
 }
