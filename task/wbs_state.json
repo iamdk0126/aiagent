@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 10:27:54",
+    "updated_at": "2026-11-09 10:28:26",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -24,13 +24,13 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [],
                             "id": "1.1.1",
                             "mode": "both",
                             "prompt": "實作 SQLite WAL 連線池，初始化 26 張表，實現 Auto-Migration 與滾動備份功能。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "db_manager.py",
                                 "vector_index_engine.py",

@@ -1,6 +1,29 @@
 {
-    "updated_at": "2026-11-09 10:26:34",
-    "tables": {},
-    "modules": {},
-    "stage_notes": {}
+    "updated_at": "2026-11-09 10:28:26",
+    "tables": {
+        "users": {
+            "columns": [],
+            "defined_in": "Stage 1.1.1",
+            "accessed_by": [],
+            "note": "用戶表，存儲用戶信息，關聯於數據庫連線初始化。"
+        },
+        "settings": {
+            "columns": [],
+            "defined_in": "Stage 1.1.1",
+            "accessed_by": [],
+            "note": "設置表，存儲系統設置，關聯於數據庫連線初始化。"
+        }
+    },
+    "modules": {
+        "database/db_manager.py": {
+            "stage_id": "1.1.1",
+            "note": "此檔案負責管理數據庫連線，包括創建連接、執行初始化查詢和處理連接錯誤。",
+            "imports": [],
+            "classes": {},
+            "functions": {}
+        }
+    },
+    "stage_notes": {
+        "1.1.1": "本階段實現了數據庫連線與初始化，包括創建數據庫連接、執行初始化查詢和處理連接錯誤。"
+    }
 }
