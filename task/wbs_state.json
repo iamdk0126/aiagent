@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:25:55",
+    "updated_at": "2026-11-09 11:26:31",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -658,13 +658,13 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [],
                             "id": "9.1.1",
                             "mode": "both",
                             "prompt": "實作 WorkflowRuntime 類別，包含初始化方法、任務註冊方法、任務執行方法、任務狀態查詢方法。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "workflow_runtime.py"
                             ],

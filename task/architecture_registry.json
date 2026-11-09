@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:24:33",
+    "updated_at": "2026-11-09 11:26:31",
     "tables": {
         "users": {
             "columns": [],
@@ -895,6 +895,48 @@
                 }
             },
             "functions": {}
+        },
+        "core/workflow_runtime.py": {
+            "stage_id": "9.1.1",
+            "note": "此檔案定義了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢。",
+            "imports": [
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "WorkflowRuntime": {
+                    "bases": [],
+                    "note": "WorkflowRuntime: 管理工作流任务的类",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self)",
+                            "note": "初始化 WorkflowRuntime 类",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "register_task": {
+                            "signature": "def register_task(self, task_id: str, task_function)",
+                            "note": "註冊任務，將任務ID和任務函數存儲在 tasks 字典中。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "execute_task": {
+                            "signature": "def execute_task(self, task_id: str)",
+                            "note": "執行指定ID的任務，返回任務執行結果。",
+                            "calls": [
+                                "ValueError"
+                            ],
+                            "tables": []
+                        },
+                        "get_task_status": {
+                            "signature": "def get_task_status(self, task_id: str) -> Optional[str]",
+                            "note": "查詢指定ID的任務狀態，返回任務狀態或 None。",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -914,6 +956,7 @@
         "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
         "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
         "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
-        "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。"
+        "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",
+        "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。"
     }
 }
