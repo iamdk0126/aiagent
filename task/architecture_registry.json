@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 10:28:26",
+    "updated_at": "2026-11-09 10:29:21",
     "tables": {
         "users": {
             "columns": [],
@@ -12,6 +12,12 @@
             "defined_in": "Stage 1.1.1",
             "accessed_by": [],
             "note": "設置表，存儲系統設置，關聯於數據庫連線初始化。"
+        },
+        "vector_index_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.2",
+            "accessed_by": [],
+            "note": "此資料表存儲向量及其相關元數據，用於高效地進行向量搜索。"
         }
     },
     "modules": {
@@ -21,9 +27,17 @@
             "imports": [],
             "classes": {},
             "functions": {}
+        },
+        "database/vector_index_engine.py": {
+            "stage_id": "1.1.2",
+            "note": "此檔案實現了向量索引引擎的核心功能，包括向量的插入、搜索和更新。",
+            "imports": [],
+            "classes": {},
+            "functions": {}
         }
     },
     "stage_notes": {
-        "1.1.1": "本階段實現了數據庫連線與初始化，包括創建數據庫連接、執行初始化查詢和處理連接錯誤。"
+        "1.1.1": "本階段實現了數據庫連線與初始化，包括創建數據庫連接、執行初始化查詢和處理連接錯誤。",
+        "1.1.2": "本階段實現了向量索引引擎，與父階段和資料表進行了互動，以支持高效的向量搜索。"
     }
 }

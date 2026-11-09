@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 10:28:51",
+    "updated_at": "2026-11-09 10:29:21",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -44,7 +44,7 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [
                                 "1.1.1"
                             ],
@@ -52,7 +52,7 @@
                             "mode": "both",
                             "prompt": "實現 sqlite-vec / HNSW 毫秒級資產向量檢索器，支持向量的插入、查詢和刪除操作。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "db_manager.py",
                                 "vector_index_engine.py",
