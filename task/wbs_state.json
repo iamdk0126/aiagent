@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:46:43",
+    "updated_at": "2026-11-09 12:47:26",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -823,8 +823,8 @@
                             ],
                             "prompt": "為 `FrameContinuityEngine` 類別中的方法添加異常處理，確保在發生錯誤時能夠正確處理。實現單元測試，覆蓋 `select_best_frame`、`apply_histogram_matching` 和 `apply_temporal_deflicker` 方法的各種情況。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],

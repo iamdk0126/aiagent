@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:46:16
+> 最後自動更新時間：2026-11-09 12:47:26
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -233,20 +233,25 @@
 - **欄位結構**: `id (INTEGER), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/workflow_checkpoints.py::WorkflowCheckpoint.save_checkpoint(), database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()`
 
+### 資料表 `未見`
+- **定義檔案**: `Stage 5.2.3` | **用途註記**: 未見明確提及資料表
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `無`
 - **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段的程式碼中未涉及任何資料表
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ## 2. 📦 程式模組、類別與 Function 關聯索引 (Modules & Symbol Map)
-### 📄 `core/frame_continuity_engine.py` (所屬階段: `5.2.2`)
-- **模組職責註記**: 此檔案的核心職責是實現智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背的演算法，並通過 DBManager 類與數據庫進行交互。
+### 📄 `core/frame_continuity_engine.py` (所屬階段: `5.2.3`)
+- **模組職責註記**: 此檔案實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), database.db_manager:(DBManager)`
   - **Class `FrameContinuityEngine`**: 智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背
     - `def __init__(self, db_manager: DBManager)` ➔ 初始化 FrameContinuityEngine 类
     - `def select_best_last_frame(self, frames: List[Dict]) -> Optional[Dict]` ➔ 此函數的功能是選擇最佳尾幀，輸入為帧列表，輸出為最佳尾幀。
-    - `def match_histograms(self, frame1: Dict, frame2: Dict) -> float` ➔ 此函數的功能是進行 LAB 色彩校正，輸入為兩帧，輸出為色彩匹配度。
-    - `def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]` ➔ 此函數的功能是進行時域去閃爍與羽化去背，輸入為帧列表，輸出為去閃爍與羽化去背後的帧列表。
+    - `def match_histograms(self, frame1: Dict, frame2: Dict) -> float` ➔ 此函數的功能是進行LAB色彩校正，輸入為兩帧，輸出為色彩匹配度。
+    - `def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]` ➔ 此函數的功能是進行時域去閃爍與羽化去背，輸入為帧列表，輸出為去閃爍與羽化去背的帧列表。
 
 ### 📄 `core/gpu_auto_profiler.py` (所屬階段: `2.1.2`)
 - **模組職責註記**: 此檔案實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。
@@ -516,6 +521,7 @@
 - **階段 `5.1.2` 關聯總結**: 本階段實現了圖形用戶界面的模組，與父階段和其他模組進行了互動，並與資料表無直接關聯。
 - **階段 `5.2.1` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **階段 `5.2.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
+- **階段 `5.2.3` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
