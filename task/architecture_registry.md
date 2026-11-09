@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:49:10
+> 最後自動更新時間：2026-11-09 12:50:32
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -240,6 +240,11 @@
 
 ### 資料表 `無`
 - **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段的程式碼中未涉及任何資料表
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `資料表名稱`
+- **定義檔案**: `Stage 5.3.2` | **用途註記**: 此資料表的業務用途與關聯說明
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -494,15 +499,17 @@
     - `def set_lighting(self, lighting)` ➔ 設置布光。 | 🔗 呼叫: `setCurrentText`
     - `def set_parameters(self, parameters)` ➔ 設置參數。 | 🔗 呼叫: `setText`
 
-### 📄 `ui/main_window.py` (所屬階段: `5.3.1`)
-- **模組職責註記**: 此檔案定義了主視窗類別，包含頂部三視圖切換介面，並初始化各視圖
-- **依賴引用 (Imports)**: `PySide6.QtWidgets:(QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel), PySide6.QtCore:(Qt)`
+### 📄 `ui/main_window.py` (所屬階段: `5.3.2`)
+- **模組職責註記**: 此檔案實現了主視窗類別，包含頂部三視圖切換介面，包括畫布視圖、影片編輯視圖、成片視圖和硬體遙測狀態視圖。
+- **依賴引用 (Imports)**: `PySide6.QtWidgets:(QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel, QFrame, QHBoxLayout, QLabel), PySide6.QtCore:(Qt, QTimer), psutil`
   - **Class `MainWindow(QMainWindow)`**: 主視窗類別，包含頂部三視圖切換介面
     - `def __init__(self)` ➔ 初始化 MainWindow 类 | 🔗 呼叫: `__init__, initUI`
-    - `def initUI(self)` ➔ 初始化 UI 元素，設置窗口標題和大小，並創建 QTabWidget 作為頂部三視圖切換介面 | 🔗 呼叫: `setWindowTitle, setGeometry, QTabWidget, setCentralWidget, QWidget, addTab, initCanvasTab, initEditorTab`
+    - `def initUI(self)` ➔ 初始化 UI 元素 | 🔗 呼叫: `setWindowTitle, setGeometry, QTabWidget, setCentralWidget, QWidget, addTab, initCanvasTab, initEditorTab`
     - `def initCanvasTab(self)` ➔ 初始化畫布視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
     - `def initEditorTab(self)` ➔ 初始化影片編輯視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
     - `def initOutputTab(self)` ➔ 初始化成片視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
+    - `def initHardwareMonitorTab(self)` ➔ 初始化硬體遙測狀態視圖 | 🔗 呼叫: `QVBoxLayout, QFrame, setFrameShape, setLineWidth, QLabelText, addWidget, setLayout, QTimer`
+    - `def updateHardwareMonitor(self)` ➔ 更新硬體遙測狀態 | 🔗 呼叫: `Process, sensors_temperatures, setText, memory_info, virtual_memory`
 
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
 - **階段 `1.1.1` 關聯總結**: 本階段實現了 SQLite WAL 連線池、26 張表初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和操作的互動。
@@ -533,6 +540,7 @@
 - **階段 `5.2.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.2.3` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **階段 `5.3.1` 關聯總結**: 本階段實現了主視窗類別，包含頂部三視圖切換介面，與父階段和其他模組無直接互動，主要操作資料表為無
+- **階段 `5.3.2` 關聯總結**: 本階段實現了硬體遙測狀態顯示功能，通過 `ui/main_window.py` 檔案中的 `MainWindow` 類和 `initHardwareMonitorTab` 方法，與父階段和其他模組互動，並通過 SQL 資料表進行數據存取。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。

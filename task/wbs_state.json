@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:49:39",
+    "updated_at": "2026-11-09 12:50:32",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -889,8 +889,8 @@
                             ],
                             "prompt": "實現硬體遙測狀態的顯示，包括 GPU VRAM 與溫度的顯示。實現方式包括創建一個 QFrame 或 QGroupBox 來顯示這些狀態，並定期從系統或硬件監控器獲取數據進行更新。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ]
