@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:44:49",
+    "updated_at": "2026-11-09 12:45:15",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -802,7 +802,7 @@
                                 "core/frame_continuity_engine.py"
                             ],
                             "prompt": "實現 `select_best_frame` 方法，使用 OpenCV 計算 Laplacian 清晰度分數和面部特徵完整度，挑選最清晰無崩壞的一幀。實現 `apply_histogram_matching` 和 `apply_temporal_deflicker` 方法，進行色彩校正和時域去閃爍。",
-                            "reasoning_status": "pending",
+                            "reasoning_status": "completed",
                             "coding_status": "pending",
                             "registry_status": "pending",
                             "children": []
