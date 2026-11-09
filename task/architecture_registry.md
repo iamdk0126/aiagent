@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:47:26
+> 最後自動更新時間：2026-11-09 12:49:10
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -494,6 +494,16 @@
     - `def set_lighting(self, lighting)` ➔ 設置布光。 | 🔗 呼叫: `setCurrentText`
     - `def set_parameters(self, parameters)` ➔ 設置參數。 | 🔗 呼叫: `setText`
 
+### 📄 `ui/main_window.py` (所屬階段: `5.3.1`)
+- **模組職責註記**: 此檔案定義了主視窗類別，包含頂部三視圖切換介面，並初始化各視圖
+- **依賴引用 (Imports)**: `PySide6.QtWidgets:(QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel), PySide6.QtCore:(Qt)`
+  - **Class `MainWindow(QMainWindow)`**: 主視窗類別，包含頂部三視圖切換介面
+    - `def __init__(self)` ➔ 初始化 MainWindow 类 | 🔗 呼叫: `__init__, initUI`
+    - `def initUI(self)` ➔ 初始化 UI 元素，設置窗口標題和大小，並創建 QTabWidget 作為頂部三視圖切換介面 | 🔗 呼叫: `setWindowTitle, setGeometry, QTabWidget, setCentralWidget, QWidget, addTab, initCanvasTab, initEditorTab`
+    - `def initCanvasTab(self)` ➔ 初始化畫布視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
+    - `def initEditorTab(self)` ➔ 初始化影片編輯視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
+    - `def initOutputTab(self)` ➔ 初始化成片視圖 | 🔗 呼叫: `QVBoxLayout, QLabel, setAlignment, addWidget, setLayout`
+
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
 - **階段 `1.1.1` 關聯總結**: 本階段實現了 SQLite WAL 連線池、26 張表初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和操作的互動。
 - **階段 `1.1.2` 關聯總結**: 本階段實現了數據庫管理模組，包括連線池、表初始化、自動升級和滾動備份功能，與父階段和其他模組進行了數據庫連接和操作的互動。
@@ -522,6 +532,7 @@
 - **階段 `5.2.1` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **階段 `5.2.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.2.3` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
+- **階段 `5.3.1` 關聯總結**: 本階段實現了主視窗類別，包含頂部三視圖切換介面，與父階段和其他模組無直接互動，主要操作資料表為無
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
