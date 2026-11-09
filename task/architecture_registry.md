@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:13:51
+> 最後自動更新時間：2026-11-09 11:14:37
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -44,16 +44,16 @@
     - `def configure_precision(self) -> None` ➔ 根據 GPU 的計算能力配置運算精度，以利於高效計算。 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
     - `def configure_memory_management(self) -> None` ➔ 根據 GPU 的記憶體容量配置記憶體管理策略，以利於高效記憶體使用。 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
 
-### 📄 `core/model_store_crawler.py` (所屬階段: `3.1.1`)
-- **模組職責註記**: 此檔案定義了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
+### 📄 `core/model_store_crawler.py` (所屬階段: `3.1.2`)
+- **模組職責註記**: 此檔案的核心職責是從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，並提供對外介面來獲取和保存模型數據。
 - **依賴引用 (Imports)**: `requests, typing:(List, Dict, Optional)`
   - **Class `ModelStoreCrawler`**: ModelStoreCrawler: 用于从 Hugging Face Hub 和 Civitai v1 API 获取模型信息的类
-    - `def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])` ➔ 初始化 ModelStoreCrawler 類，接收 Hugging Face Hub 和 Civitai v1 API 的令牌。
-    - `def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]` ➔ 從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並返回模型信息列表。 | 🔗 呼叫: `_fetch_hf_models, _fetch_civitai_models`
+    - `def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])` ➔ 初始化 ModelStoreCrawler 类
+    - `def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]` ➔ 從 Hugging Face Hub 和 Civitai v1 API 获取模型信息，並返回模型信息列表。 | 🔗 呼叫: `_fetch_hf_models, _fetch_civitai_models`
     - `def parse_model_info(self, model_info: Dict) -> Dict` ➔ 解析模型信息，返回解析後的模型信息字典。
     - `def save_models(self, models: List[Dict], save_path: str) -> None` ➔ 將模型信息保存到文件中。 | 🔗 呼叫: `write`
-    - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 獲取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
-    - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 獲取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
+    - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
+    - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
 
 ### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.2`)
 - **模組職責註記**: 此檔案實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
@@ -106,3 +106,4 @@
 - **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **階段 `2.2.2` 關聯總結**: 本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **階段 `3.1.1` 關聯總結**: 本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
+- **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。
