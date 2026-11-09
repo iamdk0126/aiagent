@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:36:43",
+    "updated_at": "2026-11-09 11:38:49",
     "tables": {
         "users": {
             "columns": [],
@@ -127,6 +127,32 @@
                 "database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()"
             ],
             "note": "此資料表用於保存工作流程的檢查點數據，包括檢查點數據和創建時間。"
+        },
+        "permissions": {
+            "columns": [
+                "permission_id (TEXT)",
+                "permission_name (TEXT)",
+                "description (TEXT)"
+            ],
+            "defined_in": "database/permissions.py",
+            "accessed_by": [
+                "database/users.py::Permission.insert_permission()",
+                "database/users.py::Permission.get_permission()",
+                "database/users.py::Permission.update_permission()",
+                "database/users.py::Permission.delete_permission()",
+                "database/users.py::Permission.get_all_permissions()",
+                "database/roles.py::Permission.insert_permission()",
+                "database/roles.py::Permission.get_permission()",
+                "database/roles.py::Permission.update_permission()",
+                "database/roles.py::Permission.delete_permission()",
+                "database/roles.py::Permission.get_all_permissions()",
+                "database/permissions.py::Permission.insert_permission()",
+                "database/permissions.py::Permission.get_permission()",
+                "database/permissions.py::Permission.update_permission()",
+                "database/permissions.py::Permission.delete_permission()",
+                "database/permissions.py::Permission.get_all_permissions()"
+            ],
+            "note": "此資料表用於存儲權限的相關信息，包括權限ID、權限名稱和描述。"
         }
     },
     "modules": {
@@ -1183,6 +1209,333 @@
                 }
             },
             "functions": {}
+        },
+        "database/users.py": {
+            "stage_id": "15.1.1",
+            "note": "此檔案定義了 Permission 類別，用於處理用戶權限的資料庫操作。",
+            "imports": [
+                "sqlite3",
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "Permission": {
+                    "bases": [],
+                    "note": "權限類別，用於處理權限資料庫操作。",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "connect": {
+                            "signature": "def connect(self) -> None",
+                            "note": "連接到 SQLite 資料庫。",
+                            "calls": [
+                                "connect"
+                            ],
+                            "tables": []
+                        },
+                        "disconnect": {
+                            "signature": "def disconnect(self) -> None",
+                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "calls": [
+                                "close"
+                            ],
+                            "tables": []
+                        },
+                        "create_table": {
+                            "signature": "def create_table(self) -> None",
+                            "note": "創建 permissions 資料表。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": []
+                        },
+                        "insert_permission": {
+                            "signature": "def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "插入一個新權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_permission": {
+                            "signature": "def get_permission(self, permission_id: str) -> Optional[Dict]",
+                            "note": "查詢指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "update_permission": {
+                            "signature": "def update_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "更新指定權限的資料。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "delete_permission": {
+                            "signature": "def delete_permission(self, permission_id: str) -> None",
+                            "note": "刪除指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_all_permissions": {
+                            "signature": "def get_all_permissions(self) -> List[Dict]",
+                            "note": "查詢所有權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchall"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        }
+                    }
+                }
+            },
+            "functions": {}
+        },
+        "database/roles.py": {
+            "stage_id": "15.1.1",
+            "note": "此檔案定義了 Permission 類別，用於處理角色權限的資料庫操作。",
+            "imports": [
+                "sqlite3",
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "Permission": {
+                    "bases": [],
+                    "note": "權限類別，用於處理權限資料庫操作。",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "connect": {
+                            "signature": "def connect(self) -> None",
+                            "note": "連接到 SQLite 資料庫。",
+                            "calls": [
+                                "connect"
+                            ],
+                            "tables": []
+                        },
+                        "disconnect": {
+                            "signature": "def disconnect(self) -> None",
+                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "calls": [
+                                "close"
+                            ],
+                            "tables": []
+                        },
+                        "create_table": {
+                            "signature": "def create_table(self) -> None",
+                            "note": "創建 permissions 資料表。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": []
+                        },
+                        "insert_permission": {
+                            "signature": "def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "插入一個新權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_permission": {
+                            "signature": "def get_permission(self, permission_id: str) -> Optional[Dict]",
+                            "note": "查詢指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "update_permission": {
+                            "signature": "def update_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "更新指定權限的資料。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "delete_permission": {
+                            "signature": "def delete_permission(self, permission_id: str) -> None",
+                            "note": "刪除指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_all_permissions": {
+                            "signature": "def get_all_permissions(self) -> List[Dict]",
+                            "note": "查詢所有權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchall"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        }
+                    }
+                }
+            },
+            "functions": {}
+        },
+        "database/permissions.py": {
+            "stage_id": "15.1.1",
+            "note": "此檔案定義了 Permission 類別，用於處理單純的權限資料庫操作。",
+            "imports": [
+                "sqlite3",
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "Permission": {
+                    "bases": [],
+                    "note": "權限類別，用於處理權限資料庫操作。",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "connect": {
+                            "signature": "def connect(self) -> None",
+                            "note": "連接到 SQLite 資料庫。",
+                            "calls": [
+                                "connect"
+                            ],
+                            "tables": []
+                        },
+                        "disconnect": {
+                            "signature": "def disconnect(self) -> None",
+                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "calls": [
+                                "close"
+                            ],
+                            "tables": []
+                        },
+                        "create_table": {
+                            "signature": "def create_table(self) -> None",
+                            "note": "創建 permissions 資料表。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": []
+                        },
+                        "insert_permission": {
+                            "signature": "def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "插入一個新權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_permission": {
+                            "signature": "def get_permission(self, permission_id: str) -> Optional[Dict]",
+                            "note": "查詢指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "update_permission": {
+                            "signature": "def update_permission(self, permission_id: str, permission_name: str, description: str) -> None",
+                            "note": "更新指定權限的資料。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "delete_permission": {
+                            "signature": "def delete_permission(self, permission_id: str) -> None",
+                            "note": "刪除指定權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        },
+                        "get_all_permissions": {
+                            "signature": "def get_all_permissions(self) -> List[Dict]",
+                            "note": "查詢所有權限。",
+                            "calls": [
+                                "cursor",
+                                "execute",
+                                "fetchall"
+                            ],
+                            "tables": [
+                                "permissions"
+                            ]
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -1210,6 +1563,7 @@
         "13.1.1": "本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。",
         "13.1.2": "本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。",
         "14.1.1": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
-        "14.1.2": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。"
+        "14.1.2": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
+        "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。"
     }
 }
