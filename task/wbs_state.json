@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:30:04",
+    "updated_at": "2026-11-09 12:30:27",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -461,7 +461,7 @@
                                 "core/model_store_crawler.py"
                             ],
                             "prompt": "實作 `ModelStoreCrawler` 類別，包含 `__init__` 方法用於初始化連線，以及 `fetch_models` 方法用於從 HF/Civitai 爬取模型信息。",
-                            "reasoning_status": "pending",
+                            "reasoning_status": "completed",
                             "coding_status": "pending",
                             "registry_status": "pending",
                             "children": []
