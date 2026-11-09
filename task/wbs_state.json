@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:31:12",
+    "updated_at": "2026-11-09 12:31:39",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -481,7 +481,7 @@
                                 "core/model_store_crawler.py"
                             ],
                             "prompt": "在 `ModelStoreCrawler` 類別中實現核心業務演算法，如分頁爬取、數據解析和錯誤處理。同時，撰寫單元測試以確保各方法的正確性。",
-                            "reasoning_status": "pending",
+                            "reasoning_status": "completed",
                             "coding_status": "pending",
                             "registry_status": "pending",
                             "children": []
