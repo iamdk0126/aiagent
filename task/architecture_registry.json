@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:32:11",
+    "updated_at": "2026-11-09 12:33:33",
     "tables": {
         "users": {
             "columns": [],
@@ -57,7 +57,7 @@
                 "core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models()",
                 "core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()"
             ],
-            "note": "此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯的函數為fetch_free_local_models和fetch_commercial_api_models。"
+            "note": "此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯說明為 ModelMenuProvider 類通過此表獲取本地免費模型和商業API模型。"
         },
         "asset_embeddings": {
             "columns": [
@@ -751,8 +751,8 @@
             "functions": {}
         },
         "core/model_menu_provider.py": {
-            "stage_id": "3.2.2",
-            "note": "此檔案的核心職責是提供模型菜單和基礎連接接口，通過DBManager與數據庫進行交互，獲取本地免費和商業API模型。",
+            "stage_id": "3.2.1",
+            "note": "此檔案的核心職責是提供模型菜單和基礎連線介面，通過與數據庫管理器交互來獲取本地免費模型和商業API模型。",
             "imports": [
                 "typing:(List, Dict)",
                 "database.db_manager:(DBManager)"
@@ -770,7 +770,7 @@
                         },
                         "fetch_free_local_models": {
                             "signature": "def fetch_free_local_models(self) -> List[Dict]",
-                            "note": "此函數的功能是獲取本地免費模型，輸入無，輸出為本地免費模型列表，操作的資料表為model_store。",
+                            "note": "此函數的功能是獲取本地免費模型，輸入無，輸出為本地免費模型列表，操作的資料表為 model_store。",
                             "calls": [
                                 "execute_query"
                             ],
@@ -780,7 +780,7 @@
                         },
                         "fetch_commercial_api_models": {
                             "signature": "def fetch_commercial_api_models(self) -> List[Dict]",
-                            "note": "此函數的功能是獲取商業API模型，輸入無，輸出為商業API模型列表，操作的資料表為model_store。",
+                            "note": "此函數的功能是獲取商業API模型，輸入無，輸出為商業API模型列表，操作的資料表為 model_store。",
                             "calls": [
                                 "execute_query"
                             ],
