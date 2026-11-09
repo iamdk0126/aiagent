@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:28:11",
+    "updated_at": "2026-11-09 12:29:13",
     "tables": {
         "users": {
             "columns": [],
@@ -315,6 +315,12 @@
             "defined_in": "Stage 2.3.1",
             "accessed_by": [],
             "note": "本階段的程式碼中未涉及任何資料表"
+        },
+        "N/A": {
+            "columns": [],
+            "defined_in": "Stage 2.3.3",
+            "accessed_by": [],
+            "note": "本階段的程式碼未涉及任何資料表。"
         }
     },
     "modules": {
@@ -1700,8 +1706,8 @@
             "functions": {}
         },
         "core/master_video_assembler.py": {
-            "stage_id": "2.3.2",
-            "note": "此檔案實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能",
+            "stage_id": "2.3.3",
+            "note": "此檔案實現了 GPU 自適應引擎和 VRAM 記憶體管理，並整合了音素級指定臉孔對嘴、J/L-Cut 混音和視頻組裝功能。",
             "imports": [
                 "torch",
                 "pynvml",
@@ -1873,6 +1879,7 @@
         "1.3.1": "本階段實現了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，與資料庫進行互動。",
         "1.3.2": "本階段實現了專案版本快照和 .omni_pack 打包的創建與復原功能，與父階段和資料表進行了互動。",
         "2.3.1": "本階段實現了 GPU 自適應引擎和 VRAM/RAM 協同管理器，用於音素級指定臉孔對嘴和 J/L-Cut 混音。",
-        "2.3.2": "本階段實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能。"
+        "2.3.2": "本階段實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能。",
+        "2.3.3": "本階段實現了 GPU 自適應引擎和 VRAM 記憶體管理，並在 MasterVideoAssembler 中整合了音素級指定臉孔對嘴、J/L-Cut 混音和視頻組裝功能，與父階段和其他模組進行了互動。"
     }
 }
