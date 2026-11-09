@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:40:35",
+    "updated_at": "2026-11-09 12:42:33",
     "tables": {
         "users": {
             "columns": [],
@@ -1844,6 +1844,89 @@
                 }
             },
             "functions": {}
+        },
+        "ui/canvas/shot_pair_node_widget.py": {
+            "stage_id": "5.1.1",
+            "note": "此檔案實現了圖形用戶介面的元素和功能，包括左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。",
+            "imports": [
+                "PySide6.QtWidgets:(QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QComboBox, QLineEdit, QPushButton)",
+                "PySide6.QtCore:(Qt)"
+            ],
+            "classes": {
+                "ShotPairNodeWidget": {
+                    "bases": [
+                        "QWidget"
+                    ],
+                    "note": "左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, parent)",
+                            "note": "初始化 ShotPairNodeWidget 类，設置父窗口。",
+                            "calls": [
+                                "__init__",
+                                "initUI"
+                            ],
+                            "tables": []
+                        },
+                        "initUI": {
+                            "signature": "def initUI(self)",
+                            "note": "初始化 UI 元素，包括圖形化界面的布局和控件。",
+                            "calls": [
+                                "QVBoxLayout",
+                                "QLabel",
+                                "QHBoxLayout",
+                                "addWidget",
+                                "addLayout",
+                                "QListWidget",
+                                "QComboBox",
+                                "QLineEdit"
+                            ],
+                            "tables": []
+                        },
+                        "add_frame": {
+                            "signature": "def add_frame(self, left_frame, right_frame)",
+                            "note": "添加左圖右影成對分鏡卡。",
+                            "calls": [
+                                "setText"
+                            ],
+                            "tables": []
+                        },
+                        "add_to_white_list": {
+                            "signature": "def add_to_white_list(self, item)",
+                            "note": "將項目添加到白名單。",
+                            "calls": [
+                                "addItem"
+                            ],
+                            "tables": []
+                        },
+                        "set_camera": {
+                            "signature": "def set_camera(self, camera)",
+                            "note": "設置運鏡。",
+                            "calls": [
+                                "setCurrentText"
+                            ],
+                            "tables": []
+                        },
+                        "set_lighting": {
+                            "signature": "def set_lighting(self, lighting)",
+                            "note": "設置布光。",
+                            "calls": [
+                                "setCurrentText"
+                            ],
+                            "tables": []
+                        },
+                        "set_parameters": {
+                            "signature": "def set_parameters(self, parameters)",
+                            "note": "設置參數",
+                            "calls": [
+                                "setText"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -1860,7 +1943,7 @@
         "3.2.2": "本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。",
         "4.1.1": "本階段實現了資料庫連線管理、項目資產與嵌入式數據的 ORM 模型，並定義了項目存档與恢復的介面。",
         "4.1.2": "本階段實現了數據庫模型和管理器，用於存儲和操作項目資產及其嵌入數據，並提供了數據庫管理器和存档管理器的實現。",
-        "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
+        "5.1.1": "ShotPairNodeWidget 模組實現了圖形用戶介面的元素和功能，與父階段的 UI 設計和資料結構相連，並與其他模組進行互動以實現圖形化操作。",
         "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
         "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
         "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",

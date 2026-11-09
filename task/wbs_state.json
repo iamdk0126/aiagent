@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:41:50",
+    "updated_at": "2026-11-09 12:42:33",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -726,8 +726,8 @@
                             ],
                             "prompt": "實作 `ShotPairNodeWidget` 類別，包含基本的 UI 元素和介面，如左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {
