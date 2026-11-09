@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:06:48",
+    "updated_at": "2026-11-09 11:07:29",
     "tables": {
         "users": {
             "columns": [],
@@ -16,8 +16,12 @@
         "vector_index_table": {
             "columns": [],
             "defined_in": "Stage 1.1.2",
-            "accessed_by": [],
-            "note": "此資料表存儲向量及其相關元數據，用於高效地進行向量搜索。"
+            "accessed_by": [
+                "database/vector_index_engine.py::VectorIndexEngine.load_index()",
+                "database/vector_index_engine.py::VectorIndexEngine.insert_vector()",
+                "database/vector_index_engine.py::VectorIndexEngine.delete_vector()"
+            ],
+            "note": "此資料表用於存儲向量及其ID，用於向量索引引擎的數據庫操作。"
         },
         "project_info": {
             "columns": [],
@@ -113,9 +117,94 @@
         },
         "database/vector_index_engine.py": {
             "stage_id": "1.1.2",
-            "note": "此檔案實現了向量索引引擎的核心功能，包括向量的插入、搜索和更新。",
-            "imports": [],
-            "classes": {},
+            "note": "此檔案實現了一個向量索引引擎，主要功能包括初始化、加載索引、插入向量、查詢向量和刪除向量。",
+            "imports": [
+                "sqlite3",
+                "typing:(List, Optional, Tuple)",
+                "hnswlib:(HierarchicalNSW)",
+                "numpy"
+            ],
+            "classes": {
+                "VectorIndexEngine": {
+                    "bases": [],
+                    "note": "sqlite-vec / HNSW 毫秒級資產向量檢索器",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str, index_path: str)",
+                            "note": "初始化向量索引引擎，設置資料庫和索引路徑，加載索引。",
+                            "calls": [
+                                "load_index"
+                            ],
+                            "tables": []
+                        },
+                        "load_index": {
+                            "signature": "def load_index(self)",
+                            "note": "加載HNSW索引，從SQLite資料庫中讀取向量數據並添加到索引中。",
+                            "calls": [
+                                "HierarchicalNSW",
+                                "load_index",
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "fetchall",
+                                "append",
+                                "add_item"
+                            ],
+                            "tables": [
+                                "vector_index_table"
+                            ]
+                        },
+                        "get_connection": {
+                            "signature": "def get_connection(self) -> sqlite3.Connection",
+                            "note": "從連線池獲取SQLite連線。",
+                            "calls": [
+                                "DBManager",
+                                "get_connection"
+                            ],
+                            "tables": []
+                        },
+                        "insert_vector": {
+                            "signature": "def insert_vector(self, vector: np.ndarray, vector_id: int)",
+                            "note": "插入向量到SQLite資料庫和HNSW索引中。",
+                            "calls": [
+                                "add_item",
+                                "append",
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit",
+                                "tobytes"
+                            ],
+                            "tables": [
+                                "vector_index_table"
+                            ]
+                        },
+                        "search_vector": {
+                            "signature": "def search_vector(self, vector: np.ndarray, k: int) -> List[Tuple[int, float]]",
+                            "note": "查詢最接近的向量及其距離。",
+                            "calls": [
+                                "search_knn"
+                            ],
+                            "tables": []
+                        },
+                        "delete_vector": {
+                            "signature": "def delete_vector(self, vector_id: int)",
+                            "note": "從SQLite資料庫和HNSW索引中刪除向量。",
+                            "calls": [
+                                "delete_item",
+                                "remove",
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "vector_index_table"
+                            ]
+                        }
+                    }
+                }
+            },
             "functions": {}
         },
         "database/project_archiver.py": {
@@ -128,7 +217,7 @@
     },
     "stage_notes": {
         "1.1.1": "本階段實現了 SQLite WAL 連線池、26 張表的初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和初始化的協調。",
-        "1.1.2": "本階段實現了向量索引引擎，與父階段和資料表進行了互動，以支持高效的向量搜索。",
+        "1.1.2": "本階段實現了一個向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
         "1.1.3": "本階段實現了數據庫項目存档功能，與父階段和相關模組進行了交互，並與資料表進行了關聯。"
     }
 }
