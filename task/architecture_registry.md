@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 14:58:34
+> 最後自動更新時間：2026-11-09 18:10:05
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -456,6 +456,19 @@
     - `def update_target_node_id(self, new_id: str) -> None` ➔ 更新目標節點ID。
     - `def __repr__(self) -> str` ➔ 取得邊的字符串表示。
 
+### 📄 `database/db_connection_pool.py` (所屬階段: `1.1.1`)
+- **模組職責註記**: 此模組的核心職責是管理 SQLite 連線池，提供連線取得、釋放、事務處理以及基礎的 CRUD 操作介面，支援錯誤重連機制，並通過上下文管理器簡化連線使用。
+- **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple, TypeVar, Generic, ContextManager), contextlib:(contextmanager)`
+  - **Class `DBConnectionPool(Generic[T])`**: SQLite 連線池類別，包含連線初始化、連線取得與釋放方法，並支援事務處理與錯誤重連機制。
+    - `def __init__(self, db_path: str, max_connections: int)` ➔ 初始化 SQLite 連線池。
+    - `def get_connection(self) -> sqlite3.Connection` ➔ 此函數從連線池中獲取一個 SQLite 連線，如果連線池已滿則拋出異常。輸入為無，輸出為 sqlite3.Connection 物件，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `pop, append, connect, Exception`
+    - `def release_connection(self, conn: sqlite3.Connection) -> None` ➔ 此函數將已使用的 SQLite 連線釋放回連線池。輸入為 sqlite3.Connection 物件，輸出為無，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `remove, append`
+    - `def get_connection_context(self) -> ContextManager[sqlite3.Connection]` ➔ 此函數是一個上下文管理器，用於在 with 語句中自動處理連線的取得以及釋放，支援事務處理。輸入為無，輸出為 ContextManager 物件，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `get_connection, release_connection`
+    - `def execute_query(self, query: str, params: Optional[Tuple]) -> List[Tuple]` ➔ 此函數執行 SQL 查詢，並返回查詢結果。輸入為 SQL 查詢字串和可選的參數元組，輸出為查詢結果的列表（List[Tuple]），操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `get_connection_context, cursor, execute, fetchall`
+    - `def insert_data(self, table_name: str, data: List[Tuple]) -> None` ➔ 此函數插入數據到指定的資料表。輸入為表名和數據列表，輸出為無，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `get_connection_context, cursor, join, executemany, commit`
+    - `def update_data(self, table_name: str, set_clause: str, where_clause: str) -> None` ➔ 此函數更新指定資料表中的數據。輸入為表名、更新子句和篩選子句，輸出為無，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `get_connection_context, cursor, execute, commit`
+    - `def delete_data(self, table_name: str, where_clause: str) -> None` ➔ 此函數刪除指定資料表中的數據。輸入為表名和篩選子句，輸出為無，操作對象為後端 SQL 資料表，但未指定表名。 | 🔗 呼叫: `get_connection_context, cursor, execute, commit`
+
 ### 📄 `database/db_manager.py` (所屬階段: `1.1.1`)
 - **模組職責註記**: 此檔案實現了 SQLite 數據庫的連線管理、表初始化、自動升級、滾動備份及基本的 CRUD 操作，提供了一個完整的數據庫管理介面。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple), contextlib:(contextmanager)`
@@ -654,7 +667,7 @@
     - `def updateHardwareMonitor(self)` ➔ 更新硬體遙測狀態 | 🔗 呼叫: `Process, sensors_temperatures, setText, memory_info, virtual_memory`
 
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
-- **階段 `1.1.1` 關聯總結**: 本階段實現了 SQLite 數據庫的連線管理、表初始化、自動升級、滾動備份及基本的 CRUD 操作，與父階段和其他模組進行了資料庫連線和操作的互動。
+- **階段 `1.1.1` 關聯總結**: 本階段實作資料庫連線池管理，提供基礎 CRUD 功能的支援，這些操作會與後端 SQL 資料表互動，但程式碼中未明確定義資料表，因此 CRUD 函數的具體操作對象需由其他模組或業務邏輯指定。
 - **階段 `1.1.2` 關聯總結**: 本階段實現了數據庫管理模組，包括連線池、表初始化、自動升級和滾動備份功能，與父階段和其他模組進行了數據庫連接和操作的互動。
 - **階段 `1.1.3` 關聯總結**: 本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。
 - **階段 `1.2.1` 關聯總結**: 本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。

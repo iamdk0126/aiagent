@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 18:08:34",
+    "updated_at": "2026-11-09 18:10:05",
     "reasoning_model": "ollama/deepseek-r1:8b",
     "coding_model": "ollama/qwen2.5-coder:7b",
     "stage0_strategy": "STRATEGY_B",
@@ -26,13 +26,13 @@
                 {
                     "auto_expand_subtasks": false,
                     "children": [],
-                    "coding_status": "pending",
+                    "coding_status": "completed",
                     "depends_on": [],
                     "id": "1.1.1",
                     "mode": "both",
                     "prompt": "實作 SQLite 連線池類別，包含連線初始化、連線取得與釋放方法，並支援事務處理與錯誤重連機制。需包含以下函數簽章：__init__(self, db_path: str, max_connections: int)，get_connection(self) -> sqlite3.Connection，release_connection(self, conn: sqlite3.Connection)。",
                     "reasoning_status": "completed",
-                    "registry_status": "pending",
+                    "registry_status": "completed",
                     "spec_keywords": [
                         "database",
                         "db_connection_pool",
