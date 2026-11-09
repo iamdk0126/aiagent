@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PySide6.QtCore import Qt
+from typing import Optional
 
 class SettingsBudgetDialog(QDialog):
     """
@@ -42,6 +43,10 @@ class SettingsBudgetDialog(QDialog):
         """
         更新預算設置
         """
-        budget = float(self.budget_input.text())
-        # 在這裡添加更新預算設置的邏輯
-        print(f"更新預算設置為: {budget} USD")
+        budget_str = self.budget_input.text()
+        try:
+            budget = float(budget_str)
+            # 在這裡添加更新預算設置的邏輯
+            print(f"更新預算設置為: {budget} USD")
+        except ValueError:
+            print("輸入的預算格式不正確，請輸入數字。")
