@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:26:31",
+    "updated_at": "2026-11-09 11:27:27",
     "tables": {
         "users": {
             "columns": [],
@@ -897,8 +897,8 @@
             "functions": {}
         },
         "core/workflow_runtime.py": {
-            "stage_id": "9.1.1",
-            "note": "此檔案定義了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢。",
+            "stage_id": "9.1.2",
+            "note": "此檔案的核心職責是管理工作流任務的註冊、執行和狀態查詢，提供對外介面進行任務管理。",
             "imports": [
                 "typing:(List, Dict, Optional)"
             ],
@@ -921,7 +921,7 @@
                         },
                         "execute_task": {
                             "signature": "def execute_task(self, task_id: str)",
-                            "note": "執行指定ID的任務，返回任務執行結果。",
+                            "note": "執行指定ID的任務，返回任務執行結果，如果任務不存在則拋出 ValueError。",
                             "calls": [
                                 "ValueError"
                             ],
@@ -929,7 +929,7 @@
                         },
                         "get_task_status": {
                             "signature": "def get_task_status(self, task_id: str) -> Optional[str]",
-                            "note": "查詢指定ID的任務狀態，返回任務狀態或 None。",
+                            "note": "查詢指定ID的任務狀態，如果任務存在則返回 'Running'，否則返回 None。",
                             "calls": [],
                             "tables": []
                         }
@@ -957,6 +957,7 @@
         "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
         "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
         "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",
-        "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。"
+        "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
+        "9.1.2": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。"
     }
 }

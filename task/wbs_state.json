@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:26:51",
+    "updated_at": "2026-11-09 11:27:27",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -676,7 +676,7 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [
                                 "9.1.1"
                             ],
@@ -684,7 +684,7 @@
                             "mode": "both",
                             "prompt": "在 WorkflowRuntime 類別中實現核心業務演算法，包括任務循環檢測、Dirty Propagation 與雙模式 Gate 狀態機。添加異常處理機制，並撰寫單元測試以確保各方法的正確性。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "workflow_runtime.py"
                             ],

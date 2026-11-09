@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:26:31
+> 最後自動更新時間：2026-11-09 11:27:27
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -133,14 +133,14 @@
     - `def release_from_vram(self, data: bytes)` ➔ 從VRAM釋放數據，減少VRAM使用情況。
     - `def get_vram_usage(self) -> int` ➔ 獲取當前VRAM的使用情況。
 
-### 📄 `core/workflow_runtime.py` (所屬階段: `9.1.1`)
-- **模組職責註記**: 此檔案定義了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢。
+### 📄 `core/workflow_runtime.py` (所屬階段: `9.1.2`)
+- **模組職責註記**: 此檔案的核心職責是管理工作流任務的註冊、執行和狀態查詢，提供對外介面進行任務管理。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional)`
   - **Class `WorkflowRuntime`**: WorkflowRuntime: 管理工作流任务的类
     - `def __init__(self)` ➔ 初始化 WorkflowRuntime 类
     - `def register_task(self, task_id: str, task_function)` ➔ 註冊任務，將任務ID和任務函數存儲在 tasks 字典中。
-    - `def execute_task(self, task_id: str)` ➔ 執行指定ID的任務，返回任務執行結果。 | 🔗 呼叫: `ValueError`
-    - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢指定ID的任務狀態，返回任務狀態或 None。
+    - `def execute_task(self, task_id: str)` ➔ 執行指定ID的任務，返回任務執行結果，如果任務不存在則拋出 ValueError。 | 🔗 呼叫: `ValueError`
+    - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢指定ID的任務狀態，如果任務存在則返回 'Running'，否則返回 None。
 
 ### 📄 `database/asset_embeddings.py` (所屬階段: `4.1.2`)
 - **模組職責註記**: 此檔案定義了資產嵌入向量的數據庫操作，包括創建、讀取、更新和刪除嵌入向量。
@@ -219,3 +219,4 @@
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
+- **階段 `9.1.2` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。
