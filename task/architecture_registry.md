@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:22:11
+> 最後自動更新時間：2026-11-09 12:23:46
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -208,6 +208,11 @@
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `database/vector_index_engine.py::VectorIndexEngine.load_index(), database/vector_index_engine.py::VectorIndexEngine.insert_vector(), database/vector_index_engine.py::VectorIndexEngine.delete_vector()`
 
+### 資料表 `vram_usage_table`
+- **定義檔案**: `Stage 2.2.1` | **用途註記**: 此資料表用於持久化 VRAM 使用情況，包含 VRAM 使用量等相關信息。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `workflow_checkpoints`
 - **定義檔案**: `database/workflow_checkpoints.py` | **用途註記**: 此資料表用於保存工作流程的檢查點數據，包括檢查點數據和創建時間。
 - **欄位結構**: `id (INTEGER), created_at (TIMESTAMP)`
@@ -268,15 +273,15 @@
     - `def remove_node(self, node_id: str)` ➔ 根據節點ID移除智能體節點及其相關的邊。
     - `def remove_edge(self, edge_id: str)` ➔ 根據邊ID移除邊
 
-### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.2`)
-- **模組職責註記**: 此檔案實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
+### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.1`)
+- **模組職責註記**: 此檔案實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況。
 - **依賴引用 (Imports)**: `sqlite3, typing:(Dict, Optional)`
   - **Class `VRAMRAMHybridManager`**: VRAM 和 RAM 協同管理器
-    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化VRAM和RAM協同管理器，設置VRAM緩衝區大小和固定內存池大小。
-    - `def initialize(self)` ➔ 初始化VRAM和RAM協同管理器的邏輯。
-    - `def upload_to_vram(self, data: bytes)` ➔ 將數據上傳到VRAM，如果VRAM緩衝區已滿則拋出異常。 | 🔗 呼叫: `ValueError`
-    - `def release_from_vram(self, data: bytes)` ➔ 從VRAM釋放數據，減少VRAM使用情況。
-    - `def get_vram_usage(self) -> int` ➔ 獲取當前VRAM的使用情況。
+    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化 VRAM 和 RAM 協同管理器，設置 VRAM 缓衝區大小和固定內存池大小。
+    - `def initialize(self)` ➔ 初始化 VRAM 和 RAM 協同管理器，目前為空方法。
+    - `def upload_to_vram(self, data: bytes)` ➔ 將數據上傳到 VRAM，如果 VRAM 缓衝區已滿則拋出異常。 | 🔗 呼叫: `ValueError`
+    - `def release_from_vram(self, data: bytes)` ➔ 從 VRAM 釋放數據，減少 VRAM 使用情況。
+    - `def get_vram_usage(self) -> int` ➔ 獲取 VRAM 使用情況，返回當前 VRAM 使用量。
 
 ### 📄 `core/workflow_runtime.py` (所屬階段: `9.1.2`)
 - **模組職責註記**: 此檔案的核心職責是管理工作流任務的註冊、執行和狀態查詢，提供對外介面進行任務管理。
@@ -440,7 +445,7 @@
 - **階段 `1.3.2` 關聯總結**: 本階段實現了專案版本快照和 .omni_pack 打包的創建與復原功能，與父階段和資料表進行了互動。
 - **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。
-- **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
+- **階段 `2.2.1` 關聯總結**: 本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。
 - **階段 `2.2.2` 關聯總結**: 本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **階段 `3.1.1` 關聯總結**: 本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
 - **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。

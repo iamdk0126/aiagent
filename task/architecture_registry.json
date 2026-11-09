@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:22:11",
+    "updated_at": "2026-11-09 12:23:46",
     "tables": {
         "users": {
             "columns": [],
@@ -303,6 +303,12 @@
             "defined_in": "Stage 1.1.2",
             "accessed_by": [],
             "note": "包含id和name字段，用於示例數據庫表的初始化。"
+        },
+        "vram_usage_table": {
+            "columns": [],
+            "defined_in": "Stage 2.2.1",
+            "accessed_by": [],
+            "note": "此資料表用於持久化 VRAM 使用情況，包含 VRAM 使用量等相關信息。"
         }
     },
     "modules": {
@@ -618,8 +624,8 @@
             "functions": {}
         },
         "core/vram_ram_hybrid_manager.py": {
-            "stage_id": "2.2.2",
-            "note": "此檔案實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
+            "stage_id": "2.2.1",
+            "note": "此檔案實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況。",
             "imports": [
                 "sqlite3",
                 "typing:(Dict, Optional)"
@@ -631,19 +637,19 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)",
-                            "note": "初始化VRAM和RAM協同管理器，設置VRAM緩衝區大小和固定內存池大小。",
+                            "note": "初始化 VRAM 和 RAM 協同管理器，設置 VRAM 缓衝區大小和固定內存池大小。",
                             "calls": [],
                             "tables": []
                         },
                         "initialize": {
                             "signature": "def initialize(self)",
-                            "note": "初始化VRAM和RAM協同管理器的邏輯。",
+                            "note": "初始化 VRAM 和 RAM 協同管理器，目前為空方法。",
                             "calls": [],
                             "tables": []
                         },
                         "upload_to_vram": {
                             "signature": "def upload_to_vram(self, data: bytes)",
-                            "note": "將數據上傳到VRAM，如果VRAM緩衝區已滿則拋出異常。",
+                            "note": "將數據上傳到 VRAM，如果 VRAM 缓衝區已滿則拋出異常。",
                             "calls": [
                                 "ValueError"
                             ],
@@ -651,13 +657,13 @@
                         },
                         "release_from_vram": {
                             "signature": "def release_from_vram(self, data: bytes)",
-                            "note": "從VRAM釋放數據，減少VRAM使用情況。",
+                            "note": "從 VRAM 釋放數據，減少 VRAM 使用情況。",
                             "calls": [],
                             "tables": []
                         },
                         "get_vram_usage": {
                             "signature": "def get_vram_usage(self) -> int",
-                            "note": "獲取當前VRAM的使用情況。",
+                            "note": "獲取 VRAM 使用情況，返回當前 VRAM 使用量。",
                             "calls": [],
                             "tables": []
                         }
@@ -1694,7 +1700,7 @@
         "1.1.3": "本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。",
         "2.1.1": "本階段實現了 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
         "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。",
-        "2.2.1": "本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
+        "2.2.1": "本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。",
         "2.2.2": "本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
         "3.1.1": "本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。",
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。",
