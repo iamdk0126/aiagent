@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:38:49
+> 最後自動更新時間：2026-11-09 11:39:50
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -44,7 +44,7 @@
 - **關聯存取函數 (Read/Write)**: `core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models(), core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()`
 
 ### 資料表 `permissions`
-- **定義檔案**: `database/permissions.py` | **用途註記**: 此資料表用於存儲權限的相關信息，包括權限ID、權限名稱和描述。
+- **定義檔案**: `database/permissions.py` | **用途註記**: 此資料表用於存儲權限相關的數據，包括權限ID、權限名稱和描述。
 - **欄位結構**: `permission_id (TEXT), permission_name (TEXT), description (TEXT)`
 - **關聯存取函數 (Read/Write)**: `database/users.py::Permission.insert_permission(), database/users.py::Permission.get_permission(), database/users.py::Permission.update_permission(), database/users.py::Permission.delete_permission(), database/users.py::Permission.get_all_permissions(), database/roles.py::Permission.insert_permission(), database/roles.py::Permission.get_permission(), database/roles.py::Permission.update_permission(), database/roles.py::Permission.delete_permission(), database/roles.py::Permission.get_all_permissions(), database/permissions.py::Permission.insert_permission(), database/permissions.py::Permission.get_permission(), database/permissions.py::Permission.update_permission(), database/permissions.py::Permission.delete_permission(), database/permissions.py::Permission.get_all_permissions()`
 
@@ -217,14 +217,14 @@
     - `def auto_migration(self)` ➔ 自動升級資料庫結構，添加新欄位並更新用戶版本。 | 🗄️ 資料表: `table_1` | 🔗 呼叫: `get_connection, cursor, execute, fetchone, commit`
     - `def rolling_backup(self)` ➔ 進行資料庫滾動備份，將當前資料庫備份到 'backup.db'。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
 
-### 📄 `database/permissions.py` (所屬階段: `15.1.1`)
-- **模組職責註記**: 此檔案定義了 Permission 類別，用於處理單純的權限資料庫操作。
+### 📄 `database/permissions.py` (所屬階段: `15.1.2`)
+- **模組職責註記**: 此檔案定義了權限管理功能，通過SQLite資料庫進行權限的創建、查詢、更新和刪除。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Dict, Optional)`
   - **Class `Permission`**: 權限類別，用於處理權限資料庫操作。
     - `def __init__(self, db_path: str)` ➔ 待推理模型或開發者補充註記
-    - `def connect(self) -> None` ➔ 連接到 SQLite 資料庫。 | 🔗 呼叫: `connect`
-    - `def disconnect(self) -> None` ➔ 斷開與 SQLite 資料庫的連線。 | 🔗 呼叫: `close`
-    - `def create_table(self) -> None` ➔ 創建 permissions 資料表。 | 🔗 呼叫: `cursor, execute, commit`
+    - `def connect(self) -> None` ➔ 連接到SQLite資料庫。 | 🔗 呼叫: `connect`
+    - `def disconnect(self) -> None` ➔ 斷開與SQLite資料庫的連線。 | 🔗 呼叫: `close`
+    - `def create_table(self) -> None` ➔ 創建permissions資料表。 | 🔗 呼叫: `cursor, execute, commit`
     - `def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 插入一個新權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_permission(self, permission_id: str) -> Optional[Dict]` ➔ 查詢指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchone`
     - `def update_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 更新指定權限的資料。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
@@ -256,28 +256,28 @@
     - `def create_archive(self, project_id: str, snapshot_data: str)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `get_session, first, all, filter_by, query`
     - `def restore_archive(self, project_id: str, snapshot_data: str)` ➔ 待推理模型或開發者補充註記 | 🗄️ 資料表: `archive_log` | 🔗 呼叫: `get_session`
 
-### 📄 `database/roles.py` (所屬階段: `15.1.1`)
-- **模組職責註記**: 此檔案定義了 Permission 類別，用於處理角色權限的資料庫操作。
+### 📄 `database/roles.py` (所屬階段: `15.1.2`)
+- **模組職責註記**: 此檔案定義了角色管理功能，但未直接使用，主要功能與權限管理相關。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Dict, Optional)`
   - **Class `Permission`**: 權限類別，用於處理權限資料庫操作。
     - `def __init__(self, db_path: str)` ➔ 待推理模型或開發者補充註記
-    - `def connect(self) -> None` ➔ 連接到 SQLite 資料庫。 | 🔗 呼叫: `connect`
-    - `def disconnect(self) -> None` ➔ 斷開與 SQLite 資料庫的連線。 | 🔗 呼叫: `close`
-    - `def create_table(self) -> None` ➔ 創建 permissions 資料表。 | 🔗 呼叫: `cursor, execute, commit`
+    - `def connect(self) -> None` ➔ 連接到SQLite資料庫。 | 🔗 呼叫: `connect`
+    - `def disconnect(self) -> None` ➔ 斷開與SQLite資料庫的連線。 | 🔗 呼叫: `close`
+    - `def create_table(self) -> None` ➔ 創建permissions資料表。 | 🔗 呼叫: `cursor, execute, commit`
     - `def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 插入一個新權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_permission(self, permission_id: str) -> Optional[Dict]` ➔ 查詢指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchone`
     - `def update_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 更新指定權限的資料。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def delete_permission(self, permission_id: str) -> None` ➔ 刪除指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_all_permissions(self) -> List[Dict]` ➔ 查詢所有權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchall`
 
-### 📄 `database/users.py` (所屬階段: `15.1.1`)
-- **模組職責註記**: 此檔案定義了 Permission 類別，用於處理用戶權限的資料庫操作。
+### 📄 `database/users.py` (所屬階段: `15.1.2`)
+- **模組職責註記**: 此檔案定義了用戶管理功能，但未直接使用，主要功能與權限管理相關。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Dict, Optional)`
   - **Class `Permission`**: 權限類別，用於處理權限資料庫操作。
     - `def __init__(self, db_path: str)` ➔ 待推理模型或開發者補充註記
-    - `def connect(self) -> None` ➔ 連接到 SQLite 資料庫。 | 🔗 呼叫: `connect`
-    - `def disconnect(self) -> None` ➔ 斷開與 SQLite 資料庫的連線。 | 🔗 呼叫: `close`
-    - `def create_table(self) -> None` ➔ 創建 permissions 資料表。 | 🔗 呼叫: `cursor, execute, commit`
+    - `def connect(self) -> None` ➔ 連接到SQLite資料庫。 | 🔗 呼叫: `connect`
+    - `def disconnect(self) -> None` ➔ 斷開與SQLite資料庫的連線。 | 🔗 呼叫: `close`
+    - `def create_table(self) -> None` ➔ 創建permissions資料表。 | 🔗 呼叫: `cursor, execute, commit`
     - `def insert_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 插入一個新權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_permission(self, permission_id: str) -> Optional[Dict]` ➔ 查詢指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchone`
     - `def update_permission(self, permission_id: str, permission_name: str, description: str) -> None` ➔ 更新指定權限的資料。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
@@ -332,3 +332,4 @@
 - **階段 `14.1.1` 關聯總結**: 本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。
 - **階段 `14.1.2` 關聯總結**: 本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。
 - **階段 `15.1.1` 關聯總結**: 本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。
+- **階段 `15.1.2` 關聯總結**: 本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。

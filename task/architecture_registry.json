@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:38:49",
+    "updated_at": "2026-11-09 11:39:50",
     "tables": {
         "users": {
             "columns": [],
@@ -152,7 +152,7 @@
                 "database/permissions.py::Permission.delete_permission()",
                 "database/permissions.py::Permission.get_all_permissions()"
             ],
-            "note": "此資料表用於存儲權限的相關信息，包括權限ID、權限名稱和描述。"
+            "note": "此資料表用於存儲權限相關的數據，包括權限ID、權限名稱和描述。"
         }
     },
     "modules": {
@@ -1211,8 +1211,8 @@
             "functions": {}
         },
         "database/users.py": {
-            "stage_id": "15.1.1",
-            "note": "此檔案定義了 Permission 類別，用於處理用戶權限的資料庫操作。",
+            "stage_id": "15.1.2",
+            "note": "此檔案定義了用戶管理功能，但未直接使用，主要功能與權限管理相關。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Dict, Optional)"
@@ -1230,7 +1230,7 @@
                         },
                         "connect": {
                             "signature": "def connect(self) -> None",
-                            "note": "連接到 SQLite 資料庫。",
+                            "note": "連接到SQLite資料庫。",
                             "calls": [
                                 "connect"
                             ],
@@ -1238,7 +1238,7 @@
                         },
                         "disconnect": {
                             "signature": "def disconnect(self) -> None",
-                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "note": "斷開與SQLite資料庫的連線。",
                             "calls": [
                                 "close"
                             ],
@@ -1246,7 +1246,7 @@
                         },
                         "create_table": {
                             "signature": "def create_table(self) -> None",
-                            "note": "創建 permissions 資料表。",
+                            "note": "創建permissions資料表。",
                             "calls": [
                                 "cursor",
                                 "execute",
@@ -1320,8 +1320,8 @@
             "functions": {}
         },
         "database/roles.py": {
-            "stage_id": "15.1.1",
-            "note": "此檔案定義了 Permission 類別，用於處理角色權限的資料庫操作。",
+            "stage_id": "15.1.2",
+            "note": "此檔案定義了角色管理功能，但未直接使用，主要功能與權限管理相關。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Dict, Optional)"
@@ -1339,7 +1339,7 @@
                         },
                         "connect": {
                             "signature": "def connect(self) -> None",
-                            "note": "連接到 SQLite 資料庫。",
+                            "note": "連接到SQLite資料庫。",
                             "calls": [
                                 "connect"
                             ],
@@ -1347,7 +1347,7 @@
                         },
                         "disconnect": {
                             "signature": "def disconnect(self) -> None",
-                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "note": "斷開與SQLite資料庫的連線。",
                             "calls": [
                                 "close"
                             ],
@@ -1355,7 +1355,7 @@
                         },
                         "create_table": {
                             "signature": "def create_table(self) -> None",
-                            "note": "創建 permissions 資料表。",
+                            "note": "創建permissions資料表。",
                             "calls": [
                                 "cursor",
                                 "execute",
@@ -1429,8 +1429,8 @@
             "functions": {}
         },
         "database/permissions.py": {
-            "stage_id": "15.1.1",
-            "note": "此檔案定義了 Permission 類別，用於處理單純的權限資料庫操作。",
+            "stage_id": "15.1.2",
+            "note": "此檔案定義了權限管理功能，通過SQLite資料庫進行權限的創建、查詢、更新和刪除。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Dict, Optional)"
@@ -1448,7 +1448,7 @@
                         },
                         "connect": {
                             "signature": "def connect(self) -> None",
-                            "note": "連接到 SQLite 資料庫。",
+                            "note": "連接到SQLite資料庫。",
                             "calls": [
                                 "connect"
                             ],
@@ -1456,7 +1456,7 @@
                         },
                         "disconnect": {
                             "signature": "def disconnect(self) -> None",
-                            "note": "斷開與 SQLite 資料庫的連線。",
+                            "note": "斷開與SQLite資料庫的連線。",
                             "calls": [
                                 "close"
                             ],
@@ -1464,7 +1464,7 @@
                         },
                         "create_table": {
                             "signature": "def create_table(self) -> None",
-                            "note": "創建 permissions 資料表。",
+                            "note": "創建permissions資料表。",
                             "calls": [
                                 "cursor",
                                 "execute",
@@ -1564,6 +1564,7 @@
         "13.1.2": "本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。",
         "14.1.1": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
         "14.1.2": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
-        "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。"
+        "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。",
+        "15.1.2": "本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。"
     }
 }
