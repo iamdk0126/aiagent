@@ -48,6 +48,9 @@ class ModelStoreDialog(QDialog):
         """
         刷新模型列表
         """
-        models = self.model_store.get_all_models()
-        self.model_table_view.setModel(models)
-        self.model_table_view.resizeColumnsToContents()
+        try:
+            models = self.model_store.get_all_models()
+            self.model_table_view.setModel(models)
+            self.model_table_view.resizeColumnsToContents()
+        except Exception as e:
+            print(f"Error refreshing model list: {e}")
