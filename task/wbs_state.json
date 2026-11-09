@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:57:24",
+    "updated_at": "2026-11-09 12:58:14",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -1056,8 +1056,8 @@
                             ],
                             "prompt": "設計並實現 `ModelStoreDialog` 類別，包含 `__init__` 方法、`setup_ui` 方法以及與 `model_store` 資料表的連線介面。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {
