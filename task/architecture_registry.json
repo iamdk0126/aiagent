@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:05:13",
+    "updated_at": "2026-11-09 13:06:29",
     "tables": {
         "users": {
             "columns": [],
@@ -350,7 +350,7 @@
             "columns": [],
             "defined_in": "Stage 6.2.1",
             "accessed_by": [],
-            "note": "此資料表用於存儲預算設置信息，包括預算上限等相關數據。"
+            "note": "此資料表用於存儲預算設置信息，包括預算上限等。"
         }
     },
     "modules": {
@@ -2460,11 +2460,12 @@
             "functions": {}
         },
         "ui/dialogs/settings_budget_dialog.py": {
-            "stage_id": "6.2.1",
-            "note": "此檔案實現了預算設置對話框的 UI 界面，包括初始化、顯示預算設置和更新預算設置的功能。",
+            "stage_id": "6.2.2",
+            "note": "此檔案實現了預算設置對話框的 UI 界面和基本功能，包括顯示和更新預算設置。",
             "imports": [
                 "PySide6.QtWidgets:(QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton)",
-                "PySide6.QtCore:(Qt)"
+                "PySide6.QtCore:(Qt)",
+                "typing:(Optional)"
             ],
             "classes": {
                 "SettingsBudgetDialog": {
@@ -2475,7 +2476,7 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, parent)",
-                            "note": "初始化對話框，設置窗口標題並調用 `initUI` 方法。",
+                            "note": "初始化方法，設置對話框標題和初始化 UI 元素。",
                             "calls": [
                                 "__init__",
                                 "setWindowTitle",
@@ -2485,7 +2486,7 @@
                         },
                         "initUI": {
                             "signature": "def initUI(self)",
-                            "note": "初始化 UI 元素，包括標籤、輸入框和按鈕，並設置按鈕的點擊事件。",
+                            "note": "初始化 UI 元素，包括標籤、輸入框和按鈕。",
                             "calls": [
                                 "QVBoxLayout",
                                 "QLabel",
@@ -2508,7 +2509,7 @@
                         },
                         "update_budget_settings": {
                             "signature": "def update_budget_settings(self)",
-                            "note": "更新預算設置，從輸入框中獲取預算值並進行處理。",
+                            "note": "更新預算設置，從輸入框中獲取預算值並進行驗證，如果驗證通過則更新預算設置。",
                             "calls": [
                                 "text"
                             ],
@@ -2570,6 +2571,7 @@
         "5.6.2": "ModelStoreDialog 類別用於顯示和管理 model_store 資料表中的模型信息，與 DBManager 和 ModelStore 模組互動，並通過 QTableView 顯示模型列表。",
         "6.1.1": "本階段實現了NLE時間軸編輯器的UI組件，包括節點和連線的類別，以及編輯器的類別，這些組件與父階段的圖形處理和數據結構相關，並與其他模組進行互動以實現時間軸的編輯和顯示。",
         "6.1.2": "本階段實現了NLE時間軸編輯器的核心邏輯，包括節點和連線的管理，以及編輯器的排序和自動連接功能。",
-        "6.2.1": "本階段實現了預算設置對話框的 UI 界面，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。"
+        "6.2.1": "本階段實現了預算設置對話框的 UI 界面，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
+        "6.2.2": "本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。"
     }
 }

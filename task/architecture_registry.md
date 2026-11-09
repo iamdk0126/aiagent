@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 13:05:13
+> 最後自動更新時間：2026-11-09 13:06:29
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -29,7 +29,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `budget_settings`
-- **定義檔案**: `Stage 6.2.1` | **用途註記**: 此資料表用於存儲預算設置信息，包括預算上限等相關數據。
+- **定義檔案**: `Stage 6.2.1` | **用途註記**: 此資料表用於存儲預算設置信息，包括預算上限等。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -541,14 +541,14 @@
     - `def initUI(self)` ➔ 初始化 UI 元素，包括模型列表顯示和按鈕布局。 | 🔗 呼叫: `QVBoxLayout, QTableView, setSelectionBehavior, setSelectionMode, addWidget, QHBoxLayout, QPushButton, connect`
     - `def refresh_model_list(self)` ➔ 刷新模型列表，從 model_store 資料表中獲取模型信息並顯示在 QTableView 中。 | 🔗 呼叫: `get_all_models, setModel, resizeColumnsToContents`
 
-### 📄 `ui/dialogs/settings_budget_dialog.py` (所屬階段: `6.2.1`)
-- **模組職責註記**: 此檔案實現了預算設置對話框的 UI 界面，包括初始化、顯示預算設置和更新預算設置的功能。
-- **依賴引用 (Imports)**: `PySide6.QtWidgets:(QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton), PySide6.QtCore:(Qt)`
+### 📄 `ui/dialogs/settings_budget_dialog.py` (所屬階段: `6.2.2`)
+- **模組職責註記**: 此檔案實現了預算設置對話框的 UI 界面和基本功能，包括顯示和更新預算設置。
+- **依賴引用 (Imports)**: `PySide6.QtWidgets:(QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton), PySide6.QtCore:(Qt), typing:(Optional)`
   - **Class `SettingsBudgetDialog(QDialog)`**: 設置預算設置對話框
-    - `def __init__(self, parent)` ➔ 初始化對話框，設置窗口標題並調用 `initUI` 方法。 | 🔗 呼叫: `__init__, setWindowTitle, initUI`
-    - `def initUI(self)` ➔ 初始化 UI 元素，包括標籤、輸入框和按鈕，並設置按鈕的點擊事件。 | 🔗 呼叫: `QVBoxLayout, QLabel, addWidget, QLineEdit, setPlaceholderText, QPushButton, connect, setLayout`
+    - `def __init__(self, parent)` ➔ 初始化方法，設置對話框標題和初始化 UI 元素。 | 🔗 呼叫: `__init__, setWindowTitle, initUI`
+    - `def initUI(self)` ➔ 初始化 UI 元素，包括標籤、輸入框和按鈕。 | 🔗 呼叫: `QVBoxLayout, QLabel, addWidget, QLineEdit, setPlaceholderText, QPushButton, connect, setLayout`
     - `def show_budget_settings(self, budget: float)` ➔ 顯示預算設置，將預算值顯示在輸入框中。 | 🔗 呼叫: `setText`
-    - `def update_budget_settings(self)` ➔ 更新預算設置，從輸入框中獲取預算值並進行處理。 | 🔗 呼叫: `text`
+    - `def update_budget_settings(self)` ➔ 更新預算設置，從輸入框中獲取預算值並進行驗證，如果驗證通過則更新預算設置。 | 🔗 呼叫: `text`
 
 ### 📄 `ui/editor/nle_timeline_editor.py` (所屬階段: `6.1.2`)
 - **模組職責註記**: 此檔案實現了NLE時間軸編輯器的核心邏輯，包括節點和連線的管理，以及編輯器的排序和自動連接功能。
@@ -624,6 +624,7 @@
 - **階段 `6.1.1` 關聯總結**: 本階段實現了NLE時間軸編輯器的UI組件，包括節點和連線的類別，以及編輯器的類別，這些組件與父階段的圖形處理和數據結構相關，並與其他模組進行互動以實現時間軸的編輯和顯示。
 - **階段 `6.1.2` 關聯總結**: 本階段實現了NLE時間軸編輯器的核心邏輯，包括節點和連線的管理，以及編輯器的排序和自動連接功能。
 - **階段 `6.2.1` 關聯總結**: 本階段實現了預算設置對話框的 UI 界面，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。
+- **階段 `6.2.2` 關聯總結**: 本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
