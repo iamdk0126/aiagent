@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 13:23:06
+> 最後自動更新時間：2026-11-09 13:24:14
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -243,6 +243,11 @@
 - **欄位結構**: `id (INTEGER), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/workflow_checkpoints.py::WorkflowCheckpoint.save_checkpoint(), database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()`
 
+### 資料表 `影視體裁時間結構表`
+- **定義檔案**: `Stage 9.1.3` | **用途註記**: 此資料表用於持久化影視體裁的時間結構設定，包括影視體裁名稱和對應的時長。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `未見`
 - **定義檔案**: `Stage 5.2.3` | **用途註記**: 未見明確提及資料表
 - **欄位結構**: `(欄位待補充)`
@@ -286,14 +291,14 @@
     - `def save_memory(self, project_id: str, memory_data: dict) -> None` ➔ 將記憶數據保存到資料庫中，如果記憶已存在則進行更新。 | 🗄️ 資料表: `agent_nodes` | 🔗 呼叫: `execute_query`
     - `def retrieve_memory(self, project_id: str) -> dict` ➔ 從資料庫中检索特定專案的記憶數據並返回。 | 🔗 呼叫: `load_memory`
 
-### 📄 `config/format_presets.py` (所屬階段: `9.1.2`)
-- **模組職責註記**: 此檔案定義了影視體裁時間結構的預設設定，包括六大影視體裁及其對應的時間長度。
+### 📄 `config/format_presets.py` (所屬階段: `9.1.3`)
+- **模組職責註記**: 此檔案定義了影視體裁時間結構的配置類和管理類，並提供了獲取特定影視體裁和所有影視體裁的時間結構設定的方法。
 - **依賴引用 (Imports)**: `typing:(Dict, List)`
   - **Class `FormatPreset`**: 影視體裁時間結構設定
-    - `def __init__(self, name: str, duration: int)` ➔ 待推理模型或開發者補充註記
-    - `def __repr__(self) -> str` ➔ 待推理模型或開發者補充註記
+    - `def __init__(self, name: str, duration: int)` ➔ 初始化影視體裁時間結構設定的預設值。
+    - `def __repr__(self) -> str` ➔ 返回影視體裁時間結構的字符串表示。
   - **Class `FormatPresets`**: 六大影視體裁的時間結構設定
-    - `def __init__(self)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `FormatPreset`
+    - `def __init__(self)` ➔ 初始化影視體裁時間結構設定的預設值。 | 🔗 呼叫: `FormatPreset`
     - `def get_preset(self, name: str) -> FormatPreset` ➔ 獲取指定影視體裁的時間結構設定。 | 🔗 呼叫: `get`
     - `def get_all_presets(self) -> List[FormatPreset]` ➔ 獲取所有影視體裁的時間結構設定。 | 🔗 呼叫: `values`
 
@@ -693,6 +698,7 @@
 - **階段 `8.2.3` 關聯總結**: 本階段實現了任務隊列的管理功能，包括任務的添加、執行和移除，與父階段和其他模組進行了互動。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了影視體裁時間結構設定的資料結構與類別骨架，與父階段和其他模組無直接互動，主要用於管理影視作品的時間配置。
 - **階段 `9.1.2` 關聯總結**: 本階段實現了影視體裁時間結構設定的配置，與父階段和其他模組無直接互動，主要與資料表無關聯。
+- **階段 `9.1.3` 關聯總結**: 本階段實現了影視體裁時間結構設定的配置，與父階段和相關模組進行了互動，並通過SQL資料表進行數據持久化。
 - **階段 `10.1.1` 關聯總結**: 本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
 - **階段 `10.1.2` 關聯總結**: 本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
 - **階段 `13.1.1` 關聯總結**: 本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。
