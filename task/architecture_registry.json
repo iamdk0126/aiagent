@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:16:09",
+    "updated_at": "2026-11-09 12:17:07",
     "tables": {
         "users": {
             "columns": [],
@@ -21,7 +21,7 @@
                 "database/vector_index_engine.py::VectorIndexEngine.insert_vector()",
                 "database/vector_index_engine.py::VectorIndexEngine.delete_vector()"
             ],
-            "note": "此資料表用於存儲向量及其ID，用於向量索引引擎的數據庫操作。"
+            "note": "此資料表用於存儲向量及其對應的 ID，用於向量的查詢和刪除操作。"
         },
         "project_info": {
             "columns": [],
@@ -377,8 +377,8 @@
             "functions": {}
         },
         "database/vector_index_engine.py": {
-            "stage_id": "1.2.1",
-            "note": "此檔案實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
+            "stage_id": "1.2.2",
+            "note": "此檔案實現了一個向量索引引擎，使用 HNSW 算法和 SQLite 數據庫來存儲和查詢向量。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -392,7 +392,7 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, db_path: str, index_path: str)",
-                            "note": "初始化向量索引引擎，設置資料庫路徑和索引路徑，並加載索引。",
+                            "note": "初始化向量索引引擎，設置資料庫和索引路徑，並加載索引。",
                             "calls": [
                                 "load_index"
                             ],
@@ -400,7 +400,7 @@
                         },
                         "load_index": {
                             "signature": "def load_index(self)",
-                            "note": "加載HNSW索引，從SQLite資料庫中讀取向量數據並添加到索引中。",
+                            "note": "加載 HNSW 索引和向量數據到記憶體中。",
                             "calls": [
                                 "HierarchicalNSW",
                                 "load_index",
@@ -417,7 +417,7 @@
                         },
                         "get_connection": {
                             "signature": "def get_connection(self) -> sqlite3.Connection",
-                            "note": "從連線池獲取SQLite連線。",
+                            "note": "從連線池獲取 SQLite 連線。",
                             "calls": [
                                 "DBManager",
                                 "get_connection"
@@ -426,7 +426,7 @@
                         },
                         "insert_vector": {
                             "signature": "def insert_vector(self, vector: np.ndarray, vector_id: int)",
-                            "note": "插入向量到SQLite資料庫和HNSW索引中。",
+                            "note": "插入向量到數據庫和索引中。",
                             "calls": [
                                 "add_item",
                                 "append",
@@ -450,7 +450,7 @@
                         },
                         "delete_vector": {
                             "signature": "def delete_vector(self, vector_id: int)",
-                            "note": "從SQLite資料庫和HNSW索引中刪除向量。",
+                            "note": "從數據庫和索引中刪除向量。",
                             "calls": [
                                 "delete_item",
                                 "remove",
@@ -1716,6 +1716,7 @@
         "14.1.2": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。",
         "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。",
         "15.1.2": "本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。",
-        "1.2.1": "本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。"
+        "1.2.1": "本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
+        "1.2.2": "本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。"
     }
 }
