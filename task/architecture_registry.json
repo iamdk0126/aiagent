@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:30:14",
+    "updated_at": "2026-11-09 11:32:37",
     "tables": {
         "users": {
             "columns": [],
@@ -109,6 +109,12 @@
             "defined_in": "Stage 10.1.1",
             "accessed_by": [],
             "note": "此資料表用於存儲畫布上的邊，包含邊的唯一識別符、源節點識別符和目標節點識別符。"
+        },
+        "budget_rules": {
+            "columns": [],
+            "defined_in": "Stage 13.1.1",
+            "accessed_by": [],
+            "note": "此資料表用於存儲單專案的預算規則，包括最大單鏡預算、最大單集預算、最大單專案預算、目前專案已支出以及是否自動切換到本地免費模型等信息。"
         }
     },
     "modules": {
@@ -1065,6 +1071,40 @@
                 }
             },
             "functions": {}
+        },
+        "database/budget_rules.py": {
+            "stage_id": "13.1.1",
+            "note": "此檔案定義了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。",
+            "imports": [
+                "typing:(Optional)"
+            ],
+            "classes": {
+                "BudgetRule": {
+                    "bases": [],
+                    "note": "管理單專案預算規則的類別",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, project_id: str, max_shot_cost: int, max_episode_cost: int, max_project_cost: int, current_project_spent: int, auto_fallback_to_local: int)",
+                            "note": "初始化 BudgetRule 類別，設置預算規則的各個屬性。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "from_db": {
+                            "signature": "def from_db(cls, project_id: str)",
+                            "note": "從資料庫讀取預算規則，返回一個 BudgetRule 實例。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "save_to_db": {
+                            "signature": "def save_to_db(self)",
+                            "note": "將預算規則寫入資料庫。",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -1088,6 +1128,7 @@
         "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
         "9.1.2": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。",
         "10.1.1": "本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。",
-        "10.1.2": "本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。"
+        "10.1.2": "本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。",
+        "13.1.1": "本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。"
     }
 }
