@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:29:13",
+    "updated_at": "2026-11-09 12:31:12",
     "tables": {
         "users": {
             "columns": [],
@@ -685,8 +685,8 @@
             "functions": {}
         },
         "core/model_store_crawler.py": {
-            "stage_id": "3.1.2",
-            "note": "此檔案的核心職責是從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，並提供對外介面來獲取和保存模型數據。",
+            "stage_id": "3.1.1",
+            "note": "此檔案定義了一個用於從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類 ModelStoreCrawler，並提供了初始化、獲取模型信息、解析模型信息和保存模型信息的方法。",
             "imports": [
                 "requests",
                 "typing:(List, Dict, Optional)"
@@ -698,13 +698,13 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])",
-                            "note": "初始化 ModelStoreCrawler 类",
+                            "note": "初始化 ModelStoreCrawler 類，接收 Hugging Face Hub 和 Civitai v1 API 的令牌。",
                             "calls": [],
                             "tables": []
                         },
                         "fetch_models": {
                             "signature": "def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]",
-                            "note": "從 Hugging Face Hub 和 Civitai v1 API 获取模型信息，並返回模型信息列表。",
+                            "note": "從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，返回模型信息列表。",
                             "calls": [
                                 "_fetch_hf_models",
                                 "_fetch_civitai_models"
@@ -727,7 +727,7 @@
                         },
                         "_fetch_hf_models": {
                             "signature": "def _fetch_hf_models(self, repo: str) -> List[Dict]",
-                            "note": "從 Hugging Face Hub 获取模型信息，返回模型信息列表。",
+                            "note": "從 Hugging Face Hub 爬取模型信息，返回模型信息列表。",
                             "calls": [
                                 "get",
                                 "raise_for_status",
@@ -737,7 +737,7 @@
                         },
                         "_fetch_civitai_models": {
                             "signature": "def _fetch_civitai_models(self, category: str) -> List[Dict]",
-                            "note": "從 Civitai v1 获取模型信息，返回模型信息列表。",
+                            "note": "從 Civitai v1 爬取模型信息，返回模型信息列表。",
                             "calls": [
                                 "get",
                                 "raise_for_status",
@@ -1854,7 +1854,7 @@
         "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。",
         "2.2.1": "本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。",
         "2.2.2": "本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
-        "3.1.1": "本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。",
+        "3.1.1": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類和方法，並保存到文件中。",
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。",
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
         "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",

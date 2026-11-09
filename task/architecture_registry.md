@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:29:13
+> 最後自動更新時間：2026-11-09 12:31:12
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -278,16 +278,16 @@
     - `def fetch_free_local_models(self) -> List[Dict]` ➔ 此函數的功能是獲取本地免費模型，輸入無，輸出為本地免費模型列表，操作的資料表為model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
     - `def fetch_commercial_api_models(self) -> List[Dict]` ➔ 此函數的功能是獲取商業API模型，輸入無，輸出為商業API模型列表，操作的資料表為model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
 
-### 📄 `core/model_store_crawler.py` (所屬階段: `3.1.2`)
-- **模組職責註記**: 此檔案的核心職責是從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，並提供對外介面來獲取和保存模型數據。
+### 📄 `core/model_store_crawler.py` (所屬階段: `3.1.1`)
+- **模組職責註記**: 此檔案定義了一個用於從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類 ModelStoreCrawler，並提供了初始化、獲取模型信息、解析模型信息和保存模型信息的方法。
 - **依賴引用 (Imports)**: `requests, typing:(List, Dict, Optional)`
   - **Class `ModelStoreCrawler`**: ModelStoreCrawler: 用于从 Hugging Face Hub 和 Civitai v1 API 获取模型信息的类
-    - `def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])` ➔ 初始化 ModelStoreCrawler 类
-    - `def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]` ➔ 從 Hugging Face Hub 和 Civitai v1 API 获取模型信息，並返回模型信息列表。 | 🔗 呼叫: `_fetch_hf_models, _fetch_civitai_models`
+    - `def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])` ➔ 初始化 ModelStoreCrawler 類，接收 Hugging Face Hub 和 Civitai v1 API 的令牌。
+    - `def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]` ➔ 從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，返回模型信息列表。 | 🔗 呼叫: `_fetch_hf_models, _fetch_civitai_models`
     - `def parse_model_info(self, model_info: Dict) -> Dict` ➔ 解析模型信息，返回解析後的模型信息字典。
     - `def save_models(self, models: List[Dict], save_path: str) -> None` ➔ 將模型信息保存到文件中。 | 🔗 呼叫: `write`
-    - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
-    - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
+    - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 爬取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
+    - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 爬取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
 
 ### 📄 `core/multi_agent_graph.py` (所屬階段: `7.1.2`)
 - **模組職責註記**: 此檔案定義了多智能體協同圖形數據庫的類別和相關操作，包括添加、獲取和移除節點和邊。
@@ -482,7 +482,7 @@
 - **階段 `2.3.1` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM/RAM 協同管理器，用於音素級指定臉孔對嘴和 J/L-Cut 混音。
 - **階段 `2.3.2` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能。
 - **階段 `2.3.3` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM 記憶體管理，並在 MasterVideoAssembler 中整合了音素級指定臉孔對嘴、J/L-Cut 混音和視頻組裝功能，與父階段和其他模組進行了互動。
-- **階段 `3.1.1` 關聯總結**: 本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
+- **階段 `3.1.1` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類和方法，並保存到文件中。
 - **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。
 - **階段 `3.2.1` 關聯總結**: 本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。
 - **階段 `3.2.2` 關聯總結**: 本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。
