@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:35:47",
+    "updated_at": "2026-11-09 12:37:05",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -594,8 +594,8 @@
                             ],
                             "prompt": "實作 `ProjectAssets` 類別，包含 `create_asset`, `get_asset`, `update_asset`, `delete_asset` 方法，並實現與 `project_assets` 資料表的連線介面。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {

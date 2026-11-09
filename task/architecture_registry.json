@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:34:32",
+    "updated_at": "2026-11-09 12:37:05",
     "tables": {
         "users": {
             "columns": [],
@@ -72,19 +72,19 @@
                 "database/asset_embeddings.py::AssetEmbeddings.update_embedding()",
                 "database/asset_embeddings.py::AssetEmbeddings.delete_embedding()"
             ],
-            "note": "此資料表存儲資產嵌入向量的相關信息，包括資產 ID、嵌入向量、創建和更新時間等。"
+            "note": "存儲資產的嵌入式數據，包括嵌入式數據等屬性。"
         },
         "project_assets": {
             "columns": [],
             "defined_in": "Stage 4.1.1",
             "accessed_by": [],
-            "note": "此資料表存儲項目資產的相關信息，包括項目 ID、資產類型、路徑、創建和更新時間等。"
+            "note": "存儲項目中的資產信息，包括資產類型、路徑等屬性。"
         },
         "projects": {
             "columns": [],
             "defined_in": "Stage 4.1.1",
             "accessed_by": [],
-            "note": "此資料表存儲項目的基本信息，包括項目 ID、項目名稱、格式預設 ID、寬高比、目標解析度、帧率、全局 LUT 路徑、默認 CJK 字體路徑、創建和更新時間等。"
+            "note": "存儲項目的基本信息，包括項目名稱、格式預設等屬性。"
         },
         "frames": {
             "columns": [],
@@ -326,7 +326,7 @@
     "modules": {
         "database/db_manager.py": {
             "stage_id": "1.1.2",
-            "note": "此檔案實現了數據庫管理功能，包括連線池、表初始化、自動升級和滾動備份。",
+            "note": "管理資料庫連線，創建 ORM 基本類型和會話。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional)",
@@ -488,7 +488,7 @@
         },
         "database/project_archiver.py": {
             "stage_id": "1.3.2",
-            "note": "此檔案實現了專案版本快照和 .omni_pack 打包的創建與復原功能，通過 DBManager 類與資料庫進行互動。",
+            "note": "提供項目存档與恢復的介面，使用 DBManager 管理資料庫連線。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -794,8 +794,8 @@
             "functions": {}
         },
         "database/project_assets.py": {
-            "stage_id": "4.1.2",
-            "note": "此檔案定義了項目資產的數據庫模型，包括項目資產和項目之間的關聯。",
+            "stage_id": "4.1.1",
+            "note": "定義了項目資產的 ORM 模型，包括資產類型、路徑等屬性，並與項目模型建立關聯。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "sqlalchemy:(create_engine, Column, Integer, String, ForeignKey)",
@@ -901,7 +901,7 @@
         },
         "database/asset_embeddings.py": {
             "stage_id": "4.1.2",
-            "note": "此檔案定義了資產嵌入向量的數據庫操作，包括創建、讀取、更新和刪除嵌入向量。",
+            "note": "定義了資產嵌入式數據的 ORM 模型，包括嵌入式數據等屬性，並與資產模型建立關聯。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "sqlite3"
@@ -1858,7 +1858,7 @@
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的功能，並保存到文件中。",
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
         "3.2.2": "本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。",
-        "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
+        "4.1.1": "本階段實現了資料庫連線管理、項目資產與嵌入式數據的 ORM 模型，並定義了項目存档與恢復的介面。",
         "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
         "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
         "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
