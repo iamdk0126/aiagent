@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:07:29",
+    "updated_at": "2026-11-09 11:08:10",
     "tables": {
         "users": {
             "columns": [],
@@ -26,14 +26,20 @@
         "project_info": {
             "columns": [],
             "defined_in": "Stage 1.1.3",
-            "accessed_by": [],
-            "note": "此資料表存儲項目的基本信息，包括項目ID、項目名稱、項目描述等。"
+            "accessed_by": [
+                "database/project_archiver.py::ProjectArchiver.create_project_pack()",
+                "database/project_archiver.py::ProjectArchiver.restore_project_pack()"
+            ],
+            "note": "存儲 .omni_pack 打包的資料表，包含 project_id 和 pack_data 字段。"
         },
         "archive_log": {
             "columns": [],
             "defined_in": "Stage 1.1.3",
-            "accessed_by": [],
-            "note": "此資料表存儲項目存档和恢復的日誌，包括存档ID、項目ID、存档時間、恢復時間等。"
+            "accessed_by": [
+                "database/project_archiver.py::ProjectArchiver.create_archive()",
+                "database/project_archiver.py::ProjectArchiver.restore_archive()"
+            ],
+            "note": "存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 字段。"
         },
         "table_1": {
             "columns": [],
@@ -209,15 +215,96 @@
         },
         "database/project_archiver.py": {
             "stage_id": "1.1.3",
-            "note": "此檔案的核心職責是實現數據庫項目存档功能，提供對外介面進行存档操作。",
-            "imports": [],
-            "classes": {},
+            "note": "此檔案實現了專案版本快照與打包的相關功能，包括創建和復原快照以及創建和復原打包數據。",
+            "imports": [
+                "sqlite3",
+                "typing:(List, Optional, Tuple)",
+                "contextlib:(contextmanager)"
+            ],
+            "classes": {
+                "ProjectArchiver": {
+                    "bases": [],
+                    "note": "專案版本快照與 .omni_pack 打包匯出/還原器",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "初始化 ProjectArchiver",
+                            "calls": [
+                                "DBManager"
+                            ],
+                            "tables": []
+                        },
+                        "get_connection": {
+                            "signature": "def get_connection(self) -> sqlite3.Connection",
+                            "note": "從連線池獲取連線",
+                            "calls": [
+                                "get_connection"
+                            ],
+                            "tables": []
+                        },
+                        "create_archive": {
+                            "signature": "def create_archive(self, project_id: int, snapshot_data: dict)",
+                            "note": "創建專案版本快照，將快照數據插入到 archive_log 資料表中。",
+                            "calls": [
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "archive_log"
+                            ]
+                        },
+                        "restore_archive": {
+                            "signature": "def restore_archive(self, archive_id: int)",
+                            "note": "復原專案版本快照，從 archive_log 資料表中讀取快照數據。",
+                            "calls": [
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "archive_log"
+                            ]
+                        },
+                        "create_project_pack": {
+                            "signature": "def create_project_pack(self, project_id: int, pack_data: dict)",
+                            "note": "創建 .omni_pack 打包，將打包數據插入到 project_info 資料表中。",
+                            "calls": [
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "project_info"
+                            ]
+                        },
+                        "restore_project_pack": {
+                            "signature": "def restore_project_pack(self, project_id: int)",
+                            "note": "復原 .omni_pack 打包，從 project_info 資料表中讀取打包數據。",
+                            "calls": [
+                                "get_connection",
+                                "cursor",
+                                "execute",
+                                "commit",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "project_info"
+                            ]
+                        }
+                    }
+                }
+            },
             "functions": {}
         }
     },
     "stage_notes": {
         "1.1.1": "本階段實現了 SQLite WAL 連線池、26 張表的初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和初始化的協調。",
         "1.1.2": "本階段實現了一個向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
-        "1.1.3": "本階段實現了數據庫項目存档功能，與父階段和相關模組進行了交互，並與資料表進行了關聯。"
+        "1.1.3": "本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。"
     }
 }
