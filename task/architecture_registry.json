@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:06:29",
+    "updated_at": "2026-11-09 13:08:12",
     "tables": {
         "users": {
             "columns": [],
@@ -96,7 +96,7 @@
             "columns": [],
             "defined_in": "Stage 7.1.2",
             "accessed_by": [],
-            "note": "此資料表存儲智能體節點的資訊，包括節點ID和節點類型。"
+            "note": "此資料表存儲智能體節點的資訊，包括節點ID和節點類型"
         },
         "edges": {
             "columns": [],
@@ -351,6 +351,12 @@
             "defined_in": "Stage 6.2.1",
             "accessed_by": [],
             "note": "此資料表用於存儲預算設置信息，包括預算上限等。"
+        },
+        "agent_edges": {
+            "columns": [],
+            "defined_in": "Stage 7.1.1",
+            "accessed_by": [],
+            "note": "此資料表存儲智能體邊的資訊，包括邊ID、源節點ID和目標節點ID"
         }
     },
     "modules": {
@@ -2519,6 +2525,104 @@
                 }
             },
             "functions": {}
+        },
+        "agents/multi_agent_graph.py": {
+            "stage_id": "7.1.1",
+            "note": "此檔案定義了智能體圖形數據結構的骨架，包括節點和邊的類別，以及圖形數據結構的管理方法，這些類別和方法將在後續的階段中與資料庫進行互動，實現智能體網絡的建模和管理。",
+            "imports": [
+                "typing:(List, Optional)"
+            ],
+            "classes": {
+                "AgentNode": {
+                    "bases": [],
+                    "note": "智能體節點類別骨架",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, node_id: str, node_type: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "__repr__": {
+                            "signature": "def __repr__(self)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                },
+                "Edge": {
+                    "bases": [],
+                    "note": "邊類別骨架",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, edge_id: str, source_node_id: str, target_node_id: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "__repr__": {
+                            "signature": "def __repr__(self)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                },
+                "MultiAgentGraph": {
+                    "bases": [],
+                    "note": "圖形數據結構類別骨架",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "add_node": {
+                            "signature": "def add_node(self, node: AgentNode)",
+                            "note": "添加一個節點到圖形中",
+                            "calls": [
+                                "append"
+                            ],
+                            "tables": []
+                        },
+                        "add_edge": {
+                            "signature": "def add_edge(self, edge: Edge)",
+                            "note": "添加一個邊到圖形中",
+                            "calls": [
+                                "append"
+                            ],
+                            "tables": []
+                        },
+                        "get_nodes": {
+                            "signature": "def get_nodes(self) -> List[AgentNode]",
+                            "note": "獲取圖形中的所有節點",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "get_edges": {
+                            "signature": "def get_edges(self) -> List[Edge]",
+                            "note": "獲取圖形中的所有邊",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "get_node_by_id": {
+                            "signature": "def get_node_by_id(self, node_id: str) -> Optional[AgentNode]",
+                            "note": "通過節點ID獲取節點",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "get_edge_by_id": {
+                            "signature": "def get_edge_by_id(self, edge_id: str) -> Optional[Edge]",
+                            "note": "通過邊ID獲取邊",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -2537,7 +2641,7 @@
         "4.1.2": "本階段實現了數據庫模型和管理器，用於存儲和操作項目資產及其嵌入數據，並提供了數據庫管理器和存档管理器的實現。",
         "5.1.1": "ShotPairNodeWidget 模組實現了圖形用戶介面的元素和功能，與父階段的 UI 設計和資料結構相連，並與其他模組進行互動以實現圖形化操作。",
         "5.1.2": "本階段實現了圖形用戶界面的模組，與父階段和其他模組進行了互動，並與資料表無直接關聯。",
-        "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
+        "7.1.1": "本階段實現了智能體圖形數據結構的骨架，包括節點和邊的類別，以及圖形數據結構的管理方法，這些類別和方法將在後續的階段中與資料庫進行互動，實現智能體網絡的建模和管理。",
         "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",
         "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
         "9.1.2": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。",
