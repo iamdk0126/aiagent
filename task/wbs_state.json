@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 22:29:18",
+    "updated_at": "2026-11-10 00:08:04",
     "reasoning_model": "ollama/deepseek-r1:8b",
     "coding_model": "ollama/qwen2.5-coder:7b",
     "stage0_strategy": "STRATEGY_B",
@@ -156,7 +156,7 @@
             "id": "1.2",
             "mode": "both",
             "prompt": "建立模型商城資料表結構與 ORM 資料庫操作層。",
-            "reasoning_status": "pending",
+            "reasoning_status": "completed",
             "registry_status": "skipped",
             "spec_keywords": [
                 "model_store_repo"
