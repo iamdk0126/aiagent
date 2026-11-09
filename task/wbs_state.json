@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:18:47",
+    "updated_at": "2026-11-09 11:19:21",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -413,7 +413,7 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [
                                 "4.1.1"
                             ],
@@ -421,7 +421,7 @@
                             "mode": "both",
                             "prompt": "在 `ProjectAssets` 和 `AssetEmbeddings` 類別中實現核心業務演算法，如計算向量相似度、更新嵌入向量等。添加異常處理機制，確保操作的健壯性。撰寫單元測試以驗證各方法的正確性。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "project_assets",
                                 "asset_embeddings"

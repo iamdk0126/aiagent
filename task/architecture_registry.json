@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:18:27",
+    "updated_at": "2026-11-09 11:19:21",
     "tables": {
         "users": {
             "columns": [],
@@ -72,25 +72,25 @@
                 "database/asset_embeddings.py::AssetEmbeddings.update_embedding()",
                 "database/asset_embeddings.py::AssetEmbeddings.delete_embedding()"
             ],
-            "note": "存儲資產的嵌入向量，包括嵌入向量和創建、讀取、更新、刪除等操作。"
+            "note": "此資料表存儲資產嵌入向量的相關信息，包括資產 ID、嵌入向量、創建和更新時間等。"
         },
         "project_assets": {
             "columns": [],
             "defined_in": "Stage 4.1.1",
             "accessed_by": [],
-            "note": "存儲項目資產的相關信息，包括資產類型、路徑等。"
+            "note": "此資料表存儲項目資產的相關信息，包括項目 ID、資產類型、路徑、創建和更新時間等。"
         },
         "projects": {
             "columns": [],
             "defined_in": "Stage 4.1.1",
             "accessed_by": [],
-            "note": "存儲項目的基本信息，包括項目名稱、格式預設等。"
+            "note": "此資料表存儲項目的基本信息，包括項目 ID、項目名稱、格式預設 ID、寬高比、目標解析度、帧率、全局 LUT 路徑、默認 CJK 字體路徑、創建和更新時間等。"
         }
     },
     "modules": {
         "database/db_manager.py": {
             "stage_id": "1.1.1",
-            "note": "此檔案管理資料庫連線，並提供獲取數據庫會話的接口。",
+            "note": "此檔案管理數據庫連接，包括創建數據庫引擎和獲取數據庫會話。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional)",
@@ -252,7 +252,7 @@
         },
         "database/project_archiver.py": {
             "stage_id": "1.1.3",
-            "note": "此檔案實現了項目存档和恢復的功能。",
+            "note": "此檔案實現了項目存档和恢復的功能，包括創建和恢復存档。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -558,8 +558,8 @@
             "functions": {}
         },
         "database/project_assets.py": {
-            "stage_id": "4.1.1",
-            "note": "此檔案定義了與項目資產相關的數據模型，包括項目資產和項目的基本屬性。",
+            "stage_id": "4.1.2",
+            "note": "此檔案定義了項目資產的數據庫模型，包括項目資產和項目之間的關聯。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "sqlalchemy:(create_engine, Column, Integer, String, ForeignKey)",
@@ -664,8 +664,8 @@
             "functions": {}
         },
         "database/asset_embeddings.py": {
-            "stage_id": "4.1.1",
-            "note": "此檔案定義了與資產嵌入向量相關的數據模型和操作功能。",
+            "stage_id": "4.1.2",
+            "note": "此檔案定義了資產嵌入向量的數據庫操作，包括創建、讀取、更新和刪除嵌入向量。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "sqlite3"
@@ -764,6 +764,7 @@
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。",
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
         "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",
-        "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。"
+        "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
+        "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。"
     }
 }
