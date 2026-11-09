@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:58:14
+> 最後自動更新時間：2026-11-09 12:59:33
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -54,7 +54,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `model_store`
-- **定義檔案**: `未知` | **用途註記**: 此資料表用於存儲模型信息，包括模型的名稱、描述、版本等。
+- **定義檔案**: `未知` | **用途註記**: 此資料表用於存儲模型信息，包括模型名稱、描述等，ModelStoreDialog 類別通過 DBManager 和 ModelStore 模組與此資料表互動。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models(), core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()`
 
@@ -528,8 +528,8 @@
     - `def set_lighting(self, lighting)` ➔ 設置布光。 | 🔗 呼叫: `setCurrentText`
     - `def set_parameters(self, parameters)` ➔ 設置參數。 | 🔗 呼叫: `setText`
 
-### 📄 `ui/dialogs/model_store_dialog.py` (所屬階段: `5.6.1`)
-- **模組職責註記**: 此檔案的核心職責是實現一個對話框，用於顯示和管理 model_store 資料表中的模型信息，並提供刷新功能。
+### 📄 `ui/dialogs/model_store_dialog.py` (所屬階段: `5.6.2`)
+- **模組職責註記**: 此檔案的核心職責是提供一個對話框用於顯示和管理 model_store 資料表中的模型信息，包括初始化 UI 元素、刷新模型列表等。
 - **依賴引用 (Imports)**: `PySide6.QtWidgets:(QDialog, QVBoxLayout, QTableView, QPushButton, QHBoxLayout, QLabel), PySide6.QtCore:(Qt), database.db_manager:(DBManager), database.model_store:(ModelStore)`
   - **Class `ModelStoreDialog(QDialog)`**: ModelStoreDialog 類別用於顯示和管理 model_store 資料表中的模型信息。
     - `def __init__(self, parent)` ➔ 初始化 ModelStoreDialog 类，設置父窗口並初始化 UI 元素。 | 🔗 呼叫: `__init__, initUI`
@@ -583,6 +583,7 @@
 - **階段 `5.5.1` 關聯總結**: 本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並與PC拖放沙盒上傳功能互動。
 - **階段 `5.5.2` 關聯總結**: 本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並提供了添加、移除、獲取、排序、分類和搜索資產的功能。
 - **階段 `5.6.1` 關聯總結**: 本階段實現了 ModelStoreDialog 類別，用於顯示和管理 model_store 資料表中的模型信息，並通過 DBManager 和 ModelStore 類與資料庫進行連接和數據交互。
+- **階段 `5.6.2` 關聯總結**: ModelStoreDialog 類別用於顯示和管理 model_store 資料表中的模型信息，與 DBManager 和 ModelStore 模組互動，並通過 QTableView 顯示模型列表。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
