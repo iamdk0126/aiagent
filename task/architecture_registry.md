@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:35:47
+> 最後自動更新時間：2026-11-09 11:36:43
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -248,14 +248,14 @@
     - `def search_vector(self, vector: np.ndarray, k: int) -> List[Tuple[int, float]]` ➔ 查詢最接近的向量及其距離。 | 🔗 呼叫: `search_knn`
     - `def delete_vector(self, vector_id: int)` ➔ 從SQLite資料庫和HNSW索引中刪除向量。 | 🗄️ 資料表: `vector_index_table` | 🔗 呼叫: `delete_item, remove, get_connection, cursor, execute, commit`
 
-### 📄 `database/workflow_checkpoints.py` (所屬階段: `14.1.1`)
+### 📄 `database/workflow_checkpoints.py` (所屬階段: `14.1.2`)
 - **模組職責註記**: 此檔案定義了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點。
 - **依賴引用 (Imports)**: `sqlite3, typing:(Optional)`
   - **Class `WorkflowCheckpoint`**: WorkflowCheckpoint 類別用於管理工作流程的檢查點，包括保存和加載檢查點。
-    - `def __init__(self, db_path: str)` ➔ 初始化 WorkflowCheckpoint 類別，建立數據庫連接並創建檢查點表。 | 🔗 呼叫: `connect, cursor, _create_table`
+    - `def __init__(self, db_path: str)` ➔ 初始化 WorkflowCheckpoint 類別。 | 🔗 呼叫: `connect, cursor, _create_table`
     - `def _create_table(self)` ➔ 創建 workflow_checkpoints 表，如果表不存在。 | 🔗 呼叫: `execute, commit`
-    - `def save_checkpoint(self, checkpoint_data: bytes)` ➔ 保存檢查點數據到數據庫。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, commit`
-    - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從數據庫加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
+    - `def save_checkpoint(self, checkpoint_data: bytes)` ➔ 保存檢查點數據到 workflow_checkpoints 表中。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, commit`
+    - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
@@ -283,3 +283,4 @@
 - **階段 `13.1.1` 關聯總結**: 本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。
 - **階段 `13.1.2` 關聯總結**: 本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。
 - **階段 `14.1.1` 關聯總結**: 本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。
+- **階段 `14.1.2` 關聯總結**: 本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。
