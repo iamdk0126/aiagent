@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:33:33
+> 最後自動更新時間：2026-11-09 12:34:32
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -44,7 +44,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `model_store`
-- **定義檔案**: `未知` | **用途註記**: 此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯說明為 ModelMenuProvider 類通過此表獲取本地免費模型和商業API模型。
+- **定義檔案**: `未知` | **用途註記**: 此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯說明為ModelMenuProvider類通過調用數據庫管理器獲取本地免費模型和商業API模型。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models(), core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()`
 
@@ -270,13 +270,13 @@
     - `def j_l_cut_mix(self, audio_clip: bytes, next_audio_clip: bytes) -> bytes` ➔ J/L-Cut 混音
     - `def assemble_video(self, video_clips: list, audio_clips: list) -> bytes` ➔ 組裝視頻
 
-### 📄 `core/model_menu_provider.py` (所屬階段: `3.2.1`)
-- **模組職責註記**: 此檔案的核心職責是提供模型菜單和基礎連線介面，通過與數據庫管理器交互來獲取本地免費模型和商業API模型。
+### 📄 `core/model_menu_provider.py` (所屬階段: `3.2.2`)
+- **模組職責註記**: 此檔案的核心職責是提供模型菜單和基礎連接接口，通過調用數據庫管理器獲取本地免費模型和商業API模型。
 - **依賴引用 (Imports)**: `typing:(List, Dict), database.db_manager:(DBManager)`
   - **Class `ModelMenuProvider`**: ModelMenuProvider: 提供模型菜单和基础连接接口的类
     - `def __init__(self, db_manager: DBManager)` ➔ 初始化 ModelMenuProvider 类
-    - `def fetch_free_local_models(self) -> List[Dict]` ➔ 此函數的功能是獲取本地免費模型，輸入無，輸出為本地免費模型列表，操作的資料表為 model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
-    - `def fetch_commercial_api_models(self) -> List[Dict]` ➔ 此函數的功能是獲取商業API模型，輸入無，輸出為商業API模型列表，操作的資料表為 model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
+    - `def fetch_free_local_models(self) -> List[Dict]` ➔ 此函數的功能是獲取本地免費模型，輸入為無，輸出為本地免費模型列表，操作的資料表為model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
+    - `def fetch_commercial_api_models(self) -> List[Dict]` ➔ 此函數的功能是獲取商業API模型，輸入為無，輸出為商業API模型列表，操作的資料表為model_store。 | 🗄️ 資料表: `model_store` | 🔗 呼叫: `execute_query`
 
 ### 📄 `core/model_store_crawler.py` (所屬階段: `3.1.2`)
 - **模組職責註記**: 此檔案的核心職責是從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息，並保存到文件中。
@@ -485,7 +485,7 @@
 - **階段 `3.1.1` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類和方法，並保存到文件中。
 - **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的功能，並保存到文件中。
 - **階段 `3.2.1` 關聯總結**: 本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。
-- **階段 `3.2.2` 關聯總結**: 本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。
+- **階段 `3.2.2` 關聯總結**: 本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。
 - **階段 `4.1.1` 關聯總結**: 本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。
 - **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。
 - **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。

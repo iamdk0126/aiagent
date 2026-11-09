@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:33:33",
+    "updated_at": "2026-11-09 12:34:32",
     "tables": {
         "users": {
             "columns": [],
@@ -57,7 +57,7 @@
                 "core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models()",
                 "core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()"
             ],
-            "note": "此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯說明為 ModelMenuProvider 類通過此表獲取本地免費模型和商業API模型。"
+            "note": "此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯說明為ModelMenuProvider類通過調用數據庫管理器獲取本地免費模型和商業API模型。"
         },
         "asset_embeddings": {
             "columns": [
@@ -751,8 +751,8 @@
             "functions": {}
         },
         "core/model_menu_provider.py": {
-            "stage_id": "3.2.1",
-            "note": "此檔案的核心職責是提供模型菜單和基礎連線介面，通過與數據庫管理器交互來獲取本地免費模型和商業API模型。",
+            "stage_id": "3.2.2",
+            "note": "此檔案的核心職責是提供模型菜單和基礎連接接口，通過調用數據庫管理器獲取本地免費模型和商業API模型。",
             "imports": [
                 "typing:(List, Dict)",
                 "database.db_manager:(DBManager)"
@@ -770,7 +770,7 @@
                         },
                         "fetch_free_local_models": {
                             "signature": "def fetch_free_local_models(self) -> List[Dict]",
-                            "note": "此函數的功能是獲取本地免費模型，輸入無，輸出為本地免費模型列表，操作的資料表為 model_store。",
+                            "note": "此函數的功能是獲取本地免費模型，輸入為無，輸出為本地免費模型列表，操作的資料表為model_store。",
                             "calls": [
                                 "execute_query"
                             ],
@@ -780,7 +780,7 @@
                         },
                         "fetch_commercial_api_models": {
                             "signature": "def fetch_commercial_api_models(self) -> List[Dict]",
-                            "note": "此函數的功能是獲取商業API模型，輸入無，輸出為商業API模型列表，操作的資料表為 model_store。",
+                            "note": "此函數的功能是獲取商業API模型，輸入為無，輸出為商業API模型列表，操作的資料表為model_store。",
                             "calls": [
                                 "execute_query"
                             ],
@@ -1857,7 +1857,7 @@
         "3.1.1": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的類和方法，並保存到文件中。",
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的功能，並保存到文件中。",
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
-        "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",
+        "3.2.2": "本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。",
         "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
         "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
         "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",

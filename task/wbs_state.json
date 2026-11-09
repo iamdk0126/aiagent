@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:34:00",
+    "updated_at": "2026-11-09 12:34:32",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -539,8 +539,8 @@
                             ],
                             "prompt": "在 .1 的基礎上，實現模型庫對接的核心業務演算法，包括模型的免費狀態檢查和 API 調用。添加異常處理和單元測試，確保功能的健壯性。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],
