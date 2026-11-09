@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:21:18",
+    "updated_at": "2026-11-09 11:21:46",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -492,7 +492,7 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [
                                 "5.1.1"
                             ],
@@ -500,7 +500,7 @@
                             "mode": "both",
                             "prompt": "在 `FrameContinuityEngine` 類別中實現智慧尾幀挑選、色彩校正與時域去閃爍的核心演算法。添加異常處理機制，並撰寫單元測試以確保各方法的正確性。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "frame_continuity_engine.py"
                             ],

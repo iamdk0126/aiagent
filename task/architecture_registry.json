@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:20:58",
+    "updated_at": "2026-11-09 11:21:46",
     "tables": {
         "users": {
             "columns": [],
@@ -758,8 +758,8 @@
             "functions": {}
         },
         "core/frame_continuity_engine.py": {
-            "stage_id": "5.1.1",
-            "note": "此檔案定義了 FrameContinuityEngine 類，用於處理影像處理任務，並通過 DBManager 類與數據庫進行交互。",
+            "stage_id": "5.1.2",
+            "note": "此檔案實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "database.db_manager:(DBManager)"
@@ -783,7 +783,7 @@
                         },
                         "match_histograms": {
                             "signature": "def match_histograms(self, frame1: Dict, frame2: Dict) -> float",
-                            "note": "進行 LAB 色彩校正，輸入為兩幀影像，輸出為色彩匹配度。",
+                            "note": "進行 LAB 色彩校正，輸入為兩帧，輸出為色彩匹配度。",
                             "calls": [],
                             "tables": []
                         },
@@ -813,6 +813,7 @@
         "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",
         "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
         "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
-        "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。"
+        "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
+        "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。"
     }
 }
