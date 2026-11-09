@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 20:34:04
+> 最後自動更新時間：2026-11-09 22:29:18
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -23,10 +23,20 @@
 - **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_archive(), database/project_archiver.py::ProjectArchiver.restore_archive(), database/project_assets.py::ProjectArchiver.restore_archive()`
 
+### 資料表 `asset_embedding_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲資產的嵌入向量數據，包括嵌入向量ID、素材ID、嵌入向量和更新時間等，業務用途是支持資產的向量查詢和相似度計算，關聯到 asset_table。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `asset_embeddings`
 - **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 此資料表用於存儲資產的嵌入向量，包含 asset_id、embedding 和 created_at 字段。
 - **欄位結構**: `asset_id (TEXT), embedding (BLOB), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
+
+### 資料表 `asset_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲素材的資訊，包括素材ID、名稱、類型、劇集ID、描述和更新時間等，業務用途是管理素材實體，關聯到 episode_table 和 shot_table。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `budget_rules`
 - **定義檔案**: `database/schema_migrator.py` | **用途註記**: 記錄預算規則資訊，包含規則 ID、專案 ID、各類預算限制與自動降級標誌。
@@ -43,9 +53,19 @@
 - **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
+### 資料表 `checkpoint_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲檢查點的資訊，包括檢查點ID、分鏡ID、檢查點數據和更新時間等，業務用途是管理檢查點實體，關聯到 shot_table。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `edges`
 - **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲畫布邊的數據，包括邊的唯一識別符、源節點識別符和目標節點識別符。
 - **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `episode_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲劇集的資訊，包括劇集ID、名稱、專案ID、描述和更新時間等，業務用途是管理劇集實體，關聯到 project_table 和 asset_table。
+- **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `frame_table`
@@ -83,6 +103,11 @@
 - **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_project_pack(), database/project_archiver.py::ProjectArchiver.restore_project_pack()`
 
+### 資料表 `project_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲專案的基本資訊，包括專案ID、名稱、描述和更新時間等，業務用途是管理專案實體，關聯到 episode_table。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `project_versions`
 - **定義檔案**: `database/schema_migrator.py` | **用途註記**: 記錄專案的版本資訊，包含版本 ID、專案 ID、版本號與時間戳。
 - **欄位結構**: `id (INTEGER)`
@@ -96,6 +121,11 @@
 ### 資料表 `settings`
 - **定義檔案**: `database/schema_migrator.py` | **用途註記**: 設置表，存儲系統設置，關聯於數據庫連線初始化。
 - **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `shot_table`
+- **定義檔案**: `Stage 1.1.3` | **用途註記**: 此資料表用於存儲分鏡的資訊，包括分鏡ID、名稱、劇集ID、素材ID、起始帧、結束帧、描述和更新時間等，業務用途是管理分鏡實體，關聯到 episode_table、asset_table 和 checkpoint_table。
+- **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_1`
@@ -2193,6 +2223,16 @@
     - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
+### 📄 `schemas/shot_workflow_schemas.py` (所屬階段: `1.1.3`)
+- **模組職責註記**: 此檔案的核心職責是定義 Pydantic 資料模型，用於表示系統中的核心實體，包括專案、劇集、素材、分鏡、檢查點和資產嵌入向量。這些模型將用於 API 的請求/回應、資料庫操作或前端展示，確保資料的一致性和結構化。
+- **依賴引用 (Imports)**: `pydantic:(BaseModel, Field), typing:(List, Optional, Dict, Any)`
+  - **Class `Project(BaseModel)`**: Project: 專案資料模型
+  - **Class `Episode(BaseModel)`**: Episode: 剧集資料模型
+  - **Class `Asset(BaseModel)`**: Asset: 素材資料模型
+  - **Class `Shot(BaseModel)`**: Shot: 分鏡資料模型
+  - **Class `Checkpoint(BaseModel)`**: Checkpoint: 檢查點資料模型
+  - **Class `AssetEmbedding(BaseModel)`**: AssetEmbedding: 資產嵌入向量資料模型
+
 ### 📄 `ui/canvas/asset_container_node.py` (所屬階段: `5.5.2`)
 - **模組職責註記**: 此檔案定義了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並提供了相關的資產管理功能。
 - **依賴引用 (Imports)**: `typing:(List, Optional)`
@@ -2289,7 +2329,7 @@
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
 - **階段 `1.1.1` 關聯總結**: 本階段實作資料庫連線池管理，提供基礎 CRUD 功能的支援，這些操作會與後端 SQL 資料表互動，但程式碼中未明確定義資料表，因此 CRUD 函數的具體操作對象需由其他模組或業務邏輯指定。
 - **階段 `1.1.2` 關聯總結**: 階段 1.1.2 實作的 SchemaMigrator 模組與資料庫版本管理及表結構初始化相關，主要通過 Generic 泛型類別定義資料庫遷移框架，並提供版本獲取、升級及表創建功能，與後端資料庫操作模組（如 project_data_access）及資料庫版本控制文件（如 database_schema_versions.txt）互動，確保表結構與版本需求一致。
-- **階段 `1.1.3` 關聯總結**: 本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。
+- **階段 `1.1.3` 關聯總結**: 階段 1.1.3 定義了多個 Pydantic 資料模型，這些模型將用於 API 的資料交換、資料庫 ORM 映射或其他服務的資料結構定義，並與父階段的規範保持一致，通過明確的資料結構支持系統的其他功能模組。
 - **階段 `1.2.1` 關聯總結**: 本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.2.2` 關聯總結**: 本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.3.1` 關聯總結**: 本階段實現了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，與資料庫進行互動。

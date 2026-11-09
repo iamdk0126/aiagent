@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 22:28:00",
+    "updated_at": "2026-11-09 22:29:18",
     "reasoning_model": "ollama/deepseek-r1:8b",
     "coding_model": "ollama/qwen2.5-coder:7b",
     "stage0_strategy": "STRATEGY_B",
@@ -68,7 +68,7 @@
                 {
                     "auto_expand_subtasks": false,
                     "children": [],
-                    "coding_status": "pending",
+                    "coding_status": "completed",
                     "depends_on": [
                         "1.1.2"
                     ],
@@ -76,7 +76,7 @@
                     "mode": "both",
                     "prompt": "根據註冊表定義各個資料表的 Pydantic 資料模型，包括資料驗證、序列化與反序列化功能。需包含以下模型：Project，Episode，Asset，Shot，Checkpoint，以及對應的嵌入向量模型。",
                     "reasoning_status": "completed",
-                    "registry_status": "pending",
+                    "registry_status": "completed",
                     "spec_keywords": [
                         "database",
                         "db_connection_pool",

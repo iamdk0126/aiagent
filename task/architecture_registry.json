@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 20:34:04",
+    "updated_at": "2026-11-09 22:29:18",
     "tables": {
         "users": {
             "columns": [],
@@ -2530,6 +2530,42 @@
             "defined_in": "database/schema_migrator.py",
             "accessed_by": [],
             "note": "由 database/schema_migrator.py 建立維護"
+        },
+        "project_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲專案的基本資訊，包括專案ID、名稱、描述和更新時間等，業務用途是管理專案實體，關聯到 episode_table。"
+        },
+        "episode_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲劇集的資訊，包括劇集ID、名稱、專案ID、描述和更新時間等，業務用途是管理劇集實體，關聯到 project_table 和 asset_table。"
+        },
+        "asset_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲素材的資訊，包括素材ID、名稱、類型、劇集ID、描述和更新時間等，業務用途是管理素材實體，關聯到 episode_table 和 shot_table。"
+        },
+        "shot_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲分鏡的資訊，包括分鏡ID、名稱、劇集ID、素材ID、起始帧、結束帧、描述和更新時間等，業務用途是管理分鏡實體，關聯到 episode_table、asset_table 和 checkpoint_table。"
+        },
+        "checkpoint_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲檢查點的資訊，包括檢查點ID、分鏡ID、檢查點數據和更新時間等，業務用途是管理檢查點實體，關聯到 shot_table。"
+        },
+        "asset_embedding_table": {
+            "columns": [],
+            "defined_in": "Stage 1.1.3",
+            "accessed_by": [],
+            "note": "此資料表用於存儲資產的嵌入向量數據，包括嵌入向量ID、素材ID、嵌入向量和更新時間等，業務用途是支持資產的向量查詢和相似度計算，關聯到 asset_table。"
         }
     },
     "modules": {
@@ -8558,12 +8594,65 @@
                 }
             },
             "functions": {}
+        },
+        "schemas/shot_workflow_schemas.py": {
+            "stage_id": "1.1.3",
+            "note": "此檔案的核心職責是定義 Pydantic 資料模型，用於表示系統中的核心實體，包括專案、劇集、素材、分鏡、檢查點和資產嵌入向量。這些模型將用於 API 的請求/回應、資料庫操作或前端展示，確保資料的一致性和結構化。",
+            "imports": [
+                "pydantic:(BaseModel, Field)",
+                "typing:(List, Optional, Dict, Any)"
+            ],
+            "classes": {
+                "Project": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "Project: 專案資料模型",
+                    "methods": {}
+                },
+                "Episode": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "Episode: 剧集資料模型",
+                    "methods": {}
+                },
+                "Asset": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "Asset: 素材資料模型",
+                    "methods": {}
+                },
+                "Shot": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "Shot: 分鏡資料模型",
+                    "methods": {}
+                },
+                "Checkpoint": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "Checkpoint: 檢查點資料模型",
+                    "methods": {}
+                },
+                "AssetEmbedding": {
+                    "bases": [
+                        "BaseModel"
+                    ],
+                    "note": "AssetEmbedding: 資產嵌入向量資料模型",
+                    "methods": {}
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
         "1.1.1": "本階段實作資料庫連線池管理，提供基礎 CRUD 功能的支援，這些操作會與後端 SQL 資料表互動，但程式碼中未明確定義資料表，因此 CRUD 函數的具體操作對象需由其他模組或業務邏輯指定。",
         "1.1.2": "階段 1.1.2 實作的 SchemaMigrator 模組與資料庫版本管理及表結構初始化相關，主要通過 Generic 泛型類別定義資料庫遷移框架，並提供版本獲取、升級及表創建功能，與後端資料庫操作模組（如 project_data_access）及資料庫版本控制文件（如 database_schema_versions.txt）互動，確保表結構與版本需求一致。",
-        "1.1.3": "本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。",
+        "1.1.3": "階段 1.1.3 定義了多個 Pydantic 資料模型，這些模型將用於 API 的資料交換、資料庫 ORM 映射或其他服務的資料結構定義，並與父階段的規範保持一致，通過明確的資料結構支持系統的其他功能模組。",
         "2.1.1": "本階段實現了 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
         "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。",
         "2.2.1": "本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。",
