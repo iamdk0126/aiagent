@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:53:15
+> 最後自動更新時間：2026-11-09 12:55:03
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -487,6 +487,16 @@
     - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
+### 📄 `ui/canvas/asset_container_node.py` (所屬階段: `5.5.1`)
+- **模組職責註記**: 此檔案定義了AssetContainerNode類，用於管理資產容器，並提供添加、移除和獲取資產的方法。
+- **依賴引用 (Imports)**: `typing:(List, Optional)`
+  - **Class `AssetContainerNode`**: 角色(藍)/場景(綠)/道具(黃) 資產容器與 PC 拖放沙盒上傳
+    - `def __init__(self, asset_type: str, asset_name: str, asset_path: str)` ➔ 初始化AssetContainerNode類，設置資產類型、名稱和路徑，並初始化資產列表。
+    - `def add_asset(self, asset: str) -> None` ➔ 向資產列表中添加一個資產。 | 🔗 呼叫: `append`
+    - `def remove_asset(self, asset: str) -> None` ➔ 從資產列表中移除一個資產。 | 🔗 呼叫: `remove`
+    - `def get_assets(self) -> List[str]` ➔ 返回所有資產的列表。
+    - `def get_asset_info(self, asset_name: str) -> Optional[str]` ➔ 獲取指定資產的資訊。
+
 ### 📄 `ui/canvas/infinite_dot_canvas.py` (所屬階段: `5.4.2`)
 - **模組職責註記**: 此檔案實現了無邊際點陣畫布的邏輯，包括節點和連線的管理以及圖形項的創建。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), PySide6.QtWidgets:(QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsEllipseItem, QGraphicsLineItem), PySide6.QtCore:(Qt, QPointF)`
@@ -559,6 +569,7 @@
 - **階段 `5.3.2` 關聯總結**: 本階段實現了硬體遙測狀態顯示功能，通過 `ui/main_window.py` 檔案中的 `MainWindow` 類和 `initHardwareMonitorTab` 方法，與父階段和其他模組互動，並通過 SQL 資料表進行數據存取。
 - **階段 `5.4.1` 關聯總結**: 本階段實現了無邊際點陣畫布的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `5.4.2` 關聯總結**: 本階段實現了無邊際點陣畫布的模組，與父階段和其他模組無直接關聯，主要與 UI 層互動。
+- **階段 `5.5.1` 關聯總結**: 本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並與PC拖放沙盒上傳功能互動。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
