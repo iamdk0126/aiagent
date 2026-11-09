@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:42:33
+> 最後自動更新時間：2026-11-09 12:43:33
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -467,17 +467,17 @@
     - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
-### 📄 `ui/canvas/shot_pair_node_widget.py` (所屬階段: `5.1.1`)
-- **模組職責註記**: 此檔案實現了圖形用戶介面的元素和功能，包括左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。
+### 📄 `ui/canvas/shot_pair_node_widget.py` (所屬階段: `5.1.2`)
+- **模組職責註記**: 此檔案的核心職責是實現圖形用戶界面的模組，包括左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。
 - **依賴引用 (Imports)**: `PySide6.QtWidgets:(QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QComboBox, QLineEdit, QPushButton), PySide6.QtCore:(Qt)`
   - **Class `ShotPairNodeWidget(QWidget)`**: 左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框
     - `def __init__(self, parent)` ➔ 初始化 ShotPairNodeWidget 类，設置父窗口。 | 🔗 呼叫: `__init__, initUI`
-    - `def initUI(self)` ➔ 初始化 UI 元素，包括圖形化界面的布局和控件。 | 🔗 呼叫: `QVBoxLayout, QLabel, QHBoxLayout, addWidget, addLayout, QListWidget, QComboBox, QLineEdit`
+    - `def initUI(self)` ➔ 初始化 UI 元素，包括左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。 | 🔗 呼叫: `QVBoxLayout, QLabel, QHBoxLayout, addWidget, addLayout, QListWidget, QComboBox, QLineEdit`
     - `def add_frame(self, left_frame, right_frame)` ➔ 添加左圖右影成對分鏡卡。 | 🔗 呼叫: `setText`
     - `def add_to_white_list(self, item)` ➔ 將項目添加到白名單。 | 🔗 呼叫: `addItem`
     - `def set_camera(self, camera)` ➔ 設置運鏡。 | 🔗 呼叫: `setCurrentText`
     - `def set_lighting(self, lighting)` ➔ 設置布光。 | 🔗 呼叫: `setCurrentText`
-    - `def set_parameters(self, parameters)` ➔ 設置參數 | 🔗 呼叫: `setText`
+    - `def set_parameters(self, parameters)` ➔ 設置參數。 | 🔗 呼叫: `setText`
 
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
 - **階段 `1.1.1` 關聯總結**: 本階段實現了 SQLite WAL 連線池、26 張表初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和操作的互動。
@@ -503,7 +503,7 @@
 - **階段 `4.2.1` 關聯總結**: 本階段實現了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行互動。
 - **階段 `4.2.2` 關聯總結**: 本階段實現了資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行交互。
 - **階段 `5.1.1` 關聯總結**: ShotPairNodeWidget 模組實現了圖形用戶介面的元素和功能，與父階段的 UI 設計和資料結構相連，並與其他模組進行互動以實現圖形化操作。
-- **階段 `5.1.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。
+- **階段 `5.1.2` 關聯總結**: 本階段實現了圖形用戶界面的模組，與父階段和其他模組進行了互動，並與資料表無直接關聯。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
