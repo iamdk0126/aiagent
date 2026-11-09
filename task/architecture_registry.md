@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:23:46
+> 最後自動更新時間：2026-11-09 12:24:56
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -273,15 +273,15 @@
     - `def remove_node(self, node_id: str)` ➔ 根據節點ID移除智能體節點及其相關的邊。
     - `def remove_edge(self, edge_id: str)` ➔ 根據邊ID移除邊
 
-### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.1`)
-- **模組職責註記**: 此檔案實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況。
+### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.2`)
+- **模組職責註記**: 此檔案實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **依賴引用 (Imports)**: `sqlite3, typing:(Dict, Optional)`
   - **Class `VRAMRAMHybridManager`**: VRAM 和 RAM 協同管理器
-    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化 VRAM 和 RAM 協同管理器，設置 VRAM 缓衝區大小和固定內存池大小。
-    - `def initialize(self)` ➔ 初始化 VRAM 和 RAM 協同管理器，目前為空方法。
-    - `def upload_to_vram(self, data: bytes)` ➔ 將數據上傳到 VRAM，如果 VRAM 缓衝區已滿則拋出異常。 | 🔗 呼叫: `ValueError`
-    - `def release_from_vram(self, data: bytes)` ➔ 從 VRAM 釋放數據，減少 VRAM 使用情況。
-    - `def get_vram_usage(self) -> int` ➔ 獲取 VRAM 使用情況，返回當前 VRAM 使用量。
+    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化VRAM和RAM協同管理器，設置VRAM緩衝區大小和固定內存池大小。
+    - `def initialize(self)` ➔ 初始化VRAM和RAM協同管理器的邏輯。
+    - `def upload_to_vram(self, data: bytes)` ➔ 將數據上傳到VRAM，如果VRAM緩衝區已滿則拋出異常。 | 🔗 呼叫: `ValueError`
+    - `def release_from_vram(self, data: bytes)` ➔ 從VRAM釋放數據。
+    - `def get_vram_usage(self) -> int` ➔ 獲取VRAM的使用情況。
 
 ### 📄 `core/workflow_runtime.py` (所屬階段: `9.1.2`)
 - **模組職責註記**: 此檔案的核心職責是管理工作流任務的註冊、執行和狀態查詢，提供對外介面進行任務管理。

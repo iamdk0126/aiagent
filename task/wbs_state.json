@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:24:12",
+    "updated_at": "2026-11-09 12:24:56",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -322,8 +322,8 @@
                             ],
                             "prompt": "在 `VRAMRamHybridManager` 中實現 VRAM/RAM 協同調度的核心演算法，包括資源分配、回收和調度策略。添加異常處理和單元測試，確保在不同情況下都能正確運行。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],
