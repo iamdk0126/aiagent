@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:40:02",
+    "updated_at": "2026-11-09 12:40:35",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -671,8 +671,8 @@
                             ],
                             "prompt": "在 `AssetEmbeddings` 類別中實現提取視覺特徵向量的演算法，並添加異常處理和單元測試，確保向量提取的準確性和可靠性。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],

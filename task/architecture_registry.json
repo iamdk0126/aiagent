@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:39:35",
+    "updated_at": "2026-11-09 12:40:35",
     "tables": {
         "users": {
             "columns": [],
@@ -72,7 +72,7 @@
                 "database/asset_embeddings.py::AssetEmbeddings.update_embedding()",
                 "database/asset_embeddings.py::AssetEmbeddings.delete_embedding()"
             ],
-            "note": "此資料表用於存儲資產的嵌入向量，包括資產 ID、嵌入向量和創建時間。"
+            "note": "此資料表用於存儲資產的嵌入向量，包含 asset_id、embedding 和 created_at 字段。"
         },
         "project_assets": {
             "columns": [],
@@ -900,7 +900,7 @@
             "functions": {}
         },
         "database/asset_embeddings.py": {
-            "stage_id": "4.2.1",
+            "stage_id": "4.2.2",
             "note": "此檔案定義了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量。",
             "imports": [
                 "typing:(List, Dict, Optional)",
@@ -943,7 +943,7 @@
                         },
                         "get_embedding": {
                             "signature": "def get_embedding(self, asset_id: str) -> Optional[bytes]",
-                            "note": "讀取一個資產的嵌入向量。",
+                            "note": "讀取一個資產的嵌入向量，如果不存在則返回 None。",
                             "calls": [
                                 "execute",
                                 "fetchone"
@@ -1881,6 +1881,7 @@
         "2.3.1": "本階段實現了 GPU 自適應引擎和 VRAM/RAM 協同管理器，用於音素級指定臉孔對嘴和 J/L-Cut 混音。",
         "2.3.2": "本階段實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能。",
         "2.3.3": "本階段實現了 GPU 自適應引擎和 VRAM 記憶體管理，並在 MasterVideoAssembler 中整合了音素級指定臉孔對嘴、J/L-Cut 混音和視頻組裝功能，與父階段和其他模組進行了互動。",
-        "4.2.1": "本階段實現了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行互動。"
+        "4.2.1": "本階段實現了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行互動。",
+        "4.2.2": "本階段實現了資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行交互。"
     }
 }
