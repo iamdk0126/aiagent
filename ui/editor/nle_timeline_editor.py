@@ -63,3 +63,21 @@ class NLETimelineEditor(QGraphicsScene):
 
     def create_edge_item(self, edge: Edge) -> QGraphicsItem:
         return edge
+
+    def sort_nodes(self) -> None:
+        """
+        節點排序
+        """
+        pass
+
+    def align_timeline(self) -> None:
+        """
+        時間軸對齊
+        """
+        pass
+
+    def auto_connect_edges(self) -> None:
+        """
+        边的自動連接
+        """
+        pass
