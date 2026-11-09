@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:23:44",
+    "updated_at": "2026-11-09 11:24:33",
     "tables": {
         "users": {
             "columns": [],
@@ -91,6 +91,18 @@
             "defined_in": "Stage 5.1.1",
             "accessed_by": [],
             "note": "此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。"
+        },
+        "agent_nodes": {
+            "columns": [],
+            "defined_in": "Stage 7.1.2",
+            "accessed_by": [],
+            "note": "此資料表存儲智能體節點的資訊，包括節點ID和節點類型。"
+        },
+        "edges": {
+            "columns": [],
+            "defined_in": "Stage 7.1.2",
+            "accessed_by": [],
+            "note": "此資料表存儲邊的資訊，包括邊ID、源節點ID和目標節點ID。"
         }
     },
     "modules": {
@@ -799,8 +811,8 @@
             "functions": {}
         },
         "core/multi_agent_graph.py": {
-            "stage_id": "7.1.1",
-            "note": "此檔案定義了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
+            "stage_id": "7.1.2",
+            "note": "此檔案定義了多智能體協同圖形數據庫的類別和相關操作，包括添加、獲取和移除節點和邊。",
             "imports": [
                 "typing:(List, Dict, Optional)"
             ],
@@ -841,7 +853,7 @@
                         },
                         "add_node": {
                             "signature": "def add_node(self, node: AgentNode)",
-                            "note": "添加智能體節點",
+                            "note": "添加一個智能體節點到圖形數據庫中。",
                             "calls": [
                                 "append"
                             ],
@@ -849,7 +861,7 @@
                         },
                         "add_edge": {
                             "signature": "def add_edge(self, edge: Edge)",
-                            "note": "添加邊",
+                            "note": "添加一個邊到圖形數據庫中，連接兩個節點。",
                             "calls": [
                                 "append"
                             ],
@@ -857,19 +869,19 @@
                         },
                         "get_node": {
                             "signature": "def get_node(self, node_id: str) -> Optional[AgentNode]",
-                            "note": "根據節點ID獲取智能體節點",
+                            "note": "根據節點ID獲取智能體節點。",
                             "calls": [],
                             "tables": []
                         },
                         "get_edges": {
                             "signature": "def get_edges(self, node_id: str) -> List[Edge]",
-                            "note": "根據節點ID獲取所有連接的邊",
+                            "note": "根據節點ID獲取所有連接的邊。",
                             "calls": [],
                             "tables": []
                         },
                         "remove_node": {
                             "signature": "def remove_node(self, node_id: str)",
-                            "note": "根據節點ID移除智能體節點",
+                            "note": "根據節點ID移除智能體節點及其相關的邊。",
                             "calls": [],
                             "tables": []
                         },
@@ -901,6 +913,7 @@
         "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
         "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
         "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
-        "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。"
+        "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
+        "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。"
     }
 }

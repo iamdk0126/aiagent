@@ -1,8 +1,13 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:23:44
+> 最後自動更新時間：2026-11-09 11:24:33
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
+### 資料表 `agent_nodes`
+- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表存儲智能體節點的資訊，包括節點ID和節點類型。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `archive_log`
 - **定義檔案**: `Stage 1.1.3` | **用途註記**: 存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 字段。
 - **欄位結構**: `(欄位待補充)`
@@ -12,6 +17,11 @@
 - **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 此資料表存儲資產嵌入向量的相關信息，包括資產 ID、嵌入向量、創建和更新時間等。
 - **欄位結構**: `asset_id (TEXT), embedding (BLOB), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
+
+### 資料表 `edges`
+- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表存儲邊的資訊，包括邊ID、源節點ID和目標節點ID。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `frames`
 - **定義檔案**: `Stage 5.1.1` | **用途註記**: 此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。
@@ -97,8 +107,8 @@
     - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
     - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
 
-### 📄 `core/multi_agent_graph.py` (所屬階段: `7.1.1`)
-- **模組職責註記**: 此檔案定義了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
+### 📄 `core/multi_agent_graph.py` (所屬階段: `7.1.2`)
+- **模組職責註記**: 此檔案定義了多智能體協同圖形數據庫的類別和相關操作，包括添加、獲取和移除節點和邊。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional)`
   - **Class `AgentNode`**: 智能體節點類別
     - `def __init__(self, node_id: str, node_type: str)` ➔ 待推理模型或開發者補充註記
@@ -106,11 +116,11 @@
     - `def __init__(self, edge_id: str, source_node: AgentNode, target_node: AgentNode)` ➔ 待推理模型或開發者補充註記
   - **Class `MultiAgentGraph`**: 多智能體協同圖形數據庫類別
     - `def __init__(self)` ➔ 待推理模型或開發者補充註記
-    - `def add_node(self, node: AgentNode)` ➔ 添加智能體節點 | 🔗 呼叫: `append`
-    - `def add_edge(self, edge: Edge)` ➔ 添加邊 | 🔗 呼叫: `append`
-    - `def get_node(self, node_id: str) -> Optional[AgentNode]` ➔ 根據節點ID獲取智能體節點
-    - `def get_edges(self, node_id: str) -> List[Edge]` ➔ 根據節點ID獲取所有連接的邊
-    - `def remove_node(self, node_id: str)` ➔ 根據節點ID移除智能體節點
+    - `def add_node(self, node: AgentNode)` ➔ 添加一個智能體節點到圖形數據庫中。 | 🔗 呼叫: `append`
+    - `def add_edge(self, edge: Edge)` ➔ 添加一個邊到圖形數據庫中，連接兩個節點。 | 🔗 呼叫: `append`
+    - `def get_node(self, node_id: str) -> Optional[AgentNode]` ➔ 根據節點ID獲取智能體節點。
+    - `def get_edges(self, node_id: str) -> List[Edge]` ➔ 根據節點ID獲取所有連接的邊。
+    - `def remove_node(self, node_id: str)` ➔ 根據節點ID移除智能體節點及其相關的邊。
     - `def remove_edge(self, edge_id: str)` ➔ 根據邊ID移除邊
 
 ### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.2`)
@@ -198,3 +208,4 @@
 - **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.1.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
+- **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
