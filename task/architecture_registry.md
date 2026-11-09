@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:18:29
+> 最後自動更新時間：2026-11-09 12:19:29
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -356,8 +356,8 @@
     - `def delete_permission(self, permission_id: str) -> None` ➔ 刪除指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_all_permissions(self) -> List[Dict]` ➔ 查詢所有權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchall`
 
-### 📄 `database/project_archiver.py` (所屬階段: `1.3.1`)
-- **模組職責註記**: 此檔案定義了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，並與資料庫進行互動。
+### 📄 `database/project_archiver.py` (所屬階段: `1.3.2`)
+- **模組職責註記**: 此檔案實現了專案版本快照和 .omni_pack 打包的創建與復原功能，通過 DBManager 類與資料庫進行互動。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple), contextlib:(contextmanager)`
   - **Class `ProjectArchiver`**: 專案版本快照與 .omni_pack 打包匯出/還原器
     - `def __init__(self, db_path: str)` ➔ 初始化 ProjectArchiver | 🔗 呼叫: `DBManager`
@@ -437,6 +437,7 @@
 - **階段 `1.2.1` 關聯總結**: 本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.2.2` 關聯總結**: 本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.3.1` 關聯總結**: 本階段實現了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，與資料庫進行互動。
+- **階段 `1.3.2` 關聯總結**: 本階段實現了專案版本快照和 .omni_pack 打包的創建與復原功能，與父階段和資料表進行了互動。
 - **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。
 - **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
