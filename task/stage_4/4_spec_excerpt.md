@@ -1,0 +1,124 @@
+# 主規格書 (`spec.md`) 針對階段 4 之相關章節摘錄
+
+### 第 4 章：素材資料庫（資產容器）、PC 上傳與嚴格白名單控制
+
+畫布左側設立分類資產容器：**「👤 角色資產 (藍框)」**、**「🏞️ 場景資產 (綠框)」**、**「📦 道具資產 (黃框)」** 及 **「🗣️ 音源資產」**：
+1. **雙管道入庫與沙盒化歸檔**：
+   * **平台內生成自動納管**：由劇本與分鏡自動提煉繪圖 Prompt 填入素材編輯框，使用者可確認、重複修改文字並重新生成圖片（保留 `V1, V2...` 完整歷史版本）；確認後自動寫入 `project_assets` 表並掛載至畫布容器。
+   * **多視角角色設定圖與羽化去背 (`Pass 5 強化`)**：內建 `Front / Back / Side` 全身角色設定圖模板，整合本地去背模型 (`RMBG-2.0 / BiRefNet`) 自動轉為透明通道 PNG (RGBA)，並執行 `1.5px Alpha Matte Edge Feathering (邊緣消鋸齒與去白邊)`。
+   * **PC 端上傳與沙盒複製**：支援從電腦拖放上傳圖片或音檔，入庫瞬間自動複製至專案沙盒目錄 `projects/{project_id}/assets/`，杜絕外部檔案移動導致之媒體遺失。
+2. **素材命名與特徵說明雙向綁定**：
+   * 支援自訂素材名稱（如：`女孩母親`、`船夫`、`南朝長江渡口`、`木製念珠`、`草鞋`、`一根枯黃蘆葦`）與詳細文字說明；Agent 撰寫分鏡 Prompt 時自動引用該說明。
+3. **嚴格指定素材白名單、深度融合與多人分區防混臉 (`Pass 5 強化`)**：
+   * 分鏡懸浮編輯框頂部設有「指定素材參考縮圖列」（可點擊 `+` 新增或 `×` 移除，如 `E1S02` 同時鎖定 `[達摩]`、`[南朝長江渡口]`、`[木製念珠]`、`[木船]`、`[草鞋]`）。
+   * **硬性隔離與 Z-Depth 深度融合**：算圖引擎嚴格限制僅能讀取縮圖列白名單中之素材。當把角色或道具合成進指定場景時，自動提取場景之 `Depth Anything V2` 深度圖與環境光色溫，確保人物雙腳精準踩在地面透視上且受環境光染色，絕無生硬貼紙感。當單一鏡頭同時綁定 $\ge 2$ 位角色時，自動啟動 `Regional IP-Adapter / Attention Masking` 分區遮罩，防止不同角色臉部或服裝特徵混淆。
+
+---
+
+
+### 第 21 章：v5.0 凍結後完整 SQLite 資料庫結構定義 (26 張正式資料表 DDL)
+
+系統於本地維護 `data/omni_studio.db`，啟動時強制執行 WAL 模式與外鍵約束。以下為全部 **26 張正式資料表**之完整 DDL：
+
+```sql
+-- =========================================================================
+-- 一、系統設定、模型商城與憑證管理 (Tables 1 ~ 4)
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS system_settings (
+    setting_key TEXT PRIMARY KEY,
+    setting_value TEXT NOT NULL,
+    schema_version INTEGER DEFAULT 50,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS commercial_providers (
+    provider_id TEXT PRIMARY KEY,
+    provider_name TEXT NOT NULL,
+    api_base_url TEXT,
+    keyring_service_key TEXT NOT NULL,
+    key_status TEXT DEFAULT 'UNCONFIGURED',
+    rate_limit_rpm INTEGER DEFAULT 60,
+    total_points_consumed INTEGER DEFAULT 0,
+    last_verified_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS models_catalog (
+    model_id TEXT PRIMARY KEY,
+    store_partition TEXT NOT NULL,
+    category TEXT NOT NULL,
+    display_name TEXT NOT NULL,
+    provider_id TEXT,
+    description TEXT,
+    icon_name TEXT,
+    cost_badge INTEGER DEFAULT 0,
+    max_ref_images INTEGER DEFAULT 1,
+    required_custom_nodes_json TEXT,
+    is_enabled INTEGER DEFAULT 1,
+    FOREIGN KEY(provider_id) REFERENCES commercial_providers(provider_id)
+);
+
+CREATE TABLE IF NOT EXISTS local_model_versions (
+    version_id TEXT PRIMARY KEY,
+    model_id TEXT NOT NULL,
+    version_tag TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    mirror_download_url TEXT,
+    sha256_hash TEXT,
+    file_size_gb REAL NOT NULL,
+    relative_file_path TEXT NOT NULL,
+    header_verified INTEGER DEFAULT 0,
+    is_downloaded INTEGER DEFAULT 0,
+    is_active_version INTEGER DEFAULT 1,
+    remote_updated_at TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models_catalog(model_id)
+);
+
+-- =========================================================================
+-- 二、專案、劇集、版本控制與預算熔斷 (Tables 5 ~ 8)
+-- =========================================================================
+CREATE TABLE IF NOT EXISTS projects (
+    project_id TEXT PRIMARY KEY,
+    project_name TEXT NOT NULL,
+    format_preset_id TEXT NOT NULL,
+    aspect_ratio TEXT DEFAULT '21:9',
+    target_resolution TEXT DEFAULT '1920x800',
+    fps INTEGER DEFAULT 24,
+    global_lut_path TEXT,
+    default_cjk_font_path TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS episodes (
+    episode_id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    episode_index INTEGER NOT NULL,
+    episode_title TEXT,
+    execution_mode TEXT DEFAULT 'SEMI_AUTO',
+    current_gate TEXT DEFAULT 'GATE_1_OUTLINE',
+    gate_status TEXT DEFAULT 'IDLE',
+    master_video_path TEXT,
+    me_track_audio_path TEXT,
+    master_srt_path TEXT,
+    master_ass_path TEXT,
+    otio_export_path TEXT,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id)
+);
+
+CREATE TABLE IF NOT EXISTS project_versions (
+    id TEXT PRIMARY KEY,
+    project_id TEXT NOT NULL,
+    version_name TEXT NOT NULL,
+    parent_version_id TEXT,
+    snapshot_path TEXT NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id)
+);
+
+CREATE TABLE IF NOT EXISTS budget_rules (
+    project_id TEXT PRIMARY KEY,
+    max_shot_cost INTEGER DEFAULT 500,
+    max_episode_cost INTEGER DEFAULT 5000,
+    max_project_cost INTEGER DEFAULT 50000,
+    current_project_spent INTEGER D
+...(章節截斷)...
