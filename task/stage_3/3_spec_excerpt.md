@@ -1,5 +1,17 @@
 # 主規格書 (`spec.md`) 針對階段 3 之相關章節摘錄
 
+### 第 1 章：全系列 NVIDIA 硬體自適應、熱控與 VRAM/RAM 協同調度
+
+#### 1.1 跨世代 NVIDIA 顯示卡自適應引擎 (`UniversalNvidiaProfiler`)
+系統啟動時透過 `torch.cuda.get_device_properties()` 與 `pynvml` 自動掃描本機所有 NVIDIA 顯示卡之 Compute Capability (CC)、顯存容量、PCIe 通道代數與散熱狀態，動態配置運算精度與載入策略：
+* **GTX 16 / RTX 20 系列 (Turing CC 7.5，含開發基準 RTX 2080 Super 8GB VRAM)**：硬體不支援原生 `BF16`，系統於張量載入層強制攔截純 BF16 模型並自動轉型為 `FP16` 或 `GGUF (Q4_K_M / Q5_K_M)` 量化格式；自動啟用 `Attention Slicing` 與 `xFormers / SDPA`。
+* **RTX 30 系列 (Ampere CC 8.6)**：自動解鎖原生 `BF16 (bfloat16)` 與 `TF32`，提升生圖數值穩定度並消除 FP16 溢位黑圖。
+* **RTX 40 / 50 系列 (Ada CC 8.9 / Blackwell CC 10.0+)**：自動解鎖商城中之 `FP8 (e4m3fn)` 高速權重，實現算圖速度翻倍與顯存佔用減半。
+* **容量分級與多卡分工**：
+  * `LOW_VRAM (4GB~6GB)`：強制啟動 `--lowvram --cpu-vae` 逐層流式借用系統 RAM。
+  * `MID_VRAM (8GB~12GB，如 RTX 2080S)`：啟動 `--medvram
+...(章節截斷)...
+
 ### 第 3 章：雙分區模型商城、動態選單驅動與破損自癒機制
 
 「模型商城」為全系統所有生成下拉選單的**唯一真實數據源 (Single Source of Truth)**，採用傳統清單表格 (`QTableView`) 分為兩大專區：
@@ -17,30 +29,6 @@
 
 ---
 
-
-### 第 21 章：v5.0 凍結後完整 SQLite 資料庫結構定義 (26 張正式資料表 DDL)
-
-系統於本地維護 `data/omni_studio.db`，啟動時強制執行 WAL 模式與外鍵約束。以下為全部 **26 張正式資料表**之完整 DDL：
-
-```sql
--- =========================================================================
--- 一、系統設定、模型商城與憑證管理 (Tables 1 ~ 4)
--- =========================================================================
-CREATE TABLE IF NOT EXISTS system_settings (
-    setting_key TEXT PRIMARY KEY,
-    setting_value TEXT NOT NULL,
-    schema_version INTEGER DEFAULT 50,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS commercial_providers (
-    provider_id TEXT PRIMARY KEY,
-    provider_name TEXT NOT NULL,
-    api_base_url TEXT,
-    keyring_service_key TEXT NOT NULL,
-    key_status TEXT DEFAULT 'UNCONFIGURED',
-    r
-...(章節截斷)...
 
 ### 第 22 章：專案標準目錄結構與核心程式碼函式庫架構
 
