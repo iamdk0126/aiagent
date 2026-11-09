@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:37:05
+> 最後自動更新時間：2026-11-09 12:38:11
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -19,7 +19,7 @@
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_archive(), database/project_archiver.py::ProjectArchiver.restore_archive(), database/project_assets.py::ProjectArchiver.restore_archive()`
 
 ### 資料表 `asset_embeddings`
-- **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 存儲資產的嵌入式數據，包括嵌入式數據等屬性。
+- **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 存儲資產的嵌入數據，包括資產ID、嵌入數據、創建和更新時間等字段。
 - **欄位結構**: `asset_id (TEXT), embedding (BLOB), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
 
@@ -54,7 +54,7 @@
 - **關聯存取函數 (Read/Write)**: `database/users.py::Permission.insert_permission(), database/users.py::Permission.get_permission(), database/users.py::Permission.update_permission(), database/users.py::Permission.delete_permission(), database/users.py::Permission.get_all_permissions(), database/roles.py::Permission.insert_permission(), database/roles.py::Permission.get_permission(), database/roles.py::Permission.update_permission(), database/roles.py::Permission.delete_permission(), database/roles.py::Permission.get_all_permissions(), database/permissions.py::Permission.insert_permission(), database/permissions.py::Permission.get_permission(), database/permissions.py::Permission.update_permission(), database/permissions.py::Permission.delete_permission(), database/permissions.py::Permission.get_all_permissions()`
 
 ### 資料表 `project_assets`
-- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目中的資產信息，包括資產類型、路徑等屬性。
+- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目資產的數據，包括項目ID、資產類型、路徑、創建和更新時間等字段。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -64,7 +64,7 @@
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_project_pack(), database/project_archiver.py::ProjectArchiver.restore_project_pack()`
 
 ### 資料表 `projects`
-- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目的基本信息，包括項目名稱、格式預設等屬性。
+- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目的基本信息，包括項目ID、項目名稱、格式預設ID、寬高比、目標解析度、帧率、全局LUT路徑、默認CJK字體路徑、創建和更新時間等字段。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -325,7 +325,7 @@
     - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢指定ID的任務狀態，如果任務存在則返回 'Running'，否則返回 None。
 
 ### 📄 `database/asset_embeddings.py` (所屬階段: `4.1.2`)
-- **模組職責註記**: 定義了資產嵌入式數據的 ORM 模型，包括嵌入式數據等屬性，並與資產模型建立關聯。
+- **模組職責註記**: 此檔案定義了資產嵌入數據的數據庫模型，包括嵌入數據和創建更新時間等字段，並設置了與項目資產表的關聯。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), sqlite3`
   - **Class `AssetEmbeddings`**: 類別 AssetEmbeddings 用於處理資產嵌入向量的資料庫操作。
     - `def __init__(self, db_path: str)` ➔ 初始化 AssetEmbeddings 類別。 | 🔗 呼叫: `connect, cursor, _create_table`
@@ -370,10 +370,10 @@
     - `def __repr__(self) -> str` ➔ 取得邊的字符串表示。
 
 ### 📄 `database/db_manager.py` (所屬階段: `1.1.2`)
-- **模組職責註記**: 管理資料庫連線，創建 ORM 基本類型和會話。
+- **模組職責註記**: 此檔案實現了數據庫管理器，用於創建數據庫連接和獲取數據庫會話。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional), contextlib:(contextmanager)`
   - **Class `DBManager`**: SQLite WAL 連線池、26張表初始化、Auto-Migration 與滾動備份
-    - `def __init__(self, db_path: str)` ➔ 初始化 SQLite WAL 連線池
+    - `def __init__(self, db_path: str)` ➔ 初始化數據庫管理器，創建數據庫連接和元數據。
     - `def get_connection(self) -> sqlite3.Connection` ➔ 從連線池獲取SQLite連線，並在使用後返回連線池。 | 🔗 呼叫: `pop, connect, append`
     - `def init_tables(self)` ➔ 初始化26張表，每張表包含id和name字段。 | 🔗 呼叫: `get_connection, cursor, commit, execute`
     - `def auto_migration(self)` ➔ 自動升級數據庫結構，添加新列new_column到table_1。 | 🗄️ 資料表: `table_1` | 🔗 呼叫: `get_connection, cursor, execute, fetchone, commit`
@@ -394,18 +394,18 @@
     - `def get_all_permissions(self) -> List[Dict]` ➔ 查詢所有權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchall`
 
 ### 📄 `database/project_archiver.py` (所屬階段: `1.3.2`)
-- **模組職責註記**: 提供項目存档與恢復的介面，使用 DBManager 管理資料庫連線。
+- **模組職責註記**: 此檔案實現了存档管理器，用於創建和恢復項目存档。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple), contextlib:(contextmanager)`
   - **Class `ProjectArchiver`**: 專案版本快照與 .omni_pack 打包匯出/還原器
-    - `def __init__(self, db_path: str)` ➔ 初始化 ProjectArchiver | 🔗 呼叫: `DBManager`
+    - `def __init__(self, db_path: str)` ➔ 初始化存档管理器，創建數據庫管理器實例。 | 🔗 呼叫: `DBManager`
     - `def get_connection(self) -> sqlite3.Connection` ➔ 從連線池獲取連線 | 🔗 呼叫: `get_connection`
-    - `def create_archive(self, project_id: int, snapshot_data: dict)` ➔ 創建專案版本快照，將快照數據插入到 archive_log 資料表中。 | 🗄️ 資料表: `archive_log` | 🔗 呼叫: `get_connection, cursor, execute, commit`
-    - `def restore_archive(self, archive_id: int)` ➔ 復原專案版本快照，從 archive_log 資料表中讀取快照數據。 | 🗄️ 資料表: `archive_log` | 🔗 呼叫: `get_connection, cursor, execute, commit, fetchone`
+    - `def create_archive(self, project_id: int, snapshot_data: dict)` ➔ 創建項目存档，將項目、資產和嵌入數據保存到存档日誌中。 | 🗄️ 資料表: `archive_log` | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def restore_archive(self, archive_id: int)` ➔ 恢復項目存档，從存档日誌中恢復項目、資產和嵌入數據。 | 🗄️ 資料表: `archive_log` | 🔗 呼叫: `get_connection, cursor, execute, commit, fetchone`
     - `def create_project_pack(self, project_id: int, pack_data: dict)` ➔ 創建 .omni_pack 打包，將打包數據插入到 project_info 資料表中。 | 🗄️ 資料表: `project_info` | 🔗 呼叫: `get_connection, cursor, execute, commit`
     - `def restore_project_pack(self, project_id: int)` ➔ 復原 .omni_pack 打包，從 project_info 資料表中讀取打包數據。 | 🗄️ 資料表: `project_info` | 🔗 呼叫: `get_connection, cursor, execute, commit, fetchone`
 
-### 📄 `database/project_assets.py` (所屬階段: `4.1.1`)
-- **模組職責註記**: 定義了項目資產的 ORM 模型，包括資產類型、路徑等屬性，並與項目模型建立關聯。
+### 📄 `database/project_assets.py` (所屬階段: `4.1.2`)
+- **模組職責註記**: 此檔案定義了項目資產的數據庫模型，包括項目資產和項目兩個表，並設置了關聯關係。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), sqlalchemy:(create_engine, Column, Integer, String, ForeignKey), sqlalchemy.ext.declarative:(declarative_base), sqlalchemy.orm:(relationship, sessionmaker), typing:(List, Dict, Optional), sqlalchemy:(create_engine, Column, Integer, String, ForeignKey), sqlalchemy.ext.declarative:(declarative_base), sqlalchemy.orm:(relationship, sessionmaker), sqlalchemy:(create_engine), sqlalchemy.orm:(sessionmaker), project_assets:(Base, ProjectAssets, Project), asset_embeddings:(AssetEmbeddings)`
   - **Class `ProjectAssets(Base)`**: 
   - **Class `Project(Base)`**: 
@@ -487,7 +487,7 @@
 - **階段 `3.2.1` 關聯總結**: 本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。
 - **階段 `3.2.2` 關聯總結**: 本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。
 - **階段 `4.1.1` 關聯總結**: 本階段實現了資料庫連線管理、項目資產與嵌入式數據的 ORM 模型，並定義了項目存档與恢復的介面。
-- **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。
+- **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫模型和管理器，用於存儲和操作項目資產及其嵌入數據，並提供了數據庫管理器和存档管理器的實現。
 - **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.1.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
