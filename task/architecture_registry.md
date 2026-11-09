@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:24:56
+> 最後自動更新時間：2026-11-09 12:26:39
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -218,6 +218,11 @@
 - **欄位結構**: `id (INTEGER), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/workflow_checkpoints.py::WorkflowCheckpoint.save_checkpoint(), database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()`
 
+### 資料表 `無`
+- **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段未涉及資料表操作。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ## 2. 📦 程式模組、類別與 Function 關聯索引 (Modules & Symbol Map)
 ### 📄 `core/frame_continuity_engine.py` (所屬階段: `5.1.2`)
 - **模組職責註記**: 此檔案實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背。
@@ -237,6 +242,28 @@
     - `def get_device_info(self) -> Dict` ➔ 獲取 GPU 資訊 | 🔗 呼叫: `initialize`
     - `def configure_precision(self) -> None` ➔ 配置運算精度 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
     - `def configure_memory_management(self) -> None` ➔ 配置記憶體管理 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
+
+### 📄 `core/master_video_assembler.py` (所屬階段: `2.3.1`)
+- **模組職責註記**: 此檔案實現了音素級指定臉孔對嘴和 J/L-Cut 混音的主邏輯，並整合了 GPU 自適應引擎和 VRAM/RAM 協同管理器。
+- **依賴引用 (Imports)**: `torch, pynvml, typing:(Dict, Optional)`
+  - **Class `NvidiaProfiler`**: NvidiaProfiler: GPU 自適應引擎的基礎架構
+    - `def __init__(self)` ➔ 初始化 GPU 資訊
+    - `def initialize(self) -> None` ➔ 初始化 GPU 資訊 | 🔗 呼叫: `nvmlInit, nvmlDeviceGetCount, nvmlDeviceGetProperties`
+    - `def get_device_info(self) -> Dict` ➔ 獲取 GPU 資訊 | 🔗 呼叫: `initialize`
+    - `def configure_precision(self) -> None` ➔ 配置運算精度 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
+    - `def configure_memory_management(self) -> None` ➔ 配置記憶體管理 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
+  - **Class `VRAMRAMHybridManager`**: VRAM 和 RAM 協同管理器
+    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化 VRAM 和 RAM 協同管理器
+    - `def initialize(self)` ➔ 初始化 VRAM 和 RAM 协同管理器
+    - `def upload_to_vram(self, data: bytes)` ➔ 将数据上传到 VRAM | 🔗 呼叫: `ValueError`
+    - `def release_from_vram(self, data: bytes)` ➔ 从 VRAM 释放数据
+    - `def get_vram_usage(self) -> int` ➔ 获取 VRAM 使用情况
+  - **Class `MasterVideoAssembler`**: MasterVideoAssembler: 音素級指定臉孔對嘴、J/L-Cut 混音、CJK 字卡、M&E 軌與 OTIO 匯出
+    - `def __init__(self)` ➔ 初始化 MasterVideoAssembler | 🔗 呼叫: `NvidiaProfiler, VRAMRAMHybridManager`
+    - `def initialize(self)` ➔ 初始化 MasterVideoAssembler | 🔗 呼叫: `initialize`
+    - `def phoneme_aligned_lip_sync(self, speaker_asset_id: str, audio_clip: bytes) -> bytes` ➔ 音素級指定臉孔對嘴
+    - `def j_l_cut_mix(self, audio_clip: bytes, next_audio_clip: bytes) -> bytes` ➔ J/L-Cut 混音
+    - `def assemble_video(self, video_clips: list, audio_clips: list) -> bytes` ➔ 組裝視頻
 
 ### 📄 `core/model_menu_provider.py` (所屬階段: `3.2.2`)
 - **模組職責註記**: 此檔案的核心職責是提供模型菜單和基礎連接接口，通過DBManager與數據庫進行交互，獲取本地免費和商業API模型。
@@ -447,6 +474,7 @@
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。
 - **階段 `2.2.1` 關聯總結**: 本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。
 - **階段 `2.2.2` 關聯總結**: 本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
+- **階段 `2.3.1` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM/RAM 協同管理器，用於音素級指定臉孔對嘴和 J/L-Cut 混音。
 - **階段 `3.1.1` 關聯總結**: 本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
 - **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。
 - **階段 `3.2.1` 關聯總結**: 本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。
