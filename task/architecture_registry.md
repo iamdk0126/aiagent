@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:32:37
+> 最後自動更新時間：2026-11-09 11:34:05
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -19,7 +19,7 @@
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
 
 ### 資料表 `budget_rules`
-- **定義檔案**: `Stage 13.1.1` | **用途註記**: 此資料表用於存儲單專案的預算規則，包括最大單鏡預算、最大單集預算、最大單專案預算、目前專案已支出以及是否自動切換到本地免費模型等信息。
+- **定義檔案**: `Stage 13.1.1` | **用途註記**: 此資料表用於存儲各專案的預算規則，包括最大單鏡預算、最大單集預算、最大單專案預算、目前專案已支出和是否自動切換到本地免費模型等信息。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -164,8 +164,8 @@
     - `def delete_embedding(self, asset_id: str)` ➔ 刪除一個資產的嵌入向量。 | 🗄️ 資料表: `asset_embeddings` | 🔗 呼叫: `execute, commit`
     - `def close(self)` ➔ 關閉資料庫連線。 | 🔗 呼叫: `close`
 
-### 📄 `database/budget_rules.py` (所屬階段: `13.1.1`)
-- **模組職責註記**: 此檔案定義了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。
+### 📄 `database/budget_rules.py` (所屬階段: `13.1.2`)
+- **模組職責註記**: 此檔案定義了管理單專案預算規則的類別，包括初始化、從資料庫讀取和寫入預算規則的功能。
 - **依賴引用 (Imports)**: `typing:(Optional)`
   - **Class `BudgetRule`**: 管理單專案預算規則的類別
     - `def __init__(self, project_id: str, max_shot_cost: int, max_episode_cost: int, max_project_cost: int, current_project_spent: int, auto_fallback_to_local: int)` ➔ 初始化 BudgetRule 類別，設置預算規則的各個屬性。
@@ -266,3 +266,4 @@
 - **階段 `10.1.1` 關聯總結**: 本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
 - **階段 `10.1.2` 關聯總結**: 本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
 - **階段 `13.1.1` 關聯總結**: 本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。
+- **階段 `13.1.2` 關聯總結**: 本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。
