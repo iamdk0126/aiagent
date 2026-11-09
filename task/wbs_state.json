@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:04:26",
+    "updated_at": "2026-11-09 13:05:13",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -1187,8 +1187,8 @@
                             ],
                             "prompt": "實作 `SettingsBudgetDialog` 類別，包含初始化方法 `__init__`、顯示預算設置的 `show_budget_settings` 方法以及更新預算設置的 `update_budget_settings` 方法。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {
