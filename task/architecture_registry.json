@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:15:26",
+    "updated_at": "2026-11-09 13:17:12",
     "tables": {
         "users": {
             "columns": [],
@@ -2677,6 +2677,83 @@
                 }
             },
             "functions": {}
+        },
+        "core/task_queue_dispatcher.py": {
+            "stage_id": "8.2.1",
+            "note": "此檔案實現了任務隊列的基礎結構，包括任務狀態枚舉、任務類和任務隊列類，用於管理任務的添加、移除和處理。",
+            "imports": [
+                "typing:(List, Dict, Optional, Any)"
+            ],
+            "classes": {
+                "TaskStatus": {
+                    "bases": [],
+                    "note": "TaskStatus: 任务状态枚举",
+                    "methods": {}
+                },
+                "Task": {
+                    "bases": [],
+                    "note": "Task: 任务类",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, task_id: str, task_function)",
+                            "note": "初始化 Task 类",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "execute": {
+                            "signature": "def execute(self)",
+                            "note": "执行任务",
+                            "calls": [
+                                "task_function"
+                            ],
+                            "tables": []
+                        }
+                    }
+                },
+                "TaskQueue": {
+                    "bases": [],
+                    "note": "TaskQueue: 任务队列类",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self)",
+                            "note": "初始化 TaskQueue 类",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "add_task": {
+                            "signature": "def add_task(self, task: Task)",
+                            "note": "添加任务",
+                            "calls": [
+                                "append"
+                            ],
+                            "tables": []
+                        },
+                        "remove_task": {
+                            "signature": "def remove_task(self, task_id: str)",
+                            "note": "移除任务",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "process_tasks": {
+                            "signature": "def process_tasks(self)",
+                            "note": "处理任务",
+                            "calls": [
+                                "execute",
+                                "remove_task"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {
+                "example_task": {
+                    "signature": "def example_task()",
+                    "note": "待推理模型或開發者補充註記",
+                    "calls": [],
+                    "tables": []
+                }
+            }
         }
     },
     "stage_notes": {
@@ -2734,6 +2811,7 @@
         "7.2.1": "本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。",
         "7.2.2": "本階段實現了智能體長期記憶的檢索、保存和检索功能，與資料庫進行交互以持久化記憶數據。",
         "8.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
-        "8.1.2": "本階段實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢，與父階段和其他模組進行了互動。"
+        "8.1.2": "本階段實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢，與父階段和其他模組進行了互動。",
+        "8.2.1": "本階段實現了任務隊列的基礎結構，包括任務狀態枚舉、任務類和任務隊列類，用於管理任務的添加、移除和處理。"
     }
 }
