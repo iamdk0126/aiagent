@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:52:08
+> 最後自動更新時間：2026-11-09 12:53:15
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -487,8 +487,8 @@
     - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
-### 📄 `ui/canvas/infinite_dot_canvas.py` (所屬階段: `5.4.1`)
-- **模組職責註記**: 此檔案的核心職責是實現一個無邊際點陣畫布，包含節點和連線的管理，以及在畫布上顯示這些節點和連線的圖形項。
+### 📄 `ui/canvas/infinite_dot_canvas.py` (所屬階段: `5.4.2`)
+- **模組職責註記**: 此檔案實現了無邊際點陣畫布的邏輯，包括節點和連線的管理以及圖形項的創建。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), PySide6.QtWidgets:(QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsEllipseItem, QGraphicsLineItem), PySide6.QtCore:(Qt, QPointF)`
   - **Class `Node`**: 節點類別，表示畫布上的節點
     - `def __init__(self, id: int, position: QPointF)` ➔ 初始化 Node 类
@@ -558,6 +558,7 @@
 - **階段 `5.3.1` 關聯總結**: 本階段實現了主視窗類別，包含頂部三視圖切換介面，與父階段和其他模組無直接互動，主要操作資料表為無
 - **階段 `5.3.2` 關聯總結**: 本階段實現了硬體遙測狀態顯示功能，通過 `ui/main_window.py` 檔案中的 `MainWindow` 類和 `initHardwareMonitorTab` 方法，與父階段和其他模組互動，並通過 SQL 資料表進行數據存取。
 - **階段 `5.4.1` 關聯總結**: 本階段實現了無邊際點陣畫布的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
+- **階段 `5.4.2` 關聯總結**: 本階段實現了無邊際點陣畫布的模組，與父階段和其他模組無直接關聯，主要與 UI 層互動。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
