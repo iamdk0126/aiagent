@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:13:45",
+    "updated_at": "2026-11-09 13:14:21",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -1394,8 +1394,8 @@
                             ],
                             "prompt": "實作工作流運行時所需的資料結構，包括工作流節點、邊和圖形數據結構。定義必要的類別和函數簽章，並實現與註冊表中 `agent_nodes` 和 `edges` 資料表的連線介面。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {
