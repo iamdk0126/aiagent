@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:19:21
+> 最後自動更新時間：2026-11-09 11:20:58
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -12,6 +12,11 @@
 - **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 此資料表存儲資產嵌入向量的相關信息，包括資產 ID、嵌入向量、創建和更新時間等。
 - **欄位結構**: `asset_id (TEXT), embedding (BLOB), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
+
+### 資料表 `frames`
+- **定義檔案**: `Stage 5.1.1` | **用途註記**: 此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。
+- **欄位結構**: `(欄位待補充)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `model_store`
 - **定義檔案**: `未知` | **用途註記**: 此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯的函數為fetch_free_local_models和fetch_commercial_api_models。
@@ -54,6 +59,15 @@
 - **關聯存取函數 (Read/Write)**: `database/vector_index_engine.py::VectorIndexEngine.load_index(), database/vector_index_engine.py::VectorIndexEngine.insert_vector(), database/vector_index_engine.py::VectorIndexEngine.delete_vector()`
 
 ## 2. 📦 程式模組、類別與 Function 關聯索引 (Modules & Symbol Map)
+### 📄 `core/frame_continuity_engine.py` (所屬階段: `5.1.1`)
+- **模組職責註記**: 此檔案定義了 FrameContinuityEngine 類，用於處理影像處理任務，並通過 DBManager 類與數據庫進行交互。
+- **依賴引用 (Imports)**: `typing:(List, Dict, Optional), database.db_manager:(DBManager)`
+  - **Class `FrameContinuityEngine`**: 智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背
+    - `def __init__(self, db_manager: DBManager)` ➔ 初始化 FrameContinuityEngine 类
+    - `def select_best_last_frame(self, frames: List[Dict]) -> Optional[Dict]` ➔ 選擇最佳尾幀，輸入為帧列表，輸出為最佳尾幀。
+    - `def match_histograms(self, frame1: Dict, frame2: Dict) -> float` ➔ 進行 LAB 色彩校正，輸入為兩幀影像，輸出為色彩匹配度。
+    - `def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]` ➔ 進行時域去閃爍與羽化去背，輸入為帧列表，輸出為處理後的帧列表。
+
 ### 📄 `core/gpu_auto_profiler.py` (所屬階段: `2.1.2`)
 - **模組職責註記**: 此檔案的核心職責是實現 GPU 自適應引擎的基礎架構，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。
 - **依賴引用 (Imports)**: `torch, pynvml, typing:(Dict, Optional)`
@@ -165,3 +179,4 @@
 - **階段 `3.2.2` 關聯總結**: 本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。
 - **階段 `4.1.1` 關聯總結**: 本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。
 - **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。
+- **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。

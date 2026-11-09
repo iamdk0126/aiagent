@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:20:22",
+    "updated_at": "2026-11-09 11:20:58",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -474,13 +474,13 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [],
                             "id": "5.1.1",
                             "mode": "both",
                             "prompt": "實作 `FrameContinuityEngine` 類別，包含 `select_best_last_frame`、`match_histograms`、`temporal_deflicker` 方法。實現與註冊表中 `frame_continuity` 資料表的連線介面。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "frame_continuity_engine.py"
                             ],

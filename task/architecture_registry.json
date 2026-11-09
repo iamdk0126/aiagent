@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:19:21",
+    "updated_at": "2026-11-09 11:20:58",
     "tables": {
         "users": {
             "columns": [],
@@ -85,6 +85,12 @@
             "defined_in": "Stage 4.1.1",
             "accessed_by": [],
             "note": "此資料表存儲項目的基本信息，包括項目 ID、項目名稱、格式預設 ID、寬高比、目標解析度、帧率、全局 LUT 路徑、默認 CJK 字體路徑、創建和更新時間等。"
+        },
+        "frames": {
+            "columns": [],
+            "defined_in": "Stage 5.1.1",
+            "accessed_by": [],
+            "note": "此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。"
         }
     },
     "modules": {
@@ -750,6 +756,47 @@
                 }
             },
             "functions": {}
+        },
+        "core/frame_continuity_engine.py": {
+            "stage_id": "5.1.1",
+            "note": "此檔案定義了 FrameContinuityEngine 類，用於處理影像處理任務，並通過 DBManager 類與數據庫進行交互。",
+            "imports": [
+                "typing:(List, Dict, Optional)",
+                "database.db_manager:(DBManager)"
+            ],
+            "classes": {
+                "FrameContinuityEngine": {
+                    "bases": [],
+                    "note": "智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_manager: DBManager)",
+                            "note": "初始化 FrameContinuityEngine 类",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "select_best_last_frame": {
+                            "signature": "def select_best_last_frame(self, frames: List[Dict]) -> Optional[Dict]",
+                            "note": "選擇最佳尾幀，輸入為帧列表，輸出為最佳尾幀。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "match_histograms": {
+                            "signature": "def match_histograms(self, frame1: Dict, frame2: Dict) -> float",
+                            "note": "進行 LAB 色彩校正，輸入為兩幀影像，輸出為色彩匹配度。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "temporal_deflicker": {
+                            "signature": "def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]",
+                            "note": "進行時域去閃爍與羽化去背，輸入為帧列表，輸出為處理後的帧列表。",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -765,6 +812,7 @@
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
         "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",
         "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
-        "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。"
+        "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
+        "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。"
     }
 }
