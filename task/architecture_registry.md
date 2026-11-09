@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:59:33
+> 最後自動更新時間：2026-11-09 13:01:27
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -536,6 +536,26 @@
     - `def initUI(self)` ➔ 初始化 UI 元素，包括模型列表顯示和按鈕布局。 | 🔗 呼叫: `QVBoxLayout, QTableView, setSelectionBehavior, setSelectionMode, addWidget, QHBoxLayout, QPushButton, connect`
     - `def refresh_model_list(self)` ➔ 刷新模型列表，從 model_store 資料表中獲取模型信息並顯示在 QTableView 中。 | 🔗 呼叫: `get_all_models, setModel, resizeColumnsToContents`
 
+### 📄 `ui/editor/nle_timeline_editor.py` (所屬階段: `6.1.1`)
+- **模組職責註記**: 此檔案定義了NLE時間軸編輯器的UI組件，包括節點和連線的類別，以及編輯器的類別。
+- **依賴引用 (Imports)**: `typing:(List, Optional), PySide6.QtWidgets:(QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsEllipseItem, QGraphicsLineItem), PySide6.QtCore:(Qt, QPointF)`
+  - **Class `Node(QGraphicsItem)`**: 節點類別，表示畫布上的節點
+    - `def __init__(self, id: int, position: QPointF)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `__init__`
+    - `def add_connection(self, edge: 'Edge') -> None` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `append`
+    - `def remove_connection(self, edge: 'Edge') -> None` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `remove`
+    - `def boundingRect(self) -> QRectF` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `QRectF`
+    - `def paint(self, painter, option, widget)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `setBrush, drawEllipse, boundingRect`
+  - **Class `Edge(QGraphicsItem)`**: 連線類別，表示畫布上的連線
+    - `def __init__(self, source: Node, target: Node)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `__init__`
+    - `def boundingRect(self) -> QRectF` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `QRectF`
+    - `def paint(self, painter, option, widget)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `setPen, drawLine`
+  - **Class `NLETimelineEditor(QGraphicsScene)`**: NLE 時間軸編輯器類別，表示畫布上的編輯器
+    - `def __init__(self)` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `__init__`
+    - `def add_node(self, node: Node) -> None` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `addItem, append`
+    - `def add_edge(self, edge: Edge) -> None` ➔ 待推理模型或開發者補充註記 | 🔗 呼叫: `addItem, append`
+    - `def create_node_item(self, node: Node) -> QGraphicsItem` ➔ 待推理模型或開發者補充註記
+    - `def create_edge_item(self, edge: Edge) -> QGraphicsItem` ➔ 待推理模型或開發者補充註記
+
 ### 📄 `ui/main_window.py` (所屬階段: `5.3.2`)
 - **模組職責註記**: 此檔案實現了主視窗類別，包含頂部三視圖切換介面，包括畫布視圖、影片編輯視圖、成片視圖和硬體遙測狀態視圖。
 - **依賴引用 (Imports)**: `PySide6.QtWidgets:(QMainWindow, QTabWidget, QWidget, QVBoxLayout, QLabel, QFrame, QHBoxLayout, QLabel), PySide6.QtCore:(Qt, QTimer), psutil`
@@ -584,6 +604,7 @@
 - **階段 `5.5.2` 關聯總結**: 本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並提供了添加、移除、獲取、排序、分類和搜索資產的功能。
 - **階段 `5.6.1` 關聯總結**: 本階段實現了 ModelStoreDialog 類別，用於顯示和管理 model_store 資料表中的模型信息，並通過 DBManager 和 ModelStore 類與資料庫進行連接和數據交互。
 - **階段 `5.6.2` 關聯總結**: ModelStoreDialog 類別用於顯示和管理 model_store 資料表中的模型信息，與 DBManager 和 ModelStore 模組互動，並通過 QTableView 顯示模型列表。
+- **階段 `6.1.1` 關聯總結**: 本階段實現了NLE時間軸編輯器的UI組件，包括節點和連線的類別，以及編輯器的類別，這些組件與父階段的圖形處理和數據結構相關，並與其他模組進行互動以實現時間軸的編輯和顯示。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
