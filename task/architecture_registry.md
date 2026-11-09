@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:26:39
+> 最後自動更新時間：2026-11-09 12:28:11
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -219,7 +219,7 @@
 - **關聯存取函數 (Read/Write)**: `database/workflow_checkpoints.py::WorkflowCheckpoint.save_checkpoint(), database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()`
 
 ### 資料表 `無`
-- **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段未涉及資料表操作。
+- **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段的程式碼中未涉及任何資料表
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -243,8 +243,8 @@
     - `def configure_precision(self) -> None` ➔ 配置運算精度 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
     - `def configure_memory_management(self) -> None` ➔ 配置記憶體管理 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
 
-### 📄 `core/master_video_assembler.py` (所屬階段: `2.3.1`)
-- **模組職責註記**: 此檔案實現了音素級指定臉孔對嘴和 J/L-Cut 混音的主邏輯，並整合了 GPU 自適應引擎和 VRAM/RAM 協同管理器。
+### 📄 `core/master_video_assembler.py` (所屬階段: `2.3.2`)
+- **模組職責註記**: 此檔案實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能
 - **依賴引用 (Imports)**: `torch, pynvml, typing:(Dict, Optional)`
   - **Class `NvidiaProfiler`**: NvidiaProfiler: GPU 自適應引擎的基礎架構
     - `def __init__(self)` ➔ 初始化 GPU 資訊
@@ -475,6 +475,7 @@
 - **階段 `2.2.1` 關聯總結**: 本階段實現了 VRAM 和 RAM 協同管理器，該管理器通過初始化、上傳和釋放數據來管理 VRAM 和 RAM 的使用情況，並與資料庫進行互動以持久化管理狀態。
 - **階段 `2.2.2` 關聯總結**: 本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **階段 `2.3.1` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM/RAM 協同管理器，用於音素級指定臉孔對嘴和 J/L-Cut 混音。
+- **階段 `2.3.2` 關聯總結**: 本階段實現了 GPU 自適應引擎和 VRAM 與 RAM 協同管理器，用於提高視頻合成的效率和性能。
 - **階段 `3.1.1` 關聯總結**: 本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。
 - **階段 `3.1.2` 關聯總結**: 本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。
 - **階段 `3.2.1` 關聯總結**: 本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。
