@@ -1,6 +1,6 @@
 from typing import List, Optional
 from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsEllipseItem, QGraphicsLineItem
-from PySide6.QtCore import Qt, QPointF
+from PySide6.QtCore import Qt, QPointF, QRectF
 
 class Node(QGraphicsItem):
     """
