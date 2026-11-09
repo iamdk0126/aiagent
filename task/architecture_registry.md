@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:50:32
+> 最後自動更新時間：2026-11-09 12:52:08
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -239,7 +239,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `無`
-- **定義檔案**: `Stage 2.3.1` | **用途註記**: 本階段的程式碼中未涉及任何資料表
+- **定義檔案**: `Stage 2.3.1` | **用途註記**: 本模組中未涉及資料表。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -487,6 +487,22 @@
     - `def load_checkpoint(self) -> Optional[bytes]` ➔ 從 workflow_checkpoints 表中加載最新的檢查點數據。 | 🗄️ 資料表: `workflow_checkpoints` | 🔗 呼叫: `execute, fetchone`
     - `def __del__(self)` ➔ 類別析構函數，關閉數據庫連接。 | 🔗 呼叫: `close`
 
+### 📄 `ui/canvas/infinite_dot_canvas.py` (所屬階段: `5.4.1`)
+- **模組職責註記**: 此檔案的核心職責是實現一個無邊際點陣畫布，包含節點和連線的管理，以及在畫布上顯示這些節點和連線的圖形項。
+- **依賴引用 (Imports)**: `typing:(List, Dict, Optional), PySide6.QtWidgets:(QGraphicsScene, QGraphicsView, QGraphicsItem, QGraphicsEllipseItem, QGraphicsLineItem), PySide6.QtCore:(Qt, QPointF)`
+  - **Class `Node`**: 節點類別，表示畫布上的節點
+    - `def __init__(self, id: int, position: QPointF)` ➔ 初始化 Node 类
+    - `def add_connection(self, edge: 'Edge')` ➔ 添加連線 | 🔗 呼叫: `append`
+    - `def remove_connection(self, edge: 'Edge')` ➔ 移除連線 | 🔗 呼叫: `remove`
+  - **Class `Edge`**: 連線類別，表示畫布上的連線
+    - `def __init__(self, source: Node, target: Node)` ➔ 初始化 Edge 类
+  - **Class `InfiniteDotCanvas(QGraphicsScene)`**: 無邊際點陣畫布類別，表示畫布上的畫布
+    - `def __init__(self)` ➔ 初始化 InfiniteDotCanvas 类 | 🔗 呼叫: `__init__`
+    - `def add_node(self, node: Node)` ➔ 添加節點 | 🔗 呼叫: `append, addItem, create_node_item`
+    - `def add_edge(self, edge: Edge)` ➔ 添加連線 | 🔗 呼叫: `append, addItem, create_edge_item`
+    - `def create_node_item(self, node: Node) -> QGraphicsItem` ➔ 創建節點圖形項 | 🔗 呼叫: `QGraphicsEllipseItem, setBrush, x, y`
+    - `def create_edge_item(self, edge: Edge) -> QGraphicsItem` ➔ 創建連線圖形項 | 🔗 呼叫: `QGraphicsLineItem, setPen, x, y`
+
 ### 📄 `ui/canvas/shot_pair_node_widget.py` (所屬階段: `5.1.2`)
 - **模組職責註記**: 此檔案的核心職責是實現圖形用戶界面的模組，包括左圖右影成對分鏡卡、白名單縮圖列、運鏡/布光/參數懸浮框。
 - **依賴引用 (Imports)**: `PySide6.QtWidgets:(QWidget, QVBoxLayout, QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QComboBox, QLineEdit, QPushButton), PySide6.QtCore:(Qt)`
@@ -541,6 +557,7 @@
 - **階段 `5.2.3` 關聯總結**: 本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
 - **階段 `5.3.1` 關聯總結**: 本階段實現了主視窗類別，包含頂部三視圖切換介面，與父階段和其他模組無直接互動，主要操作資料表為無
 - **階段 `5.3.2` 關聯總結**: 本階段實現了硬體遙測狀態顯示功能，通過 `ui/main_window.py` 檔案中的 `MainWindow` 類和 `initHardwareMonitorTab` 方法，與父階段和其他模組互動，並通過 SQL 資料表進行數據存取。
+- **階段 `5.4.1` 關聯總結**: 本階段實現了無邊際點陣畫布的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
