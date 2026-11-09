@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:12:19",
+    "updated_at": "2026-11-09 11:13:51",
     "tables": {
         "users": {
             "columns": [],
@@ -410,6 +410,72 @@
                 }
             },
             "functions": {}
+        },
+        "core/model_store_crawler.py": {
+            "stage_id": "3.1.1",
+            "note": "此檔案定義了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。",
+            "imports": [
+                "requests",
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "ModelStoreCrawler": {
+                    "bases": [],
+                    "note": "ModelStoreCrawler: 用于从 Hugging Face Hub 和 Civitai v1 API 获取模型信息的类",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, hf_token: Optional[str], civitai_token: Optional[str])",
+                            "note": "初始化 ModelStoreCrawler 類，接收 Hugging Face Hub 和 Civitai v1 API 的令牌。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "fetch_models": {
+                            "signature": "def fetch_models(self, hf_repo: str, civitai_category: str) -> List[Dict]",
+                            "note": "從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並返回模型信息列表。",
+                            "calls": [
+                                "_fetch_hf_models",
+                                "_fetch_civitai_models"
+                            ],
+                            "tables": []
+                        },
+                        "parse_model_info": {
+                            "signature": "def parse_model_info(self, model_info: Dict) -> Dict",
+                            "note": "解析模型信息，返回解析後的模型信息字典。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "save_models": {
+                            "signature": "def save_models(self, models: List[Dict], save_path: str) -> None",
+                            "note": "將模型信息保存到文件中。",
+                            "calls": [
+                                "write"
+                            ],
+                            "tables": []
+                        },
+                        "_fetch_hf_models": {
+                            "signature": "def _fetch_hf_models(self, repo: str) -> List[Dict]",
+                            "note": "從 Hugging Face Hub 獲取模型信息，返回模型信息列表。",
+                            "calls": [
+                                "get",
+                                "raise_for_status",
+                                "json"
+                            ],
+                            "tables": []
+                        },
+                        "_fetch_civitai_models": {
+                            "signature": "def _fetch_civitai_models(self, category: str) -> List[Dict]",
+                            "note": "從 Civitai v1 獲取模型信息，返回模型信息列表。",
+                            "calls": [
+                                "get",
+                                "raise_for_status",
+                                "json"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -419,6 +485,7 @@
         "2.1.1": "本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
         "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。",
         "2.2.1": "本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
-        "2.2.2": "本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。"
+        "2.2.2": "本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
+        "3.1.1": "本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。"
     }
 }
