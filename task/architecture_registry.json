@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:09:27",
+    "updated_at": "2026-11-09 13:11:11",
     "tables": {
         "users": {
             "columns": [],
@@ -95,8 +95,11 @@
         "agent_nodes": {
             "columns": [],
             "defined_in": "Stage 7.1.2",
-            "accessed_by": [],
-            "note": "此資料表存儲智能體節點的資訊，包括節點ID和節點類型"
+            "accessed_by": [
+                "agents/story_bible_memory.py::StoryBibleMemory.load_memory()",
+                "agents/story_bible_memory.py::StoryBibleMemory.save_memory()"
+            ],
+            "note": "此資料表用於存儲智能體的長期記憶，包括專案ID和記憶數據。"
         },
         "edges": {
             "columns": [],
@@ -2623,6 +2626,57 @@
                 }
             },
             "functions": {}
+        },
+        "agents/story_bible_memory.py": {
+            "stage_id": "7.2.1",
+            "note": "此檔案實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶。",
+            "imports": [
+                "typing:(List, Optional)",
+                "database.db_manager:(DBManager)"
+            ],
+            "classes": {
+                "StoryBibleMemory": {
+                    "bases": [],
+                    "note": "智能體長期記憶檢索、角色關係圖與跨集狀態防穿幫注入",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_manager: DBManager)",
+                            "note": "初始化 StoryBibleMemory 類別",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "load_memory": {
+                            "signature": "def load_memory(self, project_id: str) -> None",
+                            "note": "從資料庫中加載記憶，根據專案ID識別特定的記憶。",
+                            "calls": [
+                                "execute_query"
+                            ],
+                            "tables": [
+                                "agent_nodes"
+                            ]
+                        },
+                        "save_memory": {
+                            "signature": "def save_memory(self, project_id: str, memory_data: dict) -> None",
+                            "note": "將記憶保存到資料庫，根據專案ID識別特定的記憶。",
+                            "calls": [
+                                "execute_query"
+                            ],
+                            "tables": [
+                                "agent_nodes"
+                            ]
+                        },
+                        "retrieve_memory": {
+                            "signature": "def retrieve_memory(self, project_id: str) -> dict",
+                            "note": "從資料庫中检索記憶，根據專案ID識別特定的記憶。",
+                            "calls": [
+                                "load_memory"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -2676,6 +2730,7 @@
         "6.1.1": "本階段實現了NLE時間軸編輯器的UI組件，包括節點和連線的類別，以及編輯器的類別，這些組件與父階段的圖形處理和數據結構相關，並與其他模組進行互動以實現時間軸的編輯和顯示。",
         "6.1.2": "本階段實現了NLE時間軸編輯器的核心邏輯，包括節點和連線的管理，以及編輯器的排序和自動連接功能。",
         "6.2.1": "本階段實現了預算設置對話框的 UI 界面，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
-        "6.2.2": "本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。"
+        "6.2.2": "本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
+        "7.2.1": "本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。"
     }
 }
