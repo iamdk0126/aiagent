@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:19:29
+> 最後自動更新時間：2026-11-09 12:21:13
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -223,15 +223,15 @@
     - `def match_histograms(self, frame1: Dict, frame2: Dict) -> float` ➔ 進行 LAB 色彩校正，輸入為兩帧，輸出為色彩匹配度。
     - `def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]` ➔ 進行時域去閃爍與羽化去背，輸入為帧列表，輸出為處理後的帧列表。
 
-### 📄 `core/gpu_auto_profiler.py` (所屬階段: `2.1.2`)
-- **模組職責註記**: 此檔案的核心職責是實現 GPU 自適應引擎的基礎架構，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。
+### 📄 `core/gpu_auto_profiler.py` (所屬階段: `2.1.1`)
+- **模組職責註記**: 此檔案的核心職責是實現 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理。
 - **依賴引用 (Imports)**: `torch, pynvml, typing:(Dict, Optional)`
   - **Class `NvidiaProfiler`**: NvidiaProfiler: GPU 自適應引擎的基礎架構
     - `def __init__(self)` ➔ 初始化 GPU 資訊
-    - `def initialize(self) -> None` ➔ 初始化 GPU 資訊，使用 pynvml 初始化並獲取 GPU 數量和屬性。 | 🔗 呼叫: `nvmlInit, nvmlDeviceGetCount, nvmlDeviceGetProperties`
-    - `def get_device_info(self) -> Dict` ➔ 獲取 GPU 資訊，如果尚未初始化則調用 initialize 方法。 | 🔗 呼叫: `initialize`
-    - `def configure_precision(self) -> None` ➔ 根據 GPU 的計算能力配置運算精度，以利於高效計算。 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
-    - `def configure_memory_management(self) -> None` ➔ 根據 GPU 的記憶體容量配置記憶體管理策略，以利於高效記憶體使用。 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
+    - `def initialize(self) -> None` ➔ 初始化 GPU 資訊 | 🔗 呼叫: `nvmlInit, nvmlDeviceGetCount, nvmlDeviceGetProperties`
+    - `def get_device_info(self) -> Dict` ➔ 獲取 GPU 資訊 | 🔗 呼叫: `initialize`
+    - `def configure_precision(self) -> None` ➔ 配置運算精度 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
+    - `def configure_memory_management(self) -> None` ➔ 配置記憶體管理 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
 
 ### 📄 `core/model_menu_provider.py` (所屬階段: `3.2.2`)
 - **模組職責註記**: 此檔案的核心職責是提供模型菜單和基礎連接接口，通過DBManager與數據庫進行交互，獲取本地免費和商業API模型。
@@ -438,7 +438,7 @@
 - **階段 `1.2.2` 關聯總結**: 本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.3.1` 關聯總結**: 本階段實現了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，與資料庫進行互動。
 - **階段 `1.3.2` 關聯總結**: 本階段實現了專案版本快照和 .omni_pack 打包的創建與復原功能，與父階段和資料表進行了互動。
-- **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
+- **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。
 - **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **階段 `2.2.2` 關聯總結**: 本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。

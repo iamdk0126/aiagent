@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:19:29",
+    "updated_at": "2026-11-09 12:21:13",
     "tables": {
         "users": {
             "columns": [],
@@ -557,8 +557,8 @@
             "functions": {}
         },
         "core/gpu_auto_profiler.py": {
-            "stage_id": "2.1.2",
-            "note": "此檔案的核心職責是實現 GPU 自適應引擎的基礎架構，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理。",
+            "stage_id": "2.1.1",
+            "note": "此檔案的核心職責是實現 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理。",
             "imports": [
                 "torch",
                 "pynvml",
@@ -577,7 +577,7 @@
                         },
                         "initialize": {
                             "signature": "def initialize(self) -> None",
-                            "note": "初始化 GPU 資訊，使用 pynvml 初始化並獲取 GPU 數量和屬性。",
+                            "note": "初始化 GPU 資訊",
                             "calls": [
                                 "nvmlInit",
                                 "nvmlDeviceGetCount",
@@ -587,7 +587,7 @@
                         },
                         "get_device_info": {
                             "signature": "def get_device_info(self) -> Dict",
-                            "note": "獲取 GPU 資訊，如果尚未初始化則調用 initialize 方法。",
+                            "note": "獲取 GPU 資訊",
                             "calls": [
                                 "initialize"
                             ],
@@ -595,7 +595,7 @@
                         },
                         "configure_precision": {
                             "signature": "def configure_precision(self) -> None",
-                            "note": "根據 GPU 的計算能力配置運算精度，以利於高效計算。",
+                            "note": "配置運算精度",
                             "calls": [
                                 "get_device_info",
                                 "set_default_tensor_type"
@@ -604,7 +604,7 @@
                         },
                         "configure_memory_management": {
                             "signature": "def configure_memory_management(self) -> None",
-                            "note": "根據 GPU 的記憶體容量配置記憶體管理策略，以利於高效記憶體使用。",
+                            "note": "配置記憶體管理",
                             "calls": [
                                 "get_device_info",
                                 "set_device",
@@ -1692,7 +1692,7 @@
         "1.1.1": "本階段實現了 SQLite WAL 連線池、26 張表初始化、Auto-Migration 與滾動備份功能，與父階段和其他模組進行了資料庫連線和操作的互動。",
         "1.1.2": "本階段實現了數據庫管理模組，包括連線池、表初始化、自動升級和滾動備份功能，與父階段和其他模組進行了數據庫連接和操作的互動。",
         "1.1.3": "本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。",
-        "2.1.1": "本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
+        "2.1.1": "本階段實現了 GPU 自適應引擎的基础框架，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
         "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。",
         "2.2.1": "本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",
         "2.2.2": "本階段實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。",

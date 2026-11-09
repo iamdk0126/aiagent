@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:20:42",
+    "updated_at": "2026-11-09 12:21:13",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -245,8 +245,8 @@
                             ],
                             "prompt": "實作跨世代 NVIDIA 顯示卡自適應引擎所需的資料結構，包括 GPU 類別、性能指標類別等。同時，定義與註冊表中 `agent_nodes` 資料表的連線介面。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         },
                         {
