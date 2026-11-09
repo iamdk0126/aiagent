@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:01:56",
+    "updated_at": "2026-11-09 13:03:29",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -1150,8 +1150,8 @@
                             ],
                             "prompt": "在基礎連線介面的基礎上，實現核心業務演算法，包括節點排序、時間軸對齊和邊的自動連接。實現異常處理和單元測試，確保編輯器的穩定性和可靠性。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],
