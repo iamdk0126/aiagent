@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:55:03",
+    "updated_at": "2026-11-09 12:56:25",
     "tables": {
         "users": {
             "columns": [],
@@ -2170,8 +2170,8 @@
             "functions": {}
         },
         "ui/canvas/asset_container_node.py": {
-            "stage_id": "5.5.1",
-            "note": "此檔案定義了AssetContainerNode類，用於管理資產容器，並提供添加、移除和獲取資產的方法。",
+            "stage_id": "5.5.2",
+            "note": "此檔案定義了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並提供了相關的資產管理功能。",
             "imports": [
                 "typing:(List, Optional)"
             ],
@@ -2204,13 +2204,33 @@
                         },
                         "get_assets": {
                             "signature": "def get_assets(self) -> List[str]",
-                            "note": "返回所有資產的列表。",
+                            "note": "獲取所有資產的列表。",
                             "calls": [],
                             "tables": []
                         },
                         "get_asset_info": {
                             "signature": "def get_asset_info(self, asset_name: str) -> Optional[str]",
                             "note": "獲取指定資產的資訊。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "sort_assets": {
+                            "signature": "def sort_assets(self) -> None",
+                            "note": "對資產列表進行排序。",
+                            "calls": [
+                                "sort"
+                            ],
+                            "tables": []
+                        },
+                        "classify_assets": {
+                            "signature": "def classify_assets(self, category: str) -> List[str]",
+                            "note": "根據指定分類對資產進行分類。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "search_assets": {
+                            "signature": "def search_assets(self, keyword: str) -> List[str]",
+                            "note": "根據指定關鍵字搜索資產。",
                             "calls": [],
                             "tables": []
                         }
@@ -2264,6 +2284,7 @@
         "5.3.2": "本階段實現了硬體遙測狀態顯示功能，通過 `ui/main_window.py` 檔案中的 `MainWindow` 類和 `initHardwareMonitorTab` 方法，與父階段和其他模組互動，並通過 SQL 資料表進行數據存取。",
         "5.4.1": "本階段實現了無邊際點陣畫布的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",
         "5.4.2": "本階段實現了無邊際點陣畫布的模組，與父階段和其他模組無直接關聯，主要與 UI 層互動。",
-        "5.5.1": "本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並與PC拖放沙盒上傳功能互動。"
+        "5.5.1": "本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並與PC拖放沙盒上傳功能互動。",
+        "5.5.2": "本階段實現了AssetContainerNode類，用於管理角色、場景和道具的資產容器，並提供了添加、移除、獲取、排序、分類和搜索資產的功能。"
     }
 }
