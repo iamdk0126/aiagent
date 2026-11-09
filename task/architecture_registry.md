@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 18:10:05
+> 最後自動更新時間：2026-11-09 20:34:04
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -19,8 +19,8 @@
 - **關聯存取函數 (Read/Write)**: `agents/story_bible_memory.py::StoryBibleMemory.load_memory(), agents/story_bible_memory.py::StoryBibleMemory.save_memory()`
 
 ### 資料表 `archive_log`
-- **定義檔案**: `Stage 1.1.3` | **用途註記**: 存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 欄位。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 用於存檔系統操作日誌，包含操作項目 ID、項目 ID、操作資料與時間戳。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_archive(), database/project_archiver.py::ProjectArchiver.restore_archive(), database/project_assets.py::ProjectArchiver.restore_archive()`
 
 ### 資料表 `asset_embeddings`
@@ -29,198 +29,1503 @@
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
 
 ### 資料表 `budget_rules`
-- **定義檔案**: `Stage 13.1.1` | **用途註記**: 此資料表用於存儲各專案的預算規則，包括最大單鏡預算、最大單集預算、最大單專案預算、目前專案已支出和是否自動切換到本地免費模型等信息。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 記錄預算規則資訊，包含規則 ID、專案 ID、各類預算限制與自動降級標誌。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `budget_settings`
-- **定義檔案**: `Stage 6.2.1` | **用途註記**: 此資料表用於存儲預算設置信息，包括預算上限等。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲預算設置信息，包括預算上限等。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `canvas_edges`
-- **定義檔案**: `Stage 10.1.1` | **用途註記**: 此資料表用於存儲畫布上的邊，包含邊的唯一識別符、源節點識別符和目標節點識別符。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲畫布上的邊，包含邊的唯一識別符、源節點識別符和目標節點識別符。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `edges`
-- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表用於存儲畫布邊的數據，包括邊的唯一識別符、源節點識別符和目標節點識別符。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲畫布邊的數據，包括邊的唯一識別符、源節點識別符和目標節點識別符。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `frame_table`
-- **定義檔案**: `Stage 5.2.1` | **用途註記**: 此資料表用於存儲フレーム的相關信息，包括帧的時間戳、圖像數據等，與 FrameContinuityEngine 中的函數進行交互。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲フレーム的相關信息，包括帧的時間戳、圖像數據等，與 FrameContinuityEngine 中的函數進行交互。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `frames`
-- **定義檔案**: `Stage 5.1.1` | **用途註記**: 此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲影像處理任務的各幀影像數據，與 FrameContinuityEngine 類中的方法進行互動。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `histogram_table`
-- **定義檔案**: `Stage 5.2.1` | **用途註記**: 此資料表用於存儲色彩直方圖的相關信息，包括色彩直方圖的數據等。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲色彩直方圖的相關信息，包括色彩直方圖的數據等。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `model_store`
-- **定義檔案**: `未知` | **用途註記**: 此資料表用於存儲模型信息，包括模型名稱、描述等，ModelStoreDialog 類別通過 DBManager 和 ModelStore 模組與此資料表互動。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲模型信息，包括模型名稱、描述等，ModelStoreDialog 類別通過 DBManager 和 ModelStore 模組與此資料表互動。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `core/model_menu_provider.py::ModelMenuProvider.fetch_free_local_models(), core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()`
 
 ### 資料表 `permissions`
-- **定義檔案**: `database/permissions.py` | **用途註記**: 此資料表用於存儲權限相關的數據，包括權限ID、權限名稱和描述。
-- **欄位結構**: `permission_id (TEXT), permission_name (TEXT), description (TEXT)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於存儲權限相關的數據，包括權限ID、權限名稱和描述。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/users.py::Permission.insert_permission(), database/users.py::Permission.get_permission(), database/users.py::Permission.update_permission(), database/users.py::Permission.delete_permission(), database/users.py::Permission.get_all_permissions(), database/roles.py::Permission.insert_permission(), database/roles.py::Permission.get_permission(), database/roles.py::Permission.update_permission(), database/roles.py::Permission.delete_permission(), database/roles.py::Permission.get_all_permissions(), database/permissions.py::Permission.insert_permission(), database/permissions.py::Permission.get_permission(), database/permissions.py::Permission.update_permission(), database/permissions.py::Permission.delete_permission(), database/permissions.py::Permission.get_all_permissions()`
 
 ### 資料表 `project_assets`
-- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目資產的數據，包括項目ID、資產類型、路徑、創建和更新時間等字段。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 記錄專案的資產資訊，包含資產 ID、專案 ID、資產類型、路徑與創建、更新時間。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `project_info`
-- **定義檔案**: `Stage 1.1.3` | **用途註記**: 存儲 .omni_pack 打包的資料表，包含 project_id 和 pack_data 欄位。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 存儲 .omni_pack 打包的資料表，包含 project_id 和 pack_data 欄位。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_project_pack(), database/project_archiver.py::ProjectArchiver.restore_project_pack()`
 
+### 資料表 `project_versions`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 記錄專案的版本資訊，包含版本 ID、專案 ID、版本號與時間戳。
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
 ### 資料表 `projects`
-- **定義檔案**: `Stage 4.1.1` | **用途註記**: 存儲項目的基本信息，包括項目ID、項目名稱、格式預設ID、寬高比、目標解析度、帧率、全局LUT路徑、默認CJK字體路徑、創建和更新時間等字段。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 存儲項目的基本信息，包括項目ID、項目名稱、格式預設ID、寬高比、目標解析度、帧率、全局LUT路徑、默認CJK字體路徑、創建和更新時間等字段。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `settings`
-- **定義檔案**: `Stage 1.1.1` | **用途註記**: 設置表，存儲系統設置，關聯於數據庫連線初始化。
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 設置表，存儲系統設置，關聯於數據庫連線初始化。
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_1`
-- **定義檔案**: `未知` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `database/db_manager.py::DBManager.auto_migration()`
 
 ### 資料表 `table_10`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_100`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_101`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_102`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_103`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_104`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_105`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_106`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_107`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_108`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_109`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_11`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_110`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_111`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_112`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_113`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_114`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_115`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_116`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_117`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_118`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_119`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_12`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_120`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_121`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_122`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_123`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_124`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_125`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_126`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_127`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_128`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_129`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_13`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_130`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_131`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_132`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_133`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_134`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_135`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_136`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_137`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_138`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_139`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_14`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_140`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_141`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_142`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_143`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_144`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_145`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_146`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_147`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_148`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_149`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_15`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_150`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_151`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_152`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_153`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_154`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_155`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_156`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_157`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_158`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_159`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_16`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_160`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_161`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_162`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_163`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_164`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_165`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_166`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_167`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_168`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_169`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_17`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_170`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_171`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_172`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_173`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_174`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_175`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_176`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_177`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_178`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_179`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_18`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_180`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_181`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_182`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_183`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_184`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_185`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_186`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_187`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_188`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_189`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_19`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_190`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_191`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_192`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_193`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_194`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_195`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_196`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_197`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_198`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_199`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_2`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_20`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_200`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_201`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_202`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_203`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_204`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_205`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_206`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_207`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_208`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_209`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_21`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_210`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_211`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_212`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_213`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_214`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_215`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_216`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_217`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_218`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_219`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_22`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_220`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_221`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_222`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_223`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_224`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_225`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_226`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_227`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_228`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_229`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_23`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_230`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_231`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_232`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_233`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_234`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_235`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_236`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_237`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_238`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_239`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_24`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_240`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_241`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_242`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_243`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_244`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_245`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_246`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_247`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_248`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_249`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_25`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_250`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_251`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_252`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_253`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_254`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_255`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_256`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_257`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_258`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_259`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_26`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_260`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_261`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_262`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_263`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_264`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_265`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_266`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_267`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_268`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_269`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_27`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_270`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_271`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_272`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_273`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_274`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_275`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_276`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_277`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_278`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_279`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_28`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_280`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_281`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_282`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_283`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_284`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_285`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_286`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_29`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_3`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_30`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_31`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_32`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_33`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_34`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_35`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_36`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_37`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_38`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_39`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_4`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_40`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_41`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_42`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_43`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_44`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_45`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_46`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_47`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_48`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_49`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_5`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_50`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_51`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_52`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_53`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_54`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_55`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_56`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_57`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_58`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_59`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_6`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_60`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_61`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_62`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_63`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_64`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_65`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_66`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_67`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_68`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_69`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_7`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_70`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_71`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_72`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_73`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_74`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_75`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_76`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_77`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_78`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_79`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_8`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_80`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_81`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_82`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_83`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_84`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_85`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_86`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_87`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_88`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_89`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `table_9`
-- **定義檔案**: `Stage 1.1.2` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
-- **欄位結構**: `(欄位待補充)`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 此資料表用於示例，具體業務用途需根據實際需求定義
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_90`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_91`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_92`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_93`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_94`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_95`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_96`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_97`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_98`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
+- **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
+
+### 資料表 `table_99`
+- **定義檔案**: `database/schema_migrator.py` | **用途註記**: 由 database/schema_migrator.py 建立維護
+- **欄位結構**: `id (INTEGER)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `users`
@@ -538,6 +1843,321 @@
     - `def delete_permission(self, permission_id: str) -> None` ➔ 刪除指定權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, commit`
     - `def get_all_permissions(self) -> List[Dict]` ➔ 查詢所有權限。 | 🗄️ 資料表: `permissions` | 🔗 呼叫: `cursor, execute, fetchall`
 
+### 📄 `database/schema_migrator.py` (所屬階段: `1.1.2`)
+- **模組職責註記**: 此模組定義了資料庫版本遷移與表結構初始化的框架，包含版本管理、表創建及遷移方法，並使用上下文管理器確保資料庫連線安全釋放。
+- **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional, Tuple, TypeVar, Generic, ContextManager), contextlib:(contextmanager)`
+  - **Class `TableSchema`**: TableSchema: 表結構類別
+    - `def __init__(self, name: str, columns: List[str], primary_key: str)` ➔ 待推理模型或開發者補充註記
+  - **Class `SchemaMigrator(Generic[T])`**: SchemaMigrator: Schema 迁移器類別
+    - `def __init__(self, db_path: str)` ➔ 初始化 SchemaMigrator 類別 | 🔗 呼叫: `get_current_version`
+    - `def get_current_version(self) -> int` ➔ 獲取當前資料庫版本，若連線異常則回傳 0。 | 🔗 呼叫: `get_connection, cursor, execute, fetchone`
+    - `def upgrade_database(self, target_version: int) -> None` ➔ 將資料庫升級到指定版本，若目標版本低於當前版本則不執行，並執行所有中間版本的升級步驟。 | 🔗 呼叫: `set_current_version, hasattr, Exception, getattr`
+    - `def set_current_version(self, version: int) -> None` ➔ 設定資料庫的當前版本。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def get_connection(self) -> ContextManager[sqlite3.Connection]` ➔ 上下文管理器，用於安全獲取與釋放 SQLite 資料庫連線。 | 🔗 呼叫: `connect, close`
+    - `def create_tables_from_schemas(self, schemas: List[TableSchema]) -> None` ➔ 根據 TableSchema 列表創建表結構，並支援 IF NOT EXISTS。 | 🔗 呼叫: `get_connection, cursor, commit, join, execute`
+    - `def _upgrade_to_v2(self) -> None` ➔ 升級到版本 2，新增 archive_log 表。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v3(self) -> None` ➔ 升級到版本 3，新增 project_assets 表。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v4(self) -> None` ➔ 升級到版本 4，新增 project_versions 表。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v5(self) -> None` ➔ 升級到版本 5，新增 budget_rules 表。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v6(self) -> None` ➔ 升級到版本 6，尚未完成。 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v7(self) -> None` ➔ 升級到版本 7 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v8(self) -> None` ➔ 升級到版本 8 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v9(self) -> None` ➔ 升級到版本 9 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v10(self) -> None` ➔ 升級到版本 10 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v11(self) -> None` ➔ 升級到版本 11 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v12(self) -> None` ➔ 升級到版本 12 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v13(self) -> None` ➔ 升級到版本 13 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v14(self) -> None` ➔ 升級到版本 14 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v15(self) -> None` ➔ 升級到版本 15 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v16(self) -> None` ➔ 升級到版本 16 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v17(self) -> None` ➔ 升級到版本 17 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v18(self) -> None` ➔ 升級到版本 18 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v19(self) -> None` ➔ 升級到版本 19 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v20(self) -> None` ➔ 升級到版本 20 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v21(self) -> None` ➔ 升級到版本 21 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v22(self) -> None` ➔ 升級到版本 22 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v23(self) -> None` ➔ 升級到版本 23 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v24(self) -> None` ➔ 升級到版本 24 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v25(self) -> None` ➔ 升級到版本 25 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v26(self) -> None` ➔ 升級到版本 26 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v27(self) -> None` ➔ 升級到版本 27 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v28(self) -> None` ➔ 升級到版本 28 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v29(self) -> None` ➔ 升級到版本 29 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v30(self) -> None` ➔ 升級到版本 30 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v31(self) -> None` ➔ 升級到版本 31 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v32(self) -> None` ➔ 升級到版本 32 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v33(self) -> None` ➔ 升級到版本 33 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v34(self) -> None` ➔ 升級到版本 34 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v35(self) -> None` ➔ 升級到版本 35 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v36(self) -> None` ➔ 升級到版本 36 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v37(self) -> None` ➔ 升級到版本 37 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v38(self) -> None` ➔ 升級到版本 38 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v39(self) -> None` ➔ 升級到版本 39 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v40(self) -> None` ➔ 升級到版本 40 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v41(self) -> None` ➔ 升級到版本 41 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v42(self) -> None` ➔ 升級到版本 42 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v43(self) -> None` ➔ 升級到版本 43 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v44(self) -> None` ➔ 升級到版本 44 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v45(self) -> None` ➔ 升級到版本 45 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v46(self) -> None` ➔ 升級到版本 46 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v47(self) -> None` ➔ 升級到版本 47 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v48(self) -> None` ➔ 升級到版本 48 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v49(self) -> None` ➔ 升級到版本 49 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v50(self) -> None` ➔ 升級到版本 50 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v51(self) -> None` ➔ 升級到版本 51 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v52(self) -> None` ➔ 升級到版本 52 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v53(self) -> None` ➔ 升級到版本 53 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v54(self) -> None` ➔ 升級到版本 54 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v55(self) -> None` ➔ 升級到版本 55 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v56(self) -> None` ➔ 升級到版本 56 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v57(self) -> None` ➔ 升級到版本 57 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v58(self) -> None` ➔ 升級到版本 58 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v59(self) -> None` ➔ 升級到版本 59 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v60(self) -> None` ➔ 升級到版本 60 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v61(self) -> None` ➔ 升級到版本 61 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v62(self) -> None` ➔ 升級到版本 62 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v63(self) -> None` ➔ 升級到版本 63 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v64(self) -> None` ➔ 升級到版本 64 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v65(self) -> None` ➔ 升級到版本 65 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v66(self) -> None` ➔ 升級到版本 66 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v67(self) -> None` ➔ 升級到版本 67 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v68(self) -> None` ➔ 升級到版本 68 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v69(self) -> None` ➔ 升級到版本 69 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v70(self) -> None` ➔ 升級到版本 70 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v71(self) -> None` ➔ 升級到版本 71 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v72(self) -> None` ➔ 升級到版本 72 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v73(self) -> None` ➔ 升級到版本 73 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v74(self) -> None` ➔ 升級到版本 74 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v75(self) -> None` ➔ 升級到版本 75 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v76(self) -> None` ➔ 升級到版本 76 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v77(self) -> None` ➔ 升級到版本 77 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v78(self) -> None` ➔ 升級到版本 78 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v79(self) -> None` ➔ 升級到版本 79 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v80(self) -> None` ➔ 升級到版本 80 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v81(self) -> None` ➔ 升級到版本 81 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v82(self) -> None` ➔ 升級到版本 82 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v83(self) -> None` ➔ 升級到版本 83 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v84(self) -> None` ➔ 升級到版本 84 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v85(self) -> None` ➔ 升級到版本 85 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v86(self) -> None` ➔ 升級到版本 86 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v87(self) -> None` ➔ 升級到版本 87 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v88(self) -> None` ➔ 升級到版本 88 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v89(self) -> None` ➔ 升級到版本 89 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v90(self) -> None` ➔ 升級到版本 90 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v91(self) -> None` ➔ 升級到版本 91 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v92(self) -> None` ➔ 升級到版本 92 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v93(self) -> None` ➔ 升級到版本 93 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v94(self) -> None` ➔ 升級到版本 94 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v95(self) -> None` ➔ 升級到版本 95 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v96(self) -> None` ➔ 升級到版本 96 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v97(self) -> None` ➔ 升級到版本 97 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v98(self) -> None` ➔ 升級到版本 98 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v99(self) -> None` ➔ 升級到版本 99 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v100(self) -> None` ➔ 升級到版本 100 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v101(self) -> None` ➔ 升級到版本 101 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v102(self) -> None` ➔ 升級到版本 102 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v103(self) -> None` ➔ 升級到版本 103 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v104(self) -> None` ➔ 升級到版本 104 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v105(self) -> None` ➔ 升級到版本 105 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v106(self) -> None` ➔ 升級到版本 106 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v107(self) -> None` ➔ 升級到版本 107 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v108(self) -> None` ➔ 升級到版本 108 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v109(self) -> None` ➔ 升級到版本 109 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v110(self) -> None` ➔ 升級到版本 110 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v111(self) -> None` ➔ 升級到版本 111 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v112(self) -> None` ➔ 升級到版本 112 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v113(self) -> None` ➔ 升級到版本 113 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v114(self) -> None` ➔ 升級到版本 114 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v115(self) -> None` ➔ 升級到版本 115 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v116(self) -> None` ➔ 升級到版本 116 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v117(self) -> None` ➔ 升級到版本 117 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v118(self) -> None` ➔ 升級到版本 118 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v119(self) -> None` ➔ 升級到版本 119 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v120(self) -> None` ➔ 升級到版本 120 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v121(self) -> None` ➔ 升級到版本 121 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v122(self) -> None` ➔ 升級到版本 122 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v123(self) -> None` ➔ 升級到版本 123 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v124(self) -> None` ➔ 升級到版本 124 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v125(self) -> None` ➔ 升級到版本 125 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v126(self) -> None` ➔ 升級到版本 126 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v127(self) -> None` ➔ 升級到版本 127 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v128(self) -> None` ➔ 升級到版本 128 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v129(self) -> None` ➔ 升級到版本 129 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v130(self) -> None` ➔ 升級到版本 130 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v131(self) -> None` ➔ 升級到版本 131 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v132(self) -> None` ➔ 升級到版本 132 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v133(self) -> None` ➔ 升級到版本 133 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v134(self) -> None` ➔ 升級到版本 134 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v135(self) -> None` ➔ 升級到版本 135 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v136(self) -> None` ➔ 升級到版本 136 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v137(self) -> None` ➔ 升級到版本 137 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v138(self) -> None` ➔ 升級到版本 138 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v139(self) -> None` ➔ 升級到版本 139 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v140(self) -> None` ➔ 升級到版本 140 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v141(self) -> None` ➔ 升級到版本 141 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v142(self) -> None` ➔ 升級到版本 142 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v143(self) -> None` ➔ 升級到版本 143 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v144(self) -> None` ➔ 升級到版本 144 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v145(self) -> None` ➔ 升級到版本 145 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v146(self) -> None` ➔ 升級到版本 146 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v147(self) -> None` ➔ 升級到版本 147 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v148(self) -> None` ➔ 升級到版本 148 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v149(self) -> None` ➔ 升級到版本 149 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v150(self) -> None` ➔ 升級到版本 150 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v151(self) -> None` ➔ 升級到版本 151 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v152(self) -> None` ➔ 升級到版本 152 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v153(self) -> None` ➔ 升級到版本 153 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v154(self) -> None` ➔ 升級到版本 154 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v155(self) -> None` ➔ 升級到版本 155 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v156(self) -> None` ➔ 升級到版本 156 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v157(self) -> None` ➔ 升級到版本 157 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v158(self) -> None` ➔ 升級到版本 158 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v159(self) -> None` ➔ 升級到版本 159 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v160(self) -> None` ➔ 升級到版本 160 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v161(self) -> None` ➔ 升級到版本 161 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v162(self) -> None` ➔ 升級到版本 162 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v163(self) -> None` ➔ 升級到版本 163 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v164(self) -> None` ➔ 升級到版本 164 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v165(self) -> None` ➔ 升級到版本 165 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v166(self) -> None` ➔ 升級到版本 166 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v167(self) -> None` ➔ 升級到版本 167 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v168(self) -> None` ➔ 升級到版本 168 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v169(self) -> None` ➔ 升級到版本 169 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v170(self) -> None` ➔ 升級到版本 170 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v171(self) -> None` ➔ 升級到版本 171 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v172(self) -> None` ➔ 升級到版本 172 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v173(self) -> None` ➔ 升級到版本 173 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v174(self) -> None` ➔ 升級到版本 174 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v175(self) -> None` ➔ 升級到版本 175 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v176(self) -> None` ➔ 升級到版本 176 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v177(self) -> None` ➔ 升級到版本 177 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v178(self) -> None` ➔ 升級到版本 178 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v179(self) -> None` ➔ 升級到版本 179 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v180(self) -> None` ➔ 升級到版本 180 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v181(self) -> None` ➔ 升級到版本 181 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v182(self) -> None` ➔ 升級到版本 182 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v183(self) -> None` ➔ 升級到版本 183 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v184(self) -> None` ➔ 升級到版本 184 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v185(self) -> None` ➔ 升級到版本 185 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v186(self) -> None` ➔ 升級到版本 186 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v187(self) -> None` ➔ 升級到版本 187 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v188(self) -> None` ➔ 升級到版本 188 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v189(self) -> None` ➔ 升級到版本 189 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v190(self) -> None` ➔ 升級到版本 190 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v191(self) -> None` ➔ 升級到版本 191 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v192(self) -> None` ➔ 升級到版本 192 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v193(self) -> None` ➔ 升級到版本 193 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v194(self) -> None` ➔ 升級到版本 194 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v195(self) -> None` ➔ 升級到版本 195 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v196(self) -> None` ➔ 升級到版本 196 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v197(self) -> None` ➔ 升級到版本 197 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v198(self) -> None` ➔ 升級到版本 198 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v199(self) -> None` ➔ 升級到版本 199 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v200(self) -> None` ➔ 升級到版本 200 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v201(self) -> None` ➔ 升級到版本 201 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v202(self) -> None` ➔ 升級到版本 202 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v203(self) -> None` ➔ 升級到版本 203 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v204(self) -> None` ➔ 升級到版本 204 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v205(self) -> None` ➔ 升級到版本 205 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v206(self) -> None` ➔ 升級到版本 206 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v207(self) -> None` ➔ 升級到版本 207 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v208(self) -> None` ➔ 升級到版本 208 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v209(self) -> None` ➔ 升級到版本 209 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v210(self) -> None` ➔ 升級到版本 210 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v211(self) -> None` ➔ 升級到版本 211 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v212(self) -> None` ➔ 升級到版本 212 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v213(self) -> None` ➔ 升級到版本 213 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v214(self) -> None` ➔ 升級到版本 214 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v215(self) -> None` ➔ 升級到版本 215 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v216(self) -> None` ➔ 升級到版本 216 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v217(self) -> None` ➔ 升級到版本 217 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v218(self) -> None` ➔ 升級到版本 218 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v219(self) -> None` ➔ 升級到版本 219 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v220(self) -> None` ➔ 升級到版本 220 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v221(self) -> None` ➔ 升級到版本 221 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v222(self) -> None` ➔ 升級到版本 222 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v223(self) -> None` ➔ 升級到版本 223 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v224(self) -> None` ➔ 升級到版本 224 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v225(self) -> None` ➔ 升級到版本 225 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v226(self) -> None` ➔ 升級到版本 226 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v227(self) -> None` ➔ 升級到版本 227 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v228(self) -> None` ➔ 升級到版本 228 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v229(self) -> None` ➔ 升級到版本 229 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v230(self) -> None` ➔ 升級到版本 230 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v231(self) -> None` ➔ 升級到版本 231 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v232(self) -> None` ➔ 升級到版本 232 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v233(self) -> None` ➔ 升級到版本 233 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v234(self) -> None` ➔ 升級到版本 234 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v235(self) -> None` ➔ 升級到版本 235 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v236(self) -> None` ➔ 升級到版本 236 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v237(self) -> None` ➔ 升級到版本 237 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v238(self) -> None` ➔ 升級到版本 238 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v239(self) -> None` ➔ 升級到版本 239 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v240(self) -> None` ➔ 升級到版本 240 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v241(self) -> None` ➔ 升級到版本 241 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v242(self) -> None` ➔ 升級到版本 242 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v243(self) -> None` ➔ 升級到版本 243 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v244(self) -> None` ➔ 升級到版本 244 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v245(self) -> None` ➔ 升級到版本 245 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v246(self) -> None` ➔ 升級到版本 246 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v247(self) -> None` ➔ 升級到版本 247 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v248(self) -> None` ➔ 升級到版本 248 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v249(self) -> None` ➔ 升級到版本 249 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v250(self) -> None` ➔ 升級到版本 250 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v251(self) -> None` ➔ 升級到版本 251 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v252(self) -> None` ➔ 升級到版本 252 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v253(self) -> None` ➔ 升級到版本 253 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v254(self) -> None` ➔ 升級到版本 254 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v255(self) -> None` ➔ 升級到版本 255 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v256(self) -> None` ➔ 升級到版本 256 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v257(self) -> None` ➔ 升級到版本 257 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v258(self) -> None` ➔ 升級到版本 258 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v259(self) -> None` ➔ 升級到版本 259 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v260(self) -> None` ➔ 升級到版本 260 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v261(self) -> None` ➔ 升級到版本 261 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v262(self) -> None` ➔ 升級到版本 262 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v263(self) -> None` ➔ 升級到版本 263 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v264(self) -> None` ➔ 升級到版本 264 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v265(self) -> None` ➔ 升級到版本 265 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v266(self) -> None` ➔ 升級到版本 266 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v267(self) -> None` ➔ 升級到版本 267 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v268(self) -> None` ➔ 升級到版本 268 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v269(self) -> None` ➔ 升級到版本 269 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v270(self) -> None` ➔ 升級到版本 270 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v271(self) -> None` ➔ 升級到版本 271 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v272(self) -> None` ➔ 升級到版本 272 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v273(self) -> None` ➔ 升級到版本 273 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v274(self) -> None` ➔ 升級到版本 274 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v275(self) -> None` ➔ 升級到版本 275 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v276(self) -> None` ➔ 升級到版本 276 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v277(self) -> None` ➔ 升級到版本 277 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v278(self) -> None` ➔ 升級到版本 278 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v279(self) -> None` ➔ 升級到版本 279 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v280(self) -> None` ➔ 升級到版本 280 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v281(self) -> None` ➔ 升級到版本 281 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v282(self) -> None` ➔ 升級到版本 282 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v283(self) -> None` ➔ 升級到版本 283 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v284(self) -> None` ➔ 升級到版本 284 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v285(self) -> None` ➔ 升級到版本 285 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v286(self) -> None` ➔ 升級到版本 286 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v287(self) -> None` ➔ 升級到版本 287 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v288(self) -> None` ➔ 升級到版本 288 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v289(self) -> None` ➔ 升級到版本 289 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v290(self) -> None` ➔ 升級到版本 290 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v291(self) -> None` ➔ 升級到版本 291 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v292(self) -> None` ➔ 升級到版本 292 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v293(self) -> None` ➔ 升級到版本 293 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v294(self) -> None` ➔ 升級到版本 294 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v295(self) -> None` ➔ 升級到版本 295 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v296(self) -> None` ➔ 升級到版本 296 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v297(self) -> None` ➔ 升級到版本 297 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v298(self) -> None` ➔ 升級到版本 298 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v299(self) -> None` ➔ 升級到版本 299 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v300(self) -> None` ➔ 升級到版本 300 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v301(self) -> None` ➔ 升級到版本 301 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v302(self) -> None` ➔ 升級到版本 302 | 🔗 呼叫: `get_connection, cursor, execute, commit`
+    - `def _upgrade_to_v303(self) -> None` ➔ 升級到版本 303 | 🔗 呼叫: `get_connection, cursor, execute`
+
 ### 📄 `database/users.py` (所屬階段: `15.1.2`)
 - **模組職責註記**: 此檔案定義了用戶管理功能，但未直接使用，主要功能與權限管理相關。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Dict, Optional)`
@@ -668,7 +2288,7 @@
 
 ## 3. 📝 各階段完成後之推理模型語意與關聯總結 (Stage Post-Coding Semantic Notes)
 - **階段 `1.1.1` 關聯總結**: 本階段實作資料庫連線池管理，提供基礎 CRUD 功能的支援，這些操作會與後端 SQL 資料表互動，但程式碼中未明確定義資料表，因此 CRUD 函數的具體操作對象需由其他模組或業務邏輯指定。
-- **階段 `1.1.2` 關聯總結**: 本階段實現了數據庫管理模組，包括連線池、表初始化、自動升級和滾動備份功能，與父階段和其他模組進行了數據庫連接和操作的互動。
+- **階段 `1.1.2` 關聯總結**: 階段 1.1.2 實作的 SchemaMigrator 模組與資料庫版本管理及表結構初始化相關，主要通過 Generic 泛型類別定義資料庫遷移框架，並提供版本獲取、升級及表創建功能，與後端資料庫操作模組（如 project_data_access）及資料庫版本控制文件（如 database_schema_versions.txt）互動，確保表結構與版本需求一致。
 - **階段 `1.1.3` 關聯總結**: 本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。
 - **階段 `1.2.1` 關聯總結**: 本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。
 - **階段 `1.2.2` 關聯總結**: 本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。
