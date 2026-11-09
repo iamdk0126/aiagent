@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:16:37",
+    "updated_at": "2026-11-09 11:18:27",
     "tables": {
         "users": {
             "columns": [],
@@ -37,7 +37,8 @@
             "defined_in": "Stage 1.1.3",
             "accessed_by": [
                 "database/project_archiver.py::ProjectArchiver.create_archive()",
-                "database/project_archiver.py::ProjectArchiver.restore_archive()"
+                "database/project_archiver.py::ProjectArchiver.restore_archive()",
+                "database/project_assets.py::ProjectArchiver.restore_archive()"
             ],
             "note": "存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 字段。"
         },
@@ -57,12 +58,39 @@
                 "core/model_menu_provider.py::ModelMenuProvider.fetch_commercial_api_models()"
             ],
             "note": "此資料表的業務用途是存儲模型信息，包括模型的免費狀態，關聯的函數為fetch_free_local_models和fetch_commercial_api_models。"
+        },
+        "asset_embeddings": {
+            "columns": [
+                "asset_id (TEXT)",
+                "embedding (BLOB)",
+                "created_at (TIMESTAMP)"
+            ],
+            "defined_in": "database/asset_embeddings.py",
+            "accessed_by": [
+                "database/asset_embeddings.py::AssetEmbeddings.create_embedding()",
+                "database/asset_embeddings.py::AssetEmbeddings.get_embedding()",
+                "database/asset_embeddings.py::AssetEmbeddings.update_embedding()",
+                "database/asset_embeddings.py::AssetEmbeddings.delete_embedding()"
+            ],
+            "note": "存儲資產的嵌入向量，包括嵌入向量和創建、讀取、更新、刪除等操作。"
+        },
+        "project_assets": {
+            "columns": [],
+            "defined_in": "Stage 4.1.1",
+            "accessed_by": [],
+            "note": "存儲項目資產的相關信息，包括資產類型、路徑等。"
+        },
+        "projects": {
+            "columns": [],
+            "defined_in": "Stage 4.1.1",
+            "accessed_by": [],
+            "note": "存儲項目的基本信息，包括項目名稱、格式預設等。"
         }
     },
     "modules": {
         "database/db_manager.py": {
             "stage_id": "1.1.1",
-            "note": "此檔案實現了 SQLite WAL 連線池、26 張表的初始化、Auto-Migration 與滾動備份功能，並提供了對外介面進行資料庫操作。",
+            "note": "此檔案管理資料庫連線，並提供獲取數據庫會話的接口。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional)",
@@ -224,7 +252,7 @@
         },
         "database/project_archiver.py": {
             "stage_id": "1.1.3",
-            "note": "此檔案實現了專案版本快照與打包的相關功能，包括創建和復原快照以及創建和復原打包數據。",
+            "note": "此檔案實現了項目存档和恢復的功能。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -528,6 +556,200 @@
                 }
             },
             "functions": {}
+        },
+        "database/project_assets.py": {
+            "stage_id": "4.1.1",
+            "note": "此檔案定義了與項目資產相關的數據模型，包括項目資產和項目的基本屬性。",
+            "imports": [
+                "typing:(List, Dict, Optional)",
+                "sqlalchemy:(create_engine, Column, Integer, String, ForeignKey)",
+                "sqlalchemy.ext.declarative:(declarative_base)",
+                "sqlalchemy.orm:(relationship, sessionmaker)",
+                "typing:(List, Dict, Optional)",
+                "sqlalchemy:(create_engine, Column, Integer, String, ForeignKey)",
+                "sqlalchemy.ext.declarative:(declarative_base)",
+                "sqlalchemy.orm:(relationship, sessionmaker)",
+                "sqlalchemy:(create_engine)",
+                "sqlalchemy.orm:(sessionmaker)",
+                "project_assets:(Base, ProjectAssets, Project)",
+                "asset_embeddings:(AssetEmbeddings)",
+                "sqlalchemy.orm:(sessionmaker)",
+                "db_manager:(DBManager)",
+                "project_assets:(ProjectAssets, Project)",
+                "asset_embeddings:(AssetEmbeddings)"
+            ],
+            "classes": {
+                "ProjectAssets": {
+                    "bases": [
+                        "Base"
+                    ],
+                    "note": "",
+                    "methods": {}
+                },
+                "Project": {
+                    "bases": [
+                        "Base"
+                    ],
+                    "note": "",
+                    "methods": {}
+                },
+                "AssetEmbeddings": {
+                    "bases": [
+                        "Base"
+                    ],
+                    "note": "",
+                    "methods": {}
+                },
+                "DBManager": {
+                    "bases": [],
+                    "note": "",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_url: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [
+                                "create_engine",
+                                "create_all",
+                                "sessionmaker"
+                            ],
+                            "tables": []
+                        },
+                        "get_session": {
+                            "signature": "def get_session(self)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [
+                                "Session"
+                            ],
+                            "tables": []
+                        }
+                    }
+                },
+                "ProjectArchiver": {
+                    "bases": [],
+                    "note": "",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_url: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [
+                                "DBManager"
+                            ],
+                            "tables": []
+                        },
+                        "create_archive": {
+                            "signature": "def create_archive(self, project_id: str, snapshot_data: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [
+                                "get_session",
+                                "first",
+                                "all",
+                                "filter_by",
+                                "query"
+                            ],
+                            "tables": []
+                        },
+                        "restore_archive": {
+                            "signature": "def restore_archive(self, project_id: str, snapshot_data: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [
+                                "get_session"
+                            ],
+                            "tables": [
+                                "archive_log"
+                            ]
+                        }
+                    }
+                }
+            },
+            "functions": {}
+        },
+        "database/asset_embeddings.py": {
+            "stage_id": "4.1.1",
+            "note": "此檔案定義了與資產嵌入向量相關的數據模型和操作功能。",
+            "imports": [
+                "typing:(List, Dict, Optional)",
+                "sqlite3"
+            ],
+            "classes": {
+                "AssetEmbeddings": {
+                    "bases": [],
+                    "note": "類別 AssetEmbeddings 用於處理資產嵌入向量的資料庫操作。",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "初始化 AssetEmbeddings 類別。",
+                            "calls": [
+                                "connect",
+                                "cursor",
+                                "_create_table"
+                            ],
+                            "tables": []
+                        },
+                        "_create_table": {
+                            "signature": "def _create_table(self)",
+                            "note": "創建 asset_embeddings 資料表。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": []
+                        },
+                        "create_embedding": {
+                            "signature": "def create_embedding(self, asset_id: str, embedding: bytes)",
+                            "note": "創建一個新的資產嵌入向量。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "asset_embeddings"
+                            ]
+                        },
+                        "get_embedding": {
+                            "signature": "def get_embedding(self, asset_id: str) -> Optional[bytes]",
+                            "note": "讀取一個資產的嵌入向量。",
+                            "calls": [
+                                "execute",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "asset_embeddings"
+                            ]
+                        },
+                        "update_embedding": {
+                            "signature": "def update_embedding(self, asset_id: str, embedding: bytes)",
+                            "note": "更新一個資產的嵌入向量。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "asset_embeddings"
+                            ]
+                        },
+                        "delete_embedding": {
+                            "signature": "def delete_embedding(self, asset_id: str)",
+                            "note": "刪除一個資產的嵌入向量。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "asset_embeddings"
+                            ]
+                        },
+                        "close": {
+                            "signature": "def close(self)",
+                            "note": "關閉資料庫連線。",
+                            "calls": [
+                                "close"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -541,6 +763,7 @@
         "3.1.1": "本階段實現了 ModelStoreCrawler 類，用於從 Hugging Face Hub 和 Civitai v1 API 獲取模型信息，並進行解析和保存。",
         "3.1.2": "本階段實現了從 Hugging Face Hub 和 Civitai v1 API 爬取模型信息的模組，並提供了對外介面來獲取和保存模型數據。",
         "3.2.1": "本階段實現了 ModelMenuProvider 類，用於提供模型菜單和基礎連線介面，與數據庫管理器進行交互以獲取本地免費模型和商業API模型。",
-        "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。"
+        "3.2.2": "本階段實現了ModelMenuProvider類，用於從model_store資料表中獲取本地免費和商業API模型，並通過DBManager與數據庫進行交互。",
+        "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。"
     }
 }
