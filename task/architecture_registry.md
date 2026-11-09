@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:21:46
+> 最後自動更新時間：2026-11-09 11:23:44
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -97,6 +97,22 @@
     - `def _fetch_hf_models(self, repo: str) -> List[Dict]` ➔ 從 Hugging Face Hub 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
     - `def _fetch_civitai_models(self, category: str) -> List[Dict]` ➔ 從 Civitai v1 获取模型信息，返回模型信息列表。 | 🔗 呼叫: `get, raise_for_status, json`
 
+### 📄 `core/multi_agent_graph.py` (所屬階段: `7.1.1`)
+- **模組職責註記**: 此檔案定義了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
+- **依賴引用 (Imports)**: `typing:(List, Dict, Optional)`
+  - **Class `AgentNode`**: 智能體節點類別
+    - `def __init__(self, node_id: str, node_type: str)` ➔ 待推理模型或開發者補充註記
+  - **Class `Edge`**: 边類別
+    - `def __init__(self, edge_id: str, source_node: AgentNode, target_node: AgentNode)` ➔ 待推理模型或開發者補充註記
+  - **Class `MultiAgentGraph`**: 多智能體協同圖形數據庫類別
+    - `def __init__(self)` ➔ 待推理模型或開發者補充註記
+    - `def add_node(self, node: AgentNode)` ➔ 添加智能體節點 | 🔗 呼叫: `append`
+    - `def add_edge(self, edge: Edge)` ➔ 添加邊 | 🔗 呼叫: `append`
+    - `def get_node(self, node_id: str) -> Optional[AgentNode]` ➔ 根據節點ID獲取智能體節點
+    - `def get_edges(self, node_id: str) -> List[Edge]` ➔ 根據節點ID獲取所有連接的邊
+    - `def remove_node(self, node_id: str)` ➔ 根據節點ID移除智能體節點
+    - `def remove_edge(self, edge_id: str)` ➔ 根據邊ID移除邊
+
 ### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.2`)
 - **模組職責註記**: 此檔案實現了VRAM和RAM的協同管理，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
 - **依賴引用 (Imports)**: `sqlite3, typing:(Dict, Optional)`
@@ -181,3 +197,4 @@
 - **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。
 - **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.1.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。
+- **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。

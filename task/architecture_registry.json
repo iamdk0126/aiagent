@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:21:46",
+    "updated_at": "2026-11-09 11:23:44",
     "tables": {
         "users": {
             "columns": [],
@@ -797,6 +797,92 @@
                 }
             },
             "functions": {}
+        },
+        "core/multi_agent_graph.py": {
+            "stage_id": "7.1.1",
+            "note": "此檔案定義了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。",
+            "imports": [
+                "typing:(List, Dict, Optional)"
+            ],
+            "classes": {
+                "AgentNode": {
+                    "bases": [],
+                    "note": "智能體節點類別",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, node_id: str, node_type: str)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                },
+                "Edge": {
+                    "bases": [],
+                    "note": "边類別",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, edge_id: str, source_node: AgentNode, target_node: AgentNode)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                },
+                "MultiAgentGraph": {
+                    "bases": [],
+                    "note": "多智能體協同圖形數據庫類別",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self)",
+                            "note": "待推理模型或開發者補充註記",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "add_node": {
+                            "signature": "def add_node(self, node: AgentNode)",
+                            "note": "添加智能體節點",
+                            "calls": [
+                                "append"
+                            ],
+                            "tables": []
+                        },
+                        "add_edge": {
+                            "signature": "def add_edge(self, edge: Edge)",
+                            "note": "添加邊",
+                            "calls": [
+                                "append"
+                            ],
+                            "tables": []
+                        },
+                        "get_node": {
+                            "signature": "def get_node(self, node_id: str) -> Optional[AgentNode]",
+                            "note": "根據節點ID獲取智能體節點",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "get_edges": {
+                            "signature": "def get_edges(self, node_id: str) -> List[Edge]",
+                            "note": "根據節點ID獲取所有連接的邊",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "remove_node": {
+                            "signature": "def remove_node(self, node_id: str)",
+                            "note": "根據節點ID移除智能體節點",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "remove_edge": {
+                            "signature": "def remove_edge(self, edge_id: str)",
+                            "note": "根據邊ID移除邊",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -814,6 +900,7 @@
         "4.1.1": "本階段實現了資料庫連線管理、資產和嵌入向量的數據模型定義，以及基本的數據庫操作功能。",
         "4.1.2": "本階段實現了數據庫連接管理、項目資產和嵌入向量的數據庫操作，並與父階段的數據庫設計和核心業務邏輯進行了整合。",
         "5.1.1": "本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。",
-        "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。"
+        "5.1.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。",
+        "7.1.1": "本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。"
     }
 }
