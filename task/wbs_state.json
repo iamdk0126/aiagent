@@ -1,0 +1,1080 @@
+{
+    "updated_at": "2026-11-09 10:27:03",
+    "stages": [
+        {
+            "auto_expand_subtasks": false,
+            "children": [],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "0",
+            "mode": "reasoning_only",
+            "prompt": "採用 解方 B：智慧章節骨架萃取 (Smart Skeleton Extraction) 產出全域模塊與核心模組階層樹總綱 0.md。",
+            "reasoning_status": "completed",
+            "registry_status": "skipped",
+            "spec_keywords": [],
+            "target_files": [],
+            "title": "全域架構總綱 0.md [解方 B | 15模塊/13核心模組]"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "1.1.1",
+                            "mode": "both",
+                            "prompt": "實作 SQLite WAL 連線池，初始化 26 張表，實現 Auto-Migration 與滾動備份功能。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "db_manager.py",
+                                "vector_index_engine.py",
+                                "project_archiver.py"
+                            ],
+                            "target_files": [
+                                "database/db_manager.py"
+                            ],
+                            "title": "資料庫連線與初始化"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "1.1.1"
+                            ],
+                            "id": "1.1.2",
+                            "mode": "both",
+                            "prompt": "實現 sqlite-vec / HNSW 毫秒級資產向量檢索器，支持向量的插入、查詢和刪除操作。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "db_manager.py",
+                                "vector_index_engine.py",
+                                "project_archiver.py"
+                            ],
+                            "target_files": [
+                                "database/vector_index_engine.py"
+                            ],
+                            "title": "向量索引引擎"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "1.1.2"
+                            ],
+                            "id": "1.1.3",
+                            "mode": "both",
+                            "prompt": "實現專案版本快照與 .omni_pack 打包匯出/還原器，支持版本控制和數據持久化。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "db_manager.py",
+                                "vector_index_engine.py",
+                                "project_archiver.py"
+                            ],
+                            "target_files": [
+                                "database/project_archiver.py"
+                            ],
+                            "title": "專案版本快照與打包"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "1.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "db_manager.py",
+                        "vector_index_engine.py",
+                        "project_archiver.py"
+                    ],
+                    "target_files": [
+                        "database/db_manager.py",
+                        "database/vector_index_engine.py",
+                        "database/project_archiver.py"
+                    ],
+                    "title": "核心模組 1.1 資料庫管理"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "1",
+            "mode": "reasoning_only",
+            "prompt": "規劃全域設定與資料庫層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "completed",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 21 章",
+                "資料庫"
+            ],
+            "target_files": [],
+            "title": "全域設定與資料庫層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "2.1.1",
+                            "mode": "both",
+                            "prompt": "實作 GPU 自適應引擎的基礎架構，包括資料結構、類別骨架與基礎連線介面。具體來說，需要定義一個 `NvidiaProfiler` 類別，該類別應包含以下屬性與方法：\n- 屬性：`device_properties` (存儲 GPU 資訊)\n- 方法：`initialize()` (初始化 GPU 資訊)\n- 方法：`get_device_info()` (獲取 GPU 資訊)\n- 方法：`configure_precision()` (配置運算精度)\n- 方法：`configure_memory_management()` (配置記憶體管理)\n此外，還需要實現與註冊表中 `architecture_registry.md` 的對接。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "UniversalNvidiaProfiler"
+                            ],
+                            "target_files": [
+                                "core/gpu_auto_profiler.py"
+                            ],
+                            "title": "GPU 自適應引擎基礎架構"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "2.1.1"
+                            ],
+                            "id": "2.1.2",
+                            "mode": "both",
+                            "prompt": "在基礎架構的基礎上，實現核心業務演算法與異常處理。具體來說，需要實現以下功能：\n- 根據 GPU 資訊自動選擇合適的運算精度 (FP16, BF16, FP8)\n- 實現容量分級與多卡分工的邏輯\n- 實現 PCIe Pinned Memory 加速\n- 實現 JIT VRAM Lifecycle 管理\n- 實現 NVML 智慧溫控與防降頻保護\n此外，需要添加單元測試來驗證各個功能的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "UniversalNvidiaProfiler"
+                            ],
+                            "target_files": [
+                                "core/gpu_auto_profiler.py"
+                            ],
+                            "title": "核心業務演算法與異常處理"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "2.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "UniversalNvidiaProfiler"
+                    ],
+                    "target_files": [
+                        "core/gpu_auto_profiler.py"
+                    ],
+                    "title": "核心模組 2.1 GPU 自適應引擎"
+                },
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "2.2.1",
+                            "mode": "both",
+                            "prompt": "實作一個 `VRAMRAMHybridManager` 類別，包含以下屬性與方法：\n- 屬性：`vram_buffer_size`, `pinned_memory_pool`\n- 方法：`initialize`, `upload_to_vram`, `release_from_vram`, `get_vram_usage`\n此類別需與註冊表中的 `VRAM` 資料表對接，並實現基本的初始化與資源管理功能。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "vram_ram_hybrid_manager.py"
+                            ],
+                            "target_files": [
+                                "core/vram_ram_hybrid_manager.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "2.2.1"
+                            ],
+                            "id": "2.2.2",
+                            "mode": "both",
+                            "prompt": "在 `VRAMRAMHybridManager` 類別中實現以下核心業務演算法：\n- `auto_adjust_vram_usage`: 根據當前 VRAM 使用情況自動調整緩衝區大小\n- `handle_memory_overflow`: 處理 VRAM 溢出異常，釋放資源\n實現單元測試以驗證上述方法的正確性，包括邊界情況與異常處理。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "vram_ram_hybrid_manager.py"
+                            ],
+                            "target_files": [
+                                "core/vram_ram_hybrid_manager.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "2.2",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "vram_ram_hybrid_manager.py"
+                    ],
+                    "target_files": [
+                        "core/vram_ram_hybrid_manager.py"
+                    ],
+                    "title": "核心模組 2.2 VRAM/RAM 協同調度"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "2",
+            "mode": "reasoning_only",
+            "prompt": "規劃 GPU 自適應與熱控層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 1 章",
+                "NVIDIA 硬體自適應"
+            ],
+            "target_files": [],
+            "title": "GPU 自適應與熱控層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "3.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `ModelStoreCrawler` 類別，包含 `__init__`、`fetch_models`、`parse_model_info`、`save_models` 方法。實現與 Hugging Face Hub API 和 Civitai v1 API 的連線介面。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "model_store_crawler.py"
+                            ],
+                            "target_files": [
+                                "core/model_store_crawler.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "3.1.1"
+                            ],
+                            "id": "3.1.2",
+                            "mode": "both",
+                            "prompt": "在 `ModelStoreCrawler` 類別中實現核心業務演算法，包括模型過濾、下載、解析和保存。添加異常處理機制，確保程序的健壯性。撰寫單元測試以驗證各方法的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "model_store_crawler.py"
+                            ],
+                            "target_files": [
+                                "core/model_store_crawler.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "3.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "model_store_crawler.py"
+                    ],
+                    "target_files": [
+                        "core/model_store_crawler.py"
+                    ],
+                    "title": "核心模組 3.1 模型庫爬蟲"
+                },
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "3.2.1",
+                            "mode": "both",
+                            "prompt": "實作 `ModelMenuProvider` 類別，包含 `__init__`、`fetch_free_local_models`、`fetch_commercial_api_models` 方法，並實現與註冊表中 `model_store` 資料表的連線介面。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "model_menu_provider.py"
+                            ],
+                            "target_files": [
+                                "core/model_menu_provider.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "3.2.1"
+                            ],
+                            "id": "3.2.2",
+                            "mode": "both",
+                            "prompt": "在 `ModelMenuProvider` 類別中實現核心業務演算法，包括模型過濾、破損檢測與分塊自癒。添加異常處理機制，並為每個方法添加單元測試。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "model_menu_provider.py"
+                            ],
+                            "target_files": [
+                                "core/model_menu_provider.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "3.2",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "model_menu_provider.py"
+                    ],
+                    "target_files": [
+                        "core/model_menu_provider.py"
+                    ],
+                    "title": "核心模組 3.2 模型庫對接"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "3",
+            "mode": "reasoning_only",
+            "prompt": "規劃模型庫與商城層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 3 章",
+                "模型商城"
+            ],
+            "target_files": [],
+            "title": "模型庫與商城層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "4.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `ProjectAssets` 和 `AssetEmbeddings` 類別，定義其屬性與方法。實現與 `project_assets` 和 `asset_embeddings` 資料表的連線介面，包括創建、讀取、更新和刪除操作。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "project_assets",
+                                "asset_embeddings"
+                            ],
+                            "target_files": [
+                                "database/project_assets.py",
+                                "database/asset_embeddings.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "4.1.1"
+                            ],
+                            "id": "4.1.2",
+                            "mode": "both",
+                            "prompt": "在 `ProjectAssets` 和 `AssetEmbeddings` 類別中實現核心業務演算法，如計算向量相似度、更新嵌入向量等。添加異常處理機制，確保操作的健壯性。撰寫單元測試以驗證各方法的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "project_assets",
+                                "asset_embeddings"
+                            ],
+                            "target_files": [
+                                "database/project_assets.py",
+                                "database/asset_embeddings.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "4.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "project_assets",
+                        "asset_embeddings"
+                    ],
+                    "target_files": [
+                        "database/project_assets.py",
+                        "database/asset_embeddings.py"
+                    ],
+                    "title": "核心模組 4.1 素材管理"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "4",
+            "mode": "reasoning_only",
+            "prompt": "規劃素材資料庫層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 4 章",
+                "素材資料庫"
+            ],
+            "target_files": [],
+            "title": "素材資料庫層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "5.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `FrameContinuityEngine` 類別，包含 `select_best_last_frame`、`match_histograms`、`temporal_deflicker` 方法。實現與註冊表中 `frame_continuity` 資料表的連線介面。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "frame_continuity_engine.py"
+                            ],
+                            "target_files": [
+                                "core/frame_continuity_engine.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "5.1.1"
+                            ],
+                            "id": "5.1.2",
+                            "mode": "both",
+                            "prompt": "在 `FrameContinuityEngine` 類別中實現智慧尾幀挑選、色彩校正與時域去閃爍的核心演算法。添加異常處理機制，並撰寫單元測試以確保各方法的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "frame_continuity_engine.py"
+                            ],
+                            "target_files": [
+                                "core/frame_continuity_engine.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "5.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "frame_continuity_engine.py"
+                    ],
+                    "target_files": [
+                        "core/frame_continuity_engine.py"
+                    ],
+                    "title": "核心模組 5.1 分鏡編輯"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "5",
+            "mode": "reasoning_only",
+            "prompt": "規劃成對分鏡節點層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 5 章",
+                "成對分鏡節點"
+            ],
+            "target_files": [],
+            "title": "成對分鏡節點層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "6",
+            "mode": "reasoning_only",
+            "prompt": "規劃創作者體驗層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 6 章",
+                "UX 增強"
+            ],
+            "target_files": [],
+            "title": "創作者體驗層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "7.1.1",
+                            "mode": "both",
+                            "prompt": "實作多智能體協同的核心資料結構，包括智能體節點、邊、圖形數據庫等。定義必要的類別和函數簽章，並實現基本的連線介面，以便智能體之間可以進行協同工作。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "multi_agent_graph.py"
+                            ],
+                            "target_files": [
+                                "core/multi_agent_graph.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "7.1.1"
+                            ],
+                            "id": "7.1.2",
+                            "mode": "both",
+                            "prompt": "在 .1 的基礎上，實現多智能體協同的核心業務演算法，包括協同任務分配、協調通信、協同學習等。實現異常處理機制，確保系統的健壯性。同時，編寫單元測試以驗證各個函數和模塊的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "multi_agent_graph.py"
+                            ],
+                            "target_files": [
+                                "core/multi_agent_graph.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "7.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "multi_agent_graph.py"
+                    ],
+                    "target_files": [
+                        "core/multi_agent_graph.py"
+                    ],
+                    "title": "核心模組 7.1 智能體協同"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "7",
+            "mode": "reasoning_only",
+            "prompt": "規劃 Multi-Agent 協同層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 7 章",
+                "Multi-Agent"
+            ],
+            "target_files": [],
+            "title": "Multi-Agent 協同層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "8",
+            "mode": "reasoning_only",
+            "prompt": "規劃多體裁動態分段架構層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 8 章",
+                "多體裁動態分段"
+            ],
+            "target_files": [],
+            "title": "多體裁動態分段架構層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "9.1.1",
+                            "mode": "both",
+                            "prompt": "實作 WorkflowRuntime 類別，包含初始化方法、任務註冊方法、任務執行方法、任務狀態查詢方法。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "workflow_runtime.py"
+                            ],
+                            "target_files": [
+                                "core/workflow_runtime.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "9.1.1"
+                            ],
+                            "id": "9.1.2",
+                            "mode": "both",
+                            "prompt": "在 WorkflowRuntime 類別中實現核心業務演算法，包括任務循環檢測、Dirty Propagation 與雙模式 Gate 狀態機。添加異常處理機制，並撰寫單元測試以確保各方法的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "workflow_runtime.py"
+                            ],
+                            "target_files": [
+                                "core/workflow_runtime.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "9.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "workflow_runtime.py"
+                    ],
+                    "target_files": [
+                        "core/workflow_runtime.py"
+                    ],
+                    "title": "核心模組 9.1 工作流引擎"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "9",
+            "mode": "reasoning_only",
+            "prompt": "規劃工作流執行層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 9 章",
+                "工作流執行"
+            ],
+            "target_files": [],
+            "title": "工作流執行層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "10.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `CanvasNode` 和 `CanvasEdge` 類別，定義其屬性和方法。確保與註冊表中的 `project_assets` 和 `asset_embeddings` 資料表對接。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "canvas_nodes",
+                                "canvas_edges"
+                            ],
+                            "target_files": [
+                                "database/canvas_nodes.py",
+                                "database/canvas_edges.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "10.1.1"
+                            ],
+                            "id": "10.1.2",
+                            "mode": "both",
+                            "prompt": "在 `CanvasNode` 和 `CanvasEdge` 類別上實現核心業務演算法，包括數據插入、查詢和更新。添加異常處理和單元測試以確保功能正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "canvas_nodes",
+                                "canvas_edges"
+                            ],
+                            "target_files": [
+                                "database/canvas_nodes.py",
+                                "database/canvas_edges.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "10.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "canvas_nodes",
+                        "canvas_edges"
+                    ],
+                    "target_files": [
+                        "database/canvas_nodes.py",
+                        "database/canvas_edges.py"
+                    ],
+                    "title": "核心模組 10.1 節點定義"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "10",
+            "mode": "reasoning_only",
+            "prompt": "規劃畫布節點系統標準化層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 10 章",
+                "畫布節點系統標準化"
+            ],
+            "target_files": [],
+            "title": "畫布節點系統標準化層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "11",
+            "mode": "reasoning_only",
+            "prompt": "規劃多平台發布層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 18 章",
+                "多平台發布"
+            ],
+            "target_files": [],
+            "title": "多平台發布層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "12",
+            "mode": "reasoning_only",
+            "prompt": "規劃企業版與團隊協作層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 20 章",
+                "企業版與團隊協作"
+            ],
+            "target_files": [],
+            "title": "企業版與團隊協作層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "13.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `BudgetRule` 類別，包含 `project_id`, `max_shot_cost`, `max_episode_cost`, `max_project_cost`, `current_project_spent`, `auto_fallback_to_local` 屬性。實現與 `projects` 資料表的連線介面，包括讀取和寫入功能。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "budget_rules"
+                            ],
+                            "target_files": [
+                                "database/budget_rules.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "13.1.1"
+                            ],
+                            "id": "13.1.2",
+                            "mode": "both",
+                            "prompt": "實現 `check_budget` 方法，檢查當前項目預算是否超出上限，如超出則觸發熔斷機制，自動切換回 `FREE_LOCAL` 地端免費模型。實現異常處理和單元測試，確保系統的穩定性和可靠性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "budget_rules"
+                            ],
+                            "target_files": [
+                                "database/budget_rules.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "13.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "budget_rules"
+                    ],
+                    "target_files": [
+                        "database/budget_rules.py"
+                    ],
+                    "title": "核心模組 13.1 预算管理"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "13",
+            "mode": "reasoning_only",
+            "prompt": "規劃預算管理層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 17 章",
+                "預算管理"
+            ],
+            "target_files": [],
+            "title": "預算管理層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "14.1.1",
+                            "mode": "both",
+                            "prompt": "實作 `WorkflowCheckpoint` 類別，包含 `__init__`, `save_checkpoint`, `load_checkpoint` 方法。連線至 SQLite 數據庫，創建 `workflow_checkpoints` 表。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "workflow_checkpoints"
+                            ],
+                            "target_files": [
+                                "database/workflow_checkpoints.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "14.1.1"
+                            ],
+                            "id": "14.1.2",
+                            "mode": "both",
+                            "prompt": "實現自動寫入持久化狀態快照至 `workflow_checkpoints` 表的邏輯。添加異常處理，確保數據庫操作的可靠性。編寫單元測試，驗證 `save_checkpoint` 和 `load_checkpoint` 方法的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "workflow_checkpoints"
+                            ],
+                            "target_files": [
+                                "database/workflow_checkpoints.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "14.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "workflow_checkpoints"
+                    ],
+                    "target_files": [
+                        "database/workflow_checkpoints.py"
+                    ],
+                    "title": "核心模組 14.1 Gate Checkpoint"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "14",
+            "mode": "reasoning_only",
+            "prompt": "規劃 Gate Checkpoint 與自動 Migration 層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 19 章",
+                "Gate Checkpoint"
+            ],
+            "target_files": [],
+            "title": "Gate Checkpoint 與自動 Migration 層"
+        },
+        {
+            "auto_expand_subtasks": false,
+            "children": [
+                {
+                    "auto_expand_subtasks": true,
+                    "children": [
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [],
+                            "id": "15.1.1",
+                            "mode": "both",
+                            "prompt": "實作 User, Role, Permission 三種類別，並定義其屬性。實現與 SQLite 資料庫的連線介面，包括連線、斷線、查詢、插入、更新和刪除等基本操作。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "users",
+                                "roles",
+                                "permissions"
+                            ],
+                            "target_files": [
+                                "database/users.py",
+                                "database/roles.py",
+                                "database/permissions.py"
+                            ],
+                            "title": "資料結構、類別骨架與基礎連線介面"
+                        },
+                        {
+                            "auto_expand_subtasks": false,
+                            "children": [],
+                            "coding_status": "pending",
+                            "depends_on": [
+                                "15.1.1"
+                            ],
+                            "id": "15.1.2",
+                            "mode": "both",
+                            "prompt": "實現用戶註冊、角色分配、權限授予等核心業務演算法。添加異常處理機制，確保數據操作的健壯性。撰寫單元測試以驗證各功能的正確性。",
+                            "reasoning_status": "pending",
+                            "registry_status": "pending",
+                            "spec_keywords": [
+                                "users",
+                                "roles",
+                                "permissions"
+                            ],
+                            "target_files": [
+                                "database/users.py",
+                                "database/roles.py",
+                                "database/permissions.py"
+                            ],
+                            "title": "核心業務演算法、異常處理與單元測試"
+                        }
+                    ],
+                    "coding_status": "skipped",
+                    "depends_on": [],
+                    "id": "15.1",
+                    "mode": "both",
+                    "prompt": "依據 spec.md、0.md 與父階段 1.md 實作此核心模組...",
+                    "reasoning_status": "pending",
+                    "registry_status": "skipped",
+                    "spec_keywords": [
+                        "users",
+                        "roles",
+                        "permissions"
+                    ],
+                    "target_files": [
+                        "database/users.py",
+                        "database/roles.py",
+                        "database/permissions.py"
+                    ],
+                    "title": "核心模組 15.1 權限管理"
+                }
+            ],
+            "coding_status": "skipped",
+            "depends_on": [],
+            "id": "15",
+            "mode": "reasoning_only",
+            "prompt": "規劃企業版與團隊協作預留架構層的共通資料結構、資料表關聯與跨模組介面契約。",
+            "reasoning_status": "pending",
+            "registry_status": "skipped",
+            "spec_keywords": [
+                "第 20 章",
+                "企業版與團隊協作預留架構"
+            ],
+            "target_files": [],
+            "title": "企業版與團隊協作預留架構層"
+        }
+    ]
+}
