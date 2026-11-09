@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:17:07",
+    "updated_at": "2026-11-09 12:18:29",
     "tables": {
         "users": {
             "columns": [],
@@ -30,7 +30,7 @@
                 "database/project_archiver.py::ProjectArchiver.create_project_pack()",
                 "database/project_archiver.py::ProjectArchiver.restore_project_pack()"
             ],
-            "note": "存儲 .omni_pack 打包的資料表，包含 project_id 和 pack_data 字段。"
+            "note": "存儲 .omni_pack 打包的資料表，包含 project_id 和 pack_data 欄位。"
         },
         "archive_log": {
             "columns": [],
@@ -40,7 +40,7 @@
                 "database/project_archiver.py::ProjectArchiver.restore_archive()",
                 "database/project_assets.py::ProjectArchiver.restore_archive()"
             ],
-            "note": "存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 字段。"
+            "note": "存儲專案版本快照的資料表，包含 project_id 和 snapshot_data 欄位。"
         },
         "table_1": {
             "columns": [],
@@ -469,8 +469,8 @@
             "functions": {}
         },
         "database/project_archiver.py": {
-            "stage_id": "1.1.3",
-            "note": "此檔案實現了項目存档和恢復的功能，包括創建和恢復存档。",
+            "stage_id": "1.3.1",
+            "note": "此檔案定義了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，並與資料庫進行互動。",
             "imports": [
                 "sqlite3",
                 "typing:(List, Optional, Tuple)",
@@ -1717,6 +1717,7 @@
         "15.1.1": "本階段實現了三個模組（users.py, roles.py, permissions.py）來處理權限資料庫操作，每個模組都包含連接、斷開連接、創建表、插入、查詢、更新和刪除權限的功能，並與 permissions 資料表進行互動。",
         "15.1.2": "本階段實現了權限管理功能，通過三個模組（users.py, roles.py, permissions.py）與SQLite資料庫進行互動，實現了權限的創建、查詢、更新和刪除。",
         "1.2.1": "本階段實現了向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
-        "1.2.2": "本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。"
+        "1.2.2": "本階段實現了向量索引引擎，與父階段和資料表互動，進行向量的插入、查詢和刪除操作。",
+        "1.3.1": "本階段實現了 ProjectArchiver 類別，用於管理專案版本快照和 .omni_pack 打包的創建與復原，與資料庫進行互動。"
     }
 }
