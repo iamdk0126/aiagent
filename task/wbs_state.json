@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:26:39",
+    "updated_at": "2026-11-09 12:27:07",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -387,7 +387,7 @@
                                 "core/master_video_assembler.py"
                             ],
                             "prompt": "實現 CJK 字卡引擎，支持直排/橫排、描邊陰影、中文避頭尾換行與滾動演職員表。",
-                            "reasoning_status": "pending",
+                            "reasoning_status": "completed",
                             "coding_status": "pending",
                             "registry_status": "pending",
                             "children": []
