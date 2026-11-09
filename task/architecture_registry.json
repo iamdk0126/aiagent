@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:44:49",
+    "updated_at": "2026-11-09 12:46:16",
     "tables": {
         "users": {
             "columns": [],
@@ -326,7 +326,7 @@
             "columns": [],
             "defined_in": "Stage 5.2.1",
             "accessed_by": [],
-            "note": "此資料表用於存儲フレーム的相關信息，包括帧的時間戳、圖像數據等。"
+            "note": "此資料表用於存儲フレーム的相關信息，包括帧的時間戳、圖像數據等，與 FrameContinuityEngine 中的函數進行交互。"
         },
         "histogram_table": {
             "columns": [],
@@ -1000,8 +1000,8 @@
             "functions": {}
         },
         "core/frame_continuity_engine.py": {
-            "stage_id": "5.2.1",
-            "note": "此檔案的核心職責是實現智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背的功能，並通過DBManager與數據庫進行交互。",
+            "stage_id": "5.2.2",
+            "note": "此檔案的核心職責是實現智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背的演算法，並通過 DBManager 類與數據庫進行交互。",
             "imports": [
                 "typing:(List, Dict, Optional)",
                 "database.db_manager:(DBManager)"
@@ -1025,13 +1025,13 @@
                         },
                         "match_histograms": {
                             "signature": "def match_histograms(self, frame1: Dict, frame2: Dict) -> float",
-                            "note": "此函數的功能是進行LAB色彩校正，輸入為兩帧，輸出為色彩匹配度。",
+                            "note": "此函數的功能是進行 LAB 色彩校正，輸入為兩帧，輸出為色彩匹配度。",
                             "calls": [],
                             "tables": []
                         },
                         "temporal_deflicker": {
                             "signature": "def temporal_deflicker(self, frames: List[Dict]) -> List[Dict]",
-                            "note": "此函數的功能是進行時域去閃爍與羽化去背，輸入為帧列表，輸出為去閃爍與羽化去背的帧列表。",
+                            "note": "此函數的功能是進行時域去閃爍與羽化去背，輸入為帧列表，輸出為去閃爍與羽化去背後的帧列表。",
                             "calls": [],
                             "tables": []
                         }
@@ -1978,6 +1978,7 @@
         "2.3.3": "本階段實現了 GPU 自適應引擎和 VRAM 記憶體管理，並在 MasterVideoAssembler 中整合了音素級指定臉孔對嘴、J/L-Cut 混音和視頻組裝功能，與父階段和其他模組進行了互動。",
         "4.2.1": "本階段實現了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行互動。",
         "4.2.2": "本階段實現了資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行交互。",
-        "5.2.1": "本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。"
+        "5.2.1": "本階段實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。",
+        "5.2.2": "本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。"
     }
 }
