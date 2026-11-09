@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:09:53",
+    "updated_at": "2026-11-09 11:11:21",
     "tables": {
         "users": {
             "columns": [],
@@ -361,6 +361,55 @@
                 }
             },
             "functions": {}
+        },
+        "core/vram_ram_hybrid_manager.py": {
+            "stage_id": "2.2.1",
+            "note": "此檔案實現了VRAM和RAM協同管理器，提供了初始化、上傳和釋放數據的功能。",
+            "imports": [
+                "sqlite3",
+                "typing:(Dict, Optional)"
+            ],
+            "classes": {
+                "VRAMRAMHybridManager": {
+                    "bases": [],
+                    "note": "VRAM 和 RAM 協同管理器",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)",
+                            "note": "初始化VRAM和RAM協同管理器，設置VRAM緩衝區大小和固定內存池大小。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "initialize": {
+                            "signature": "def initialize(self)",
+                            "note": "初始化VRAM和RAM協同管理器的邏輯。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "upload_to_vram": {
+                            "signature": "def upload_to_vram(self, data: bytes)",
+                            "note": "將數據上傳到VRAM，如果VRAM緩衝區已滿則拋出異常。",
+                            "calls": [
+                                "ValueError"
+                            ],
+                            "tables": []
+                        },
+                        "release_from_vram": {
+                            "signature": "def release_from_vram(self, data: bytes)",
+                            "note": "從VRAM釋放數據，減少VRAM使用情況。",
+                            "calls": [],
+                            "tables": []
+                        },
+                        "get_vram_usage": {
+                            "signature": "def get_vram_usage(self) -> int",
+                            "note": "獲取當前VRAM的使用情況。",
+                            "calls": [],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -368,6 +417,7 @@
         "1.1.2": "本階段實現了一個向量索引引擎，與SQLite資料庫和HNSW索引庫互動，進行向量的插入、查詢和刪除操作。",
         "1.1.3": "本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。",
         "2.1.1": "本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。",
-        "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。"
+        "2.1.2": "本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。",
+        "2.2.1": "本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。"
     }
 }

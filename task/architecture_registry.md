@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:09:53
+> 最後自動更新時間：2026-11-09 11:11:21
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -44,6 +44,16 @@
     - `def configure_precision(self) -> None` ➔ 根據 GPU 的計算能力配置運算精度，以利於高效計算。 | 🔗 呼叫: `get_device_info, set_default_tensor_type`
     - `def configure_memory_management(self) -> None` ➔ 根據 GPU 的記憶體容量配置記憶體管理策略，以利於高效記憶體使用。 | 🔗 呼叫: `get_device_info, set_device, empty_cache`
 
+### 📄 `core/vram_ram_hybrid_manager.py` (所屬階段: `2.2.1`)
+- **模組職責註記**: 此檔案實現了VRAM和RAM協同管理器，提供了初始化、上傳和釋放數據的功能。
+- **依賴引用 (Imports)**: `sqlite3, typing:(Dict, Optional)`
+  - **Class `VRAMRAMHybridManager`**: VRAM 和 RAM 協同管理器
+    - `def __init__(self, vram_buffer_size: int, pinned_memory_pool: int)` ➔ 初始化VRAM和RAM協同管理器，設置VRAM緩衝區大小和固定內存池大小。
+    - `def initialize(self)` ➔ 初始化VRAM和RAM協同管理器的邏輯。
+    - `def upload_to_vram(self, data: bytes)` ➔ 將數據上傳到VRAM，如果VRAM緩衝區已滿則拋出異常。 | 🔗 呼叫: `ValueError`
+    - `def release_from_vram(self, data: bytes)` ➔ 從VRAM釋放數據，減少VRAM使用情況。
+    - `def get_vram_usage(self) -> int` ➔ 獲取當前VRAM的使用情況。
+
 ### 📄 `database/db_manager.py` (所屬階段: `1.1.1`)
 - **模組職責註記**: 此檔案實現了 SQLite WAL 連線池、26 張表的初始化、Auto-Migration 與滾動備份功能，並提供了對外介面進行資料庫操作。
 - **依賴引用 (Imports)**: `sqlite3, typing:(List, Optional), contextlib:(contextmanager)`
@@ -82,3 +92,4 @@
 - **階段 `1.1.3` 關聯總結**: 本階段實現了專案版本快照與打包的相關功能，通過 ProjectArchiver 類與 DBManager 類進行資料庫操作，與父階段和其他模組進行互動，並與資料表 archive_log 和 project_info 進行關聯。
 - **階段 `2.1.1` 關聯總結**: 本階段實現了 GPU 自適應引擎的基础架构，包括初始化 GPU 信息、获取 GPU 信息、配置运算精度和配置内存管理，并与父阶段和相关模块进行交互。
 - **階段 `2.1.2` 關聯總結**: 本階段實現了 GPU 自適應引擎的核心功能，包括初始化 GPU 資訊、獲取 GPU 資訊、配置運算精度和記憶體管理，這些功能與父階段和其他模組互動，以實現高效的 GPU 計算資源管理。
+- **階段 `2.2.1` 關聯總結**: 本階段實現了VRAM和RAM協同管理器，通過初始化、上傳和釋放數據來管理VRAM的使用情況。
