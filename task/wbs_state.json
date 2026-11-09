@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 12:14:07",
+    "updated_at": "2026-11-09 12:14:47",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -76,8 +76,8 @@
                             ],
                             "prompt": "在 `DatabaseManager` 類別中實現核心業務演算法，如創建表、插入數據、查詢數據等。同時，添加異常處理和單元測試，確保數據庫操作的可靠性。",
                             "reasoning_status": "completed",
-                            "coding_status": "pending",
-                            "registry_status": "pending",
+                            "coding_status": "completed",
+                            "registry_status": "completed",
                             "children": []
                         }
                     ],
