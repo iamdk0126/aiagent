@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:14:21",
+    "updated_at": "2026-11-09 13:15:26",
     "tables": {
         "users": {
             "columns": [],
@@ -1154,8 +1154,8 @@
             "functions": {}
         },
         "core/workflow_runtime.py": {
-            "stage_id": "8.1.1",
-            "note": "此檔案定義了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢。",
+            "stage_id": "8.1.2",
+            "note": "此檔案實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢。",
             "imports": [
                 "typing:(List, Dict, Optional)"
             ],
@@ -1172,13 +1172,13 @@
                         },
                         "register_task": {
                             "signature": "def register_task(self, task_id: str, task_function)",
-                            "note": "註冊一個任務，將任務ID和任務函數存儲在 tasks 字典中。",
+                            "note": "註冊任務，將任務ID和任務函數存儲在tasks字典中。",
                             "calls": [],
                             "tables": []
                         },
                         "execute_task": {
                             "signature": "def execute_task(self, task_id: str)",
-                            "note": "執行一個任務，根據任務ID調用對應的任務函數並返回結果。",
+                            "note": "執行指定ID的任務，返回任務執行結果，如果任務不存在則拋出異常。",
                             "calls": [
                                 "ValueError"
                             ],
@@ -1186,7 +1186,7 @@
                         },
                         "get_task_status": {
                             "signature": "def get_task_status(self, task_id: str) -> Optional[str]",
-                            "note": "查詢一個任務的狀態，如果任務存在則返回 'Running'，否則返回 None。",
+                            "note": "查詢指定ID的任務狀態，如果任務存在則返回'Running'，否則返回None。",
                             "calls": [],
                             "tables": []
                         }
@@ -2733,6 +2733,7 @@
         "6.2.2": "本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
         "7.2.1": "本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。",
         "7.2.2": "本階段實現了智能體長期記憶的檢索、保存和检索功能，與資料庫進行交互以持久化記憶數據。",
-        "8.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。"
+        "8.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
+        "8.1.2": "本階段實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢，與父階段和其他模組進行了互動。"
     }
 }

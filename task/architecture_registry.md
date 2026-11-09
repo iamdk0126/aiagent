@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 13:14:21
+> 最後自動更新時間：2026-11-09 13:15:26
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -372,14 +372,14 @@
     - `def release_from_vram(self, data: bytes)` ➔ 從VRAM釋放數據。
     - `def get_vram_usage(self) -> int` ➔ 獲取VRAM的使用情況。
 
-### 📄 `core/workflow_runtime.py` (所屬階段: `8.1.1`)
-- **模組職責註記**: 此檔案定義了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢。
+### 📄 `core/workflow_runtime.py` (所屬階段: `8.1.2`)
+- **模組職責註記**: 此檔案實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional)`
   - **Class `WorkflowRuntime`**: WorkflowRuntime: 管理工作流任务的类
     - `def __init__(self)` ➔ 初始化 WorkflowRuntime 类
-    - `def register_task(self, task_id: str, task_function)` ➔ 註冊一個任務，將任務ID和任務函數存儲在 tasks 字典中。
-    - `def execute_task(self, task_id: str)` ➔ 執行一個任務，根據任務ID調用對應的任務函數並返回結果。 | 🔗 呼叫: `ValueError`
-    - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢一個任務的狀態，如果任務存在則返回 'Running'，否則返回 None。
+    - `def register_task(self, task_id: str, task_function)` ➔ 註冊任務，將任務ID和任務函數存儲在tasks字典中。
+    - `def execute_task(self, task_id: str)` ➔ 執行指定ID的任務，返回任務執行結果，如果任務不存在則拋出異常。 | 🔗 呼叫: `ValueError`
+    - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢指定ID的任務狀態，如果任務存在則返回'Running'，否則返回None。
 
 ### 📄 `database/asset_embeddings.py` (所屬階段: `4.2.2`)
 - **模組職責註記**: 此檔案定義了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量。
@@ -662,6 +662,7 @@
 - **階段 `7.2.1` 關聯總結**: 本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。
 - **階段 `7.2.2` 關聯總結**: 本階段實現了智能體長期記憶的檢索、保存和检索功能，與資料庫進行交互以持久化記憶數據。
 - **階段 `8.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
+- **階段 `8.1.2` 關聯總結**: 本階段實現了工作流任務管理的核心功能，包括任務註冊、執行和狀態查詢，與父階段和其他模組進行了互動。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
 - **階段 `9.1.2` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。
 - **階段 `10.1.1` 關聯總結**: 本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
