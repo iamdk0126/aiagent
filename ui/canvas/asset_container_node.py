@@ -49,3 +49,25 @@ class AssetContainerNode:
             if asset_name in asset:
                 return asset
         return None
+
+    def sort_assets(self) -> None:
+        """
+        質產排序
+        """
+        self.assets.sort()
+
+    def classify_assets(self, category: str) -> List[str]:
+        """
+        質產分類
+        :param category: 分類
+        :return: 分類後的資產列表
+        """
+        return [asset for asset in self.assets if category in asset]
+
+    def search_assets(self, keyword: str) -> List[str]:
+        """
+        質產搜索
+        :param keyword: 搜尋關鍵字
+        :return: 搜尋結果
+        """
+        return [asset for asset in self.assets if keyword in asset]
