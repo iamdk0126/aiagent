@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:34:05",
+    "updated_at": "2026-11-09 11:35:47",
     "tables": {
         "users": {
             "columns": [],
@@ -115,6 +115,18 @@
             "defined_in": "Stage 13.1.1",
             "accessed_by": [],
             "note": "此資料表用於存儲各專案的預算規則，包括最大單鏡預算、最大單集預算、最大單專案預算、目前專案已支出和是否自動切換到本地免費模型等信息。"
+        },
+        "workflow_checkpoints": {
+            "columns": [
+                "id (INTEGER)",
+                "created_at (TIMESTAMP)"
+            ],
+            "defined_in": "database/workflow_checkpoints.py",
+            "accessed_by": [
+                "database/workflow_checkpoints.py::WorkflowCheckpoint.save_checkpoint()",
+                "database/workflow_checkpoints.py::WorkflowCheckpoint.load_checkpoint()"
+            ],
+            "note": "此資料表用於保存工作流程的檢查點數據，包括檢查點數據和創建時間。"
         }
     },
     "modules": {
@@ -1105,6 +1117,72 @@
                 }
             },
             "functions": {}
+        },
+        "database/workflow_checkpoints.py": {
+            "stage_id": "14.1.1",
+            "note": "此檔案定義了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點。",
+            "imports": [
+                "sqlite3",
+                "typing:(Optional)"
+            ],
+            "classes": {
+                "WorkflowCheckpoint": {
+                    "bases": [],
+                    "note": "WorkflowCheckpoint 類別用於管理工作流程的檢查點，包括保存和加載檢查點。",
+                    "methods": {
+                        "__init__": {
+                            "signature": "def __init__(self, db_path: str)",
+                            "note": "初始化 WorkflowCheckpoint 類別，建立數據庫連接並創建檢查點表。",
+                            "calls": [
+                                "connect",
+                                "cursor",
+                                "_create_table"
+                            ],
+                            "tables": []
+                        },
+                        "_create_table": {
+                            "signature": "def _create_table(self)",
+                            "note": "創建 workflow_checkpoints 表，如果表不存在。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": []
+                        },
+                        "save_checkpoint": {
+                            "signature": "def save_checkpoint(self, checkpoint_data: bytes)",
+                            "note": "保存檢查點數據到數據庫。",
+                            "calls": [
+                                "execute",
+                                "commit"
+                            ],
+                            "tables": [
+                                "workflow_checkpoints"
+                            ]
+                        },
+                        "load_checkpoint": {
+                            "signature": "def load_checkpoint(self) -> Optional[bytes]",
+                            "note": "從數據庫加載最新的檢查點數據。",
+                            "calls": [
+                                "execute",
+                                "fetchone"
+                            ],
+                            "tables": [
+                                "workflow_checkpoints"
+                            ]
+                        },
+                        "__del__": {
+                            "signature": "def __del__(self)",
+                            "note": "類別析構函數，關閉數據庫連接。",
+                            "calls": [
+                                "close"
+                            ],
+                            "tables": []
+                        }
+                    }
+                }
+            },
+            "functions": {}
         }
     },
     "stage_notes": {
@@ -1130,6 +1208,7 @@
         "10.1.1": "本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。",
         "10.1.2": "本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。",
         "13.1.1": "本階段實現了 BudgetRule 類別，用於管理單專案預算規則，並提供了從資料庫讀取和寫入預算規則的功能。",
-        "13.1.2": "本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。"
+        "13.1.2": "本階段實現了預算規則的管理類別，與資料庫進行互動，進行預算規則的讀取和寫入。",
+        "14.1.1": "本階段實現了 WorkflowCheckpoint 類別，用於管理工作流程的檢查點，包括保存和加載檢查點，並與 SQLite 數據庫進行交互。"
     }
 }
