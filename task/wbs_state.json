@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:13:51",
+    "updated_at": "2026-11-09 11:14:10",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -286,7 +286,7 @@
                             "id": "3.1.2",
                             "mode": "both",
                             "prompt": "在 `ModelStoreCrawler` 類別中實現核心業務演算法，包括模型過濾、下載、解析和保存。添加異常處理機制，確保程序的健壯性。撰寫單元測試以驗證各方法的正確性。",
-                            "reasoning_status": "pending",
+                            "reasoning_status": "completed",
                             "registry_status": "pending",
                             "spec_keywords": [
                                 "model_store_crawler.py"
