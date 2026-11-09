@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 12:38:11
+> 最後自動更新時間：2026-11-09 12:39:35
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -19,7 +19,7 @@
 - **關聯存取函數 (Read/Write)**: `database/project_archiver.py::ProjectArchiver.create_archive(), database/project_archiver.py::ProjectArchiver.restore_archive(), database/project_assets.py::ProjectArchiver.restore_archive()`
 
 ### 資料表 `asset_embeddings`
-- **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 存儲資產的嵌入數據，包括資產ID、嵌入數據、創建和更新時間等字段。
+- **定義檔案**: `database/asset_embeddings.py` | **用途註記**: 此資料表用於存儲資產的嵌入向量，包括資產 ID、嵌入向量和創建時間。
 - **欄位結構**: `asset_id (TEXT), embedding (BLOB), created_at (TIMESTAMP)`
 - **關聯存取函數 (Read/Write)**: `database/asset_embeddings.py::AssetEmbeddings.create_embedding(), database/asset_embeddings.py::AssetEmbeddings.get_embedding(), database/asset_embeddings.py::AssetEmbeddings.update_embedding(), database/asset_embeddings.py::AssetEmbeddings.delete_embedding()`
 
@@ -324,12 +324,12 @@
     - `def execute_task(self, task_id: str)` ➔ 執行指定ID的任務，返回任務執行結果，如果任務不存在則拋出 ValueError。 | 🔗 呼叫: `ValueError`
     - `def get_task_status(self, task_id: str) -> Optional[str]` ➔ 查詢指定ID的任務狀態，如果任務存在則返回 'Running'，否則返回 None。
 
-### 📄 `database/asset_embeddings.py` (所屬階段: `4.1.2`)
-- **模組職責註記**: 此檔案定義了資產嵌入數據的數據庫模型，包括嵌入數據和創建更新時間等字段，並設置了與項目資產表的關聯。
+### 📄 `database/asset_embeddings.py` (所屬階段: `4.2.1`)
+- **模組職責註記**: 此檔案定義了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量。
 - **依賴引用 (Imports)**: `typing:(List, Dict, Optional), sqlite3`
   - **Class `AssetEmbeddings`**: 類別 AssetEmbeddings 用於處理資產嵌入向量的資料庫操作。
     - `def __init__(self, db_path: str)` ➔ 初始化 AssetEmbeddings 類別。 | 🔗 呼叫: `connect, cursor, _create_table`
-    - `def _create_table(self)` ➔ 創建 asset_embeddings 資料表。 | 🔗 呼叫: `execute, commit`
+    - `def _create_table(self)` ➔ 創建 asset_embeddings 資料表，如果該表不存在。 | 🔗 呼叫: `execute, commit`
     - `def create_embedding(self, asset_id: str, embedding: bytes)` ➔ 創建一個新的資產嵌入向量。 | 🗄️ 資料表: `asset_embeddings` | 🔗 呼叫: `execute, commit`
     - `def get_embedding(self, asset_id: str) -> Optional[bytes]` ➔ 讀取一個資產的嵌入向量。 | 🗄️ 資料表: `asset_embeddings` | 🔗 呼叫: `execute, fetchone`
     - `def update_embedding(self, asset_id: str, embedding: bytes)` ➔ 更新一個資產的嵌入向量。 | 🗄️ 資料表: `asset_embeddings` | 🔗 呼叫: `execute, commit`
@@ -488,6 +488,7 @@
 - **階段 `3.2.2` 關聯總結**: 本階段實現了模型菜單和基礎連接接口的類，通過調用數據庫管理器獲取本地免費模型和商業API模型。
 - **階段 `4.1.1` 關聯總結**: 本階段實現了資料庫連線管理、項目資產與嵌入式數據的 ORM 模型，並定義了項目存档與恢復的介面。
 - **階段 `4.1.2` 關聯總結**: 本階段實現了數據庫模型和管理器，用於存儲和操作項目資產及其嵌入數據，並提供了數據庫管理器和存档管理器的實現。
+- **階段 `4.2.1` 關聯總結**: 本階段實現了 AssetEmbeddings 類別，用於處理資產嵌入向量的資料庫操作，包括創建、讀取、更新和刪除嵌入向量，並與 SQLite 資料庫進行互動。
 - **階段 `5.1.1` 關聯總結**: 本階段實現了 FrameContinuityEngine 類，用於智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 類與數據庫進行交互。
 - **階段 `5.1.2` 關聯總結**: 本階段實現了核心業務演算法，包括智慧最佳尾幀挑選、LAB 色彩校正、時域去閃爍與羽化去背，並通過 DBManager 与資料庫互動。
 - **階段 `7.1.1` 關聯總結**: 本階段實現了多智能體協同圖形數據庫的基礎結構，包括智能體節點和邊的類別，以及對圖形數據庫的增刪改查操作。
