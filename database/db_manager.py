@@ -1,5 +1,5 @@
 import sqlite3
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from contextlib import contextmanager
 
 class DBManager:
@@ -69,9 +69,68 @@ class DBManager:
             conn.commit()
             cursor.execute("PRAGMA backup = 'backup.db'")
 
-# 示例使用
-if __name__ == "__main__":
-    db_manager = DBManager("example.db")
-    db_manager.init_tables()
-    db_manager.auto_migration()
-    db_manager.rolling_backup()
+    def connect(self) -> None:
+        """
+        連接到 SQLite 數據庫
+        """
+        self.connection = sqlite3.connect(self.db_path, isolation_level="WAL")
+
+    def disconnect(self) -> None:
+        """
+        斷開與 SQLite 數據庫的連線
+        """
+        if self.connection:
+            self.connection.close()
+
+    def execute_query(self, query: str, params: Optional[Tuple] = None) -> List[Tuple]:
+        """
+        執行 SQL 查詢
+        :param query: SQL 查詢語句
+        :param params: 查詢參數
+        :return: 查詢結果
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            return cursor.fetchall()
+
+    def insert_data(self, table_name: str, data: List[Tuple]):
+        """
+        插入數據
+        :param table_name: 表名
+        :param data: 要插入的數據
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            placeholders = ', '.join(['?'] * len(data[0]))
+            query = f"INSERT INTO {table_name} VALUES ({placeholders})"
+            cursor.executemany(query, data)
+            conn.commit()
+
+    def update_data(self, table_name: str, set_clause: str, where_clause: str):
+        """
+        更新數據
+        :param table_name: 表名
+        :param set_clause: 更新子句
+        :param where_clause: 篩選子句
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            query = f"UPDATE {table_name} SET {set_clause} WHERE {where_clause}"
+            cursor.execute(query)
+            conn.commit()
+
+    def delete_data(self, table_name: str, where_clause: str):
+        """
+        刪除數據
+        :param table_name: 表名
+        :param where_clause: 篩選子句
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            query = f"DELETE FROM {table_name} WHERE {where_clause}"
+            cursor.execute(query)
+            conn.commit()
