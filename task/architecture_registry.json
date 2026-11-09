@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 13:11:11",
+    "updated_at": "2026-11-09 13:12:18",
     "tables": {
         "users": {
             "columns": [],
@@ -99,7 +99,7 @@
                 "agents/story_bible_memory.py::StoryBibleMemory.load_memory()",
                 "agents/story_bible_memory.py::StoryBibleMemory.save_memory()"
             ],
-            "note": "此資料表用於存儲智能體的長期記憶，包括專案ID和記憶數據。"
+            "note": "此資料表用於持久化智能體的長期記憶數據，包含專案ID和記憶數據字段。"
         },
         "edges": {
             "columns": [],
@@ -2628,8 +2628,8 @@
             "functions": {}
         },
         "agents/story_bible_memory.py": {
-            "stage_id": "7.2.1",
-            "note": "此檔案實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶。",
+            "stage_id": "7.2.2",
+            "note": "此檔案實現了智能體長期記憶的相關功能，包括記憶的加載、保存和检索。",
             "imports": [
                 "typing:(List, Optional)",
                 "database.db_manager:(DBManager)"
@@ -2647,7 +2647,7 @@
                         },
                         "load_memory": {
                             "signature": "def load_memory(self, project_id: str) -> None",
-                            "note": "從資料庫中加載記憶，根據專案ID識別特定的記憶。",
+                            "note": "從資料庫中加載特定專案的記憶數據。",
                             "calls": [
                                 "execute_query"
                             ],
@@ -2657,7 +2657,7 @@
                         },
                         "save_memory": {
                             "signature": "def save_memory(self, project_id: str, memory_data: dict) -> None",
-                            "note": "將記憶保存到資料庫，根據專案ID識別特定的記憶。",
+                            "note": "將記憶數據保存到資料庫中，如果記憶已存在則進行更新。",
                             "calls": [
                                 "execute_query"
                             ],
@@ -2667,7 +2667,7 @@
                         },
                         "retrieve_memory": {
                             "signature": "def retrieve_memory(self, project_id: str) -> dict",
-                            "note": "從資料庫中检索記憶，根據專案ID識別特定的記憶。",
+                            "note": "從資料庫中检索特定專案的記憶數據並返回。",
                             "calls": [
                                 "load_memory"
                             ],
@@ -2731,6 +2731,7 @@
         "6.1.2": "本階段實現了NLE時間軸編輯器的核心邏輯，包括節點和連線的管理，以及編輯器的排序和自動連接功能。",
         "6.2.1": "本階段實現了預算設置對話框的 UI 界面，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
         "6.2.2": "本階段實現了預算設置對話框的 UI 界面和基本功能，與父階段和其他模組無直接關聯，主要操作資料表為 `budget_settings`。",
-        "7.2.1": "本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。"
+        "7.2.1": "本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。",
+        "7.2.2": "本階段實現了智能體長期記憶的檢索、保存和检索功能，與資料庫進行交互以持久化記憶數據。"
     }
 }

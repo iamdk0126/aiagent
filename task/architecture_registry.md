@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 13:11:11
+> 最後自動更新時間：2026-11-09 13:12:18
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -14,7 +14,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `agent_nodes`
-- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表用於存儲智能體的長期記憶，包括專案ID和記憶數據。
+- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表用於持久化智能體的長期記憶數據，包含專案ID和記憶數據字段。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `agents/story_bible_memory.py::StoryBibleMemory.load_memory(), agents/story_bible_memory.py::StoryBibleMemory.save_memory()`
 
@@ -277,14 +277,14 @@
     - `def get_node_by_id(self, node_id: str) -> Optional[AgentNode]` ➔ 通過節點ID獲取特定的智能體節點。
     - `def get_edge_by_id(self, edge_id: str) -> Optional[Edge]` ➔ 通過邊ID獲取特定的邊
 
-### 📄 `agents/story_bible_memory.py` (所屬階段: `7.2.1`)
-- **模組職責註記**: 此檔案實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶。
+### 📄 `agents/story_bible_memory.py` (所屬階段: `7.2.2`)
+- **模組職責註記**: 此檔案實現了智能體長期記憶的相關功能，包括記憶的加載、保存和检索。
 - **依賴引用 (Imports)**: `typing:(List, Optional), database.db_manager:(DBManager)`
   - **Class `StoryBibleMemory`**: 智能體長期記憶檢索、角色關係圖與跨集狀態防穿幫注入
     - `def __init__(self, db_manager: DBManager)` ➔ 初始化 StoryBibleMemory 類別
-    - `def load_memory(self, project_id: str) -> None` ➔ 從資料庫中加載記憶，根據專案ID識別特定的記憶。 | 🗄️ 資料表: `agent_nodes` | 🔗 呼叫: `execute_query`
-    - `def save_memory(self, project_id: str, memory_data: dict) -> None` ➔ 將記憶保存到資料庫，根據專案ID識別特定的記憶。 | 🗄️ 資料表: `agent_nodes` | 🔗 呼叫: `execute_query`
-    - `def retrieve_memory(self, project_id: str) -> dict` ➔ 從資料庫中检索記憶，根據專案ID識別特定的記憶。 | 🔗 呼叫: `load_memory`
+    - `def load_memory(self, project_id: str) -> None` ➔ 從資料庫中加載特定專案的記憶數據。 | 🗄️ 資料表: `agent_nodes` | 🔗 呼叫: `execute_query`
+    - `def save_memory(self, project_id: str, memory_data: dict) -> None` ➔ 將記憶數據保存到資料庫中，如果記憶已存在則進行更新。 | 🗄️ 資料表: `agent_nodes` | 🔗 呼叫: `execute_query`
+    - `def retrieve_memory(self, project_id: str) -> dict` ➔ 從資料庫中检索特定專案的記憶數據並返回。 | 🔗 呼叫: `load_memory`
 
 ### 📄 `core/frame_continuity_engine.py` (所屬階段: `5.2.3`)
 - **模組職責註記**: 此檔案實現了FrameContinuityEngine類，用於智慧最佳尾幀挑選、LAB色彩校正、時域去閃爍與羽化去背，並通過DBManager與數據庫進行交互。
@@ -660,6 +660,7 @@
 - **階段 `7.1.1` 關聯總結**: 本階段實現了智能體圖形數據結構的骨架，包括節點和邊的類別，以及圖形數據結構的管理方法，這些類別和方法將在後續的階段中與資料庫進行互動，實現智能體網絡的建模和管理。
 - **階段 `7.1.2` 關聯總結**: 本階段實現了一個多智能體圖形數據結構，用於管理智能體節點和邊，並提供了添加、獲取和查詢節點和邊的功能。
 - **階段 `7.2.1` 關聯總結**: 本階段實現了智能體長期記憶的管理功能，包括從資料庫加載、保存和检索記憶，與資料庫進行連線。
+- **階段 `7.2.2` 關聯總結**: 本階段實現了智能體長期記憶的檢索、保存和检索功能，與資料庫進行交互以持久化記憶數據。
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
 - **階段 `9.1.2` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。
 - **階段 `10.1.1` 關聯總結**: 本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
