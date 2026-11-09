@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:29:22",
+    "updated_at": "2026-11-09 11:30:14",
     "tables": {
         "users": {
             "columns": [],
@@ -102,7 +102,7 @@
             "columns": [],
             "defined_in": "Stage 7.1.2",
             "accessed_by": [],
-            "note": "此資料表存儲邊的資訊，包括邊ID、源節點ID和目標節點ID。"
+            "note": "此資料表用於存儲畫布邊的數據，包括邊的唯一識別符、源節點識別符和目標節點識別符。"
         },
         "canvas_edges": {
             "columns": [],
@@ -945,7 +945,7 @@
             "functions": {}
         },
         "database/canvas_nodes.py": {
-            "stage_id": "10.1.1",
+            "stage_id": "10.1.2",
             "note": "此檔案定義了 CanvasEdge 類別，用於表示畫布上的邊，並提供了對邊的屬性訪問和更新方法。",
             "imports": [
                 "typing:(Optional)"
@@ -957,25 +957,25 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, edge_id: str, source_node_id: str, target_node_id: str, project_id: str)",
-                            "note": "初始化 CanvasEdge 物件，設置邊的屬性。",
+                            "note": "初始化 CanvasEdge 物件。",
                             "calls": [],
                             "tables": []
                         },
                         "get_edge_id": {
                             "signature": "def get_edge_id(self) -> str",
-                            "note": "取得邊的唯一識別符。",
+                            "note": "取得邊ID。",
                             "calls": [],
                             "tables": []
                         },
                         "get_source_node_id": {
                             "signature": "def get_source_node_id(self) -> str",
-                            "note": "取得邊的源節點識別符。",
+                            "note": "取得源節點ID。",
                             "calls": [],
                             "tables": []
                         },
                         "get_target_node_id": {
                             "signature": "def get_target_node_id(self) -> str",
-                            "note": "取得邊的目標節點識別符。",
+                            "note": "取得目標節點ID。",
                             "calls": [],
                             "tables": []
                         },
@@ -987,7 +987,7 @@
                         },
                         "update_target_node_id": {
                             "signature": "def update_target_node_id(self, new_id: str) -> None",
-                            "note": "更新邊的目標節點識別符。",
+                            "note": "更新目標節點ID。",
                             "calls": [],
                             "tables": []
                         },
@@ -1003,8 +1003,8 @@
             "functions": {}
         },
         "database/canvas_edges.py": {
-            "stage_id": "10.1.1",
-            "note": "階段 10.1.1 (資料結構、類別骨架與基礎連線介面) 產出模組",
+            "stage_id": "10.1.2",
+            "note": "此檔案定義了CanvasEdge類別，用於管理畫布邊的數據。",
             "imports": [
                 "typing:(Optional, List, Dict)"
             ],
@@ -1015,7 +1015,7 @@
                     "methods": {
                         "__init__": {
                             "signature": "def __init__(self, edge_id: str, source_node_id: str, target_node_id: str)",
-                            "note": "初始化 CanvasEdge 物件。",
+                            "note": "初始化CanvasEdge物件，設置邊的屬性。",
                             "calls": [],
                             "tables": []
                         },
@@ -1087,6 +1087,7 @@
         "7.1.2": "本階段實現了多智能體協同圖形數據庫的模組，與父階段和其他模組進行了互動，並與資料表進行了關聯。",
         "9.1.1": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。",
         "9.1.2": "本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。",
-        "10.1.1": "本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。"
+        "10.1.1": "本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。",
+        "10.1.2": "本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。"
     }
 }

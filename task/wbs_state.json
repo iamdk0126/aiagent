@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:29:44",
+    "updated_at": "2026-11-09 11:30:14",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -753,7 +753,7 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [
                                 "10.1.1"
                             ],
@@ -761,7 +761,7 @@
                             "mode": "both",
                             "prompt": "在 `CanvasNode` 和 `CanvasEdge` 類別上實現核心業務演算法，包括數據插入、查詢和更新。添加異常處理和單元測試以確保功能正確性。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "canvas_nodes",
                                 "canvas_edges"

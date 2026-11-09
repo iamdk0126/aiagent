@@ -1,5 +1,5 @@
 # 🗺️ 專案全域程式碼、Function 與資料表關聯註冊表 (Architecture Registry)
-> 最後自動更新時間：2026-11-09 11:29:22
+> 最後自動更新時間：2026-11-09 11:30:14
 > **核心規範**：推理與編程模型在實作任何階段時，必須查閱本註冊表的『資料表欄位』、『跨階段模組介面』與『Function 簽章』，確保命名與參數型別 100% 吻合。
 
 ## 1. 🗄️ 資料表結構與存取關聯 (Database Tables & CRUD Mapping)
@@ -24,7 +24,7 @@
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
 ### 資料表 `edges`
-- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表存儲邊的資訊，包括邊ID、源節點ID和目標節點ID。
+- **定義檔案**: `Stage 7.1.2` | **用途註記**: 此資料表用於存儲畫布邊的數據，包括邊的唯一識別符、源節點識別符和目標節點識別符。
 - **欄位結構**: `(欄位待補充)`
 - **關聯存取函數 (Read/Write)**: `尚無函數直接存取`
 
@@ -159,11 +159,11 @@
     - `def delete_embedding(self, asset_id: str)` ➔ 刪除一個資產的嵌入向量。 | 🗄️ 資料表: `asset_embeddings` | 🔗 呼叫: `execute, commit`
     - `def close(self)` ➔ 關閉資料庫連線。 | 🔗 呼叫: `close`
 
-### 📄 `database/canvas_edges.py` (所屬階段: `10.1.1`)
-- **模組職責註記**: 階段 10.1.1 (資料結構、類別骨架與基礎連線介面) 產出模組
+### 📄 `database/canvas_edges.py` (所屬階段: `10.1.2`)
+- **模組職責註記**: 此檔案定義了CanvasEdge類別，用於管理畫布邊的數據。
 - **依賴引用 (Imports)**: `typing:(Optional, List, Dict)`
   - **Class `CanvasEdge`**: CanvasEdge 類別，定義邊的屬性和方法。
-    - `def __init__(self, edge_id: str, source_node_id: str, target_node_id: str)` ➔ 初始化 CanvasEdge 物件。
+    - `def __init__(self, edge_id: str, source_node_id: str, target_node_id: str)` ➔ 初始化CanvasEdge物件，設置邊的屬性。
     - `def get_edge_id(self) -> str` ➔ 取得邊的唯一識別符。
     - `def get_source_node_id(self) -> str` ➔ 取得邊的源節點識別符。
     - `def get_target_node_id(self) -> str` ➔ 取得邊的目標節點識別符。
@@ -172,16 +172,16 @@
     - `def set_target_node_id(self, target_node_id: str) -> None` ➔ 設定邊的目標節點識別符。
     - `def __repr__(self) -> str` ➔ 取得邊的字串表示。
 
-### 📄 `database/canvas_nodes.py` (所屬階段: `10.1.1`)
+### 📄 `database/canvas_nodes.py` (所屬階段: `10.1.2`)
 - **模組職責註記**: 此檔案定義了 CanvasEdge 類別，用於表示畫布上的邊，並提供了對邊的屬性訪問和更新方法。
 - **依賴引用 (Imports)**: `typing:(Optional)`
   - **Class `CanvasEdge`**: CanvasEdge 類別，定義畫布邊的屬性和方法。
-    - `def __init__(self, edge_id: str, source_node_id: str, target_node_id: str, project_id: str)` ➔ 初始化 CanvasEdge 物件，設置邊的屬性。
-    - `def get_edge_id(self) -> str` ➔ 取得邊的唯一識別符。
-    - `def get_source_node_id(self) -> str` ➔ 取得邊的源節點識別符。
-    - `def get_target_node_id(self) -> str` ➔ 取得邊的目標節點識別符。
+    - `def __init__(self, edge_id: str, source_node_id: str, target_node_id: str, project_id: str)` ➔ 初始化 CanvasEdge 物件。
+    - `def get_edge_id(self) -> str` ➔ 取得邊ID。
+    - `def get_source_node_id(self) -> str` ➔ 取得源節點ID。
+    - `def get_target_node_id(self) -> str` ➔ 取得目標節點ID。
     - `def get_project_id(self) -> str` ➔ 取得專案ID。
-    - `def update_target_node_id(self, new_id: str) -> None` ➔ 更新邊的目標節點識別符。
+    - `def update_target_node_id(self, new_id: str) -> None` ➔ 更新目標節點ID。
     - `def __repr__(self) -> str` ➔ 取得邊的字符串表示。
 
 ### 📄 `database/db_manager.py` (所屬階段: `1.1.1`)
@@ -251,3 +251,4 @@
 - **階段 `9.1.1` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無直接互動。
 - **階段 `9.1.2` 關聯總結**: 本階段實現了 WorkflowRuntime 類，用於管理工作流任務的註冊、執行和狀態查詢，與父階段和其他模組無直接關聯，主要與資料表無關聯。
 - **階段 `10.1.1` 關聯總結**: 本階段實現了 CanvasEdge 類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
+- **階段 `10.1.2` 關聯總結**: 本階段實現了CanvasEdge類別，用於定義畫布邊的屬性和方法，並提供了對邊的增刪改查操作。
