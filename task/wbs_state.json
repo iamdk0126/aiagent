@@ -1,5 +1,5 @@
 {
-    "updated_at": "2026-11-09 11:28:28",
+    "updated_at": "2026-11-09 11:29:22",
     "stages": [
         {
             "auto_expand_subtasks": false,
@@ -733,13 +733,13 @@
                         {
                             "auto_expand_subtasks": false,
                             "children": [],
-                            "coding_status": "pending",
+                            "coding_status": "completed",
                             "depends_on": [],
                             "id": "10.1.1",
                             "mode": "both",
                             "prompt": "實作 `CanvasNode` 和 `CanvasEdge` 類別，定義其屬性和方法。確保與註冊表中的 `project_assets` 和 `asset_embeddings` 資料表對接。",
                             "reasoning_status": "completed",
-                            "registry_status": "pending",
+                            "registry_status": "completed",
                             "spec_keywords": [
                                 "canvas_nodes",
                                 "canvas_edges"
